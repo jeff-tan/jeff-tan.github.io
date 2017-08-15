@@ -1,0 +1,720 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.2" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="Python,爬虫," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/images/headimg.png?v=5.1.2" />
+
+
+
+
+
+
+<meta name="description" content="两个十分简单的Python爬虫">
+<meta name="keywords" content="Python,爬虫">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Python爬虫两例">
+<meta property="og:url" content="http://yoursite.com/2016/06/16/Python爬虫两例/index.html">
+<meta property="og:site_name" content="Jeff的干货基地">
+<meta property="og:description" content="两个十分简单的Python爬虫">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2016-06-16T15:09:25.784Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Python爬虫两例">
+<meta name="twitter:description" content="两个十分简单的Python爬虫">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    sidebar: {"position":"left","display":"post","offset":12,"offset_float":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2016/06/16/Python爬虫两例/"/>
+
+
+
+
+
+  <title>Python爬虫两例 | Jeff的干货基地</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Jeff的干货基地</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2016/06/16/Python爬虫两例/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Jeff Tan">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/headimg.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Jeff的干货基地">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">Python爬虫两例</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2016-06-16T22:32:39+08:00">
+                2016-06-16
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Python/" itemprop="url" rel="index">
+                    <span itemprop="name">Python</span>
+                  </a>
+                </span>
+
+                
+                
+                  ， 
+                
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Python/爬虫/" itemprop="url" rel="index">
+                    <span itemprop="name">爬虫</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>两个十分简单的Python爬虫<br><a id="more"></a></p>
+<p>废话不多说，直接贴代码</p>
+<p>爬取豆瓣读书中小说, 随笔, 散文, 童话, 诗歌, 名著这六个标签下前10页图书内容，并保存为html文件</p>
+<hr>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div></pre></td><td class="code"><pre><div class="line"># -*- coding:utf-8 -*- </div><div class="line"></div><div class="line"># Python version:3.4.3</div><div class="line"></div><div class="line">import requests</div><div class="line">from bs4 import BeautifulSoup</div><div class="line"></div><div class="line">def get_book_data(url, book_list, htmlfile):</div><div class="line">    # 防止爬虫限制</div><div class="line"></div><div class="line"></div><div class="line">    headers = &#123;&apos;User-Agent&apos;:&apos;Mozilla/5.0 (Windows NT 6.3; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/48.0.2564.116 Safari/537.36&apos;,</div><div class="line">             &#125;</div><div class="line">    douban_data = requests.get(url, headers=headers)</div><div class="line">    douban_html = douban_data.text</div><div class="line">    soup = BeautifulSoup(douban_html, &quot;html.parser&quot;)</div><div class="line">    titles = soup.select(&apos;a.title&apos;) # 爬取书名</div><div class="line"></div><div class="line">    descriptions = soup.select(&apos;div.desc&apos;) # 爬取描述</div><div class="line"></div><div class="line">    scores = soup.select(&apos;span.rating_nums&apos;) # 爬取评分</div><div class="line"></div><div class="line">    for title, description, score in zip(titles, descriptions, scores): # 循环输出</div><div class="line"></div><div class="line">        print(&apos;书名&apos; + title.get_text())    </div><div class="line">        print(&apos;描述&apos; + description.get_text().strip())</div><div class="line">        print(&apos;评分&apos; + score.get_text())</div><div class="line">        htmlfile.write(&apos;&lt;tr&gt;&apos;)</div><div class="line">        htmlfile.write(&apos;&lt;td&gt;%s&lt;/td&gt;&apos; % title.get_text())</div><div class="line">        htmlfile.write(&apos;&lt;td&gt;%s&lt;/td&gt;&apos; % description.get_text().strip())</div><div class="line">        htmlfile.write(&apos;&lt;td&gt;%s&lt;/td&gt;&apos; % score.get_text())</div><div class="line">        htmlfile.write(&apos;&lt;/tr&gt;&apos;)</div><div class="line">        </div><div class="line">             </div><div class="line">        </div><div class="line">        </div><div class="line">if __name__ == &apos;__main__&apos;:</div><div class="line">    book_list = [&apos;小说&apos;, &apos;随笔&apos;, &apos;散文&apos;, &apos;童话&apos;, &apos;诗歌&apos;, &apos;名著&apos;] # 爬取这六个标签下的图书内容</div><div class="line"></div><div class="line">    tag = 0</div><div class="line">    while (tag &lt;= 5):</div><div class="line">        page = 0</div><div class="line">        htmlfile = open(book_list[tag] + &apos;.html&apos;, &apos;w+&apos;, encoding=&quot;utf-8&quot;)</div><div class="line">        htmlfile.write(&apos;&lt;html&gt;&apos;)</div><div class="line">        htmlfile.write(&apos;&lt;head&gt;&lt;meta http-equiv=\&quot;content-type\&quot; content=\&quot;text/html;charset=utf-8\&quot;&gt;&lt;/head&gt;&apos;)</div><div class="line">        htmlfile.write(&apos;&lt;body&gt;&apos;)</div><div class="line">        htmlfile.write(&apos;&lt;table border=&quot;1px&quot; cellspacing=&quot;0px&quot; style=&quot;border-collapse:collapse&quot;&gt;&apos;)</div><div class="line">        htmlfile.write(&apos;&lt;tr&gt;&apos;)</div><div class="line">        htmlfile.write(&apos;&lt;th&gt;书名&lt;/th&gt;&apos;)</div><div class="line">        htmlfile.write(&apos;&lt;th&gt;描述&lt;/th&gt;&apos;)</div><div class="line">        htmlfile.write(&apos;&lt;th&gt;评分&lt;/th&gt;&apos;)</div><div class="line">        htmlfile.write(&apos;&lt;/tr&gt;&apos;)</div><div class="line">        while (page &lt; 10): # 爬取每个标签下的前十页图书内容</div><div class="line"></div><div class="line">            url = &quot;http://www.douban.com/tag/&quot; + book_list[tag] + &quot;/book?start=&quot; + str(page * 15)</div><div class="line">            get_book_data(url, book_list, htmlfile)</div><div class="line">            page += 1 </div><div class="line">        </div><div class="line">        tag += 1    </div><div class="line">        htmlfile.write(&apos;&lt;/table&gt;&apos;)</div><div class="line">        htmlfile.write(&apos;&lt;/body&gt;&apos;)</div><div class="line">        htmlfile.write(&apos;&lt;/html&gt;&apos;)</div><div class="line">        htmlfile.close()</div></pre></td></tr></table></figure>
+<p>爬取下载百度NBA贴吧某帖子里的科比图片</p>
+<hr>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div></pre></td><td class="code"><pre><div class="line"># -*- coding:utf-8 -*-</div><div class="line"></div><div class="line"># Python version:2.7.1</div><div class="line"></div><div class="line">from bs4 import BeautifulSoup</div><div class="line">import os</div><div class="line">import urllib2</div><div class="line"></div><div class="line"></div><div class="line">path = os.getcwd()</div><div class="line">new_path = os.path.join(path,u&apos;科比&apos;)</div><div class="line">if not os.path.isdir(new_path):</div><div class="line">    os.mkdir(new_path)</div><div class="line"></div><div class="line">def get_pictures(url):</div><div class="line">    headers = &#123;&apos;User-Agent&apos;:&apos;Mozilla/5.0 (Windows NT 6.3; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/48.0.2564.116 Safari/537.36&apos;,</div><div class="line">             &#125;</div><div class="line">    nba_source=urllib2.Request(url,headers=headers)</div><div class="line">    nba_data=urllib2.urlopen(nba_source)</div><div class="line">    soup=BeautifulSoup(nba_data, &quot;html.parser&quot;)</div><div class="line">    pictures=soup.find_all(&quot;img&quot;,attrs=&#123;&quot;pic_type&quot;:0&#125;)</div><div class="line">    for picture in pictures:</div><div class="line">        link=picture.get(&apos;src&apos;)</div><div class="line">        print(link)</div><div class="line">        filepath=u&apos;科比&apos;+&apos;/&apos;+link[-11:]</div><div class="line">        source=urllib2.Request(link,headers=headers)</div><div class="line">        data=urllib2.urlopen(source).read()</div><div class="line">        with open(filepath,&apos;wb&apos;) as f:</div><div class="line">            f.write(data)</div><div class="line"></div><div class="line"></div><div class="line">if __name__ == &apos;__main__&apos;:</div><div class="line">    page=1</div><div class="line">    while(page&lt;=10):</div><div class="line">        url=&quot;http://tieba.baidu.com/p/3847906280?see_lz=1&amp;pn=&quot;+str(page)</div><div class="line">        page+=1</div><div class="line">        get_pictures(url)</div></pre></td></tr></table></figure>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Python/" rel="tag"># Python</a>
+          
+            <a href="/tags/爬虫/" rel="tag"># 爬虫</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2016/06/15/开发中常用的PHP正则表达式总结/" rel="next" title="开发中常用的PHP正则表达式总结">
+                <i class="fa fa-chevron-left"></i> 开发中常用的PHP正则表达式总结
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2016/09/06/分享LNMP1.3下Thinkphp的Nginx配置/" rel="prev" title="分享LNMP1.3下Thinkphp的Nginx配置">
+                分享LNMP1.3下Thinkphp的Nginx配置 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+
+      <section class="site-overview sidebar-panel sidebar-panel-active">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/headimg.png"
+               alt="Jeff Tan" />
+          <p class="site-author-name" itemprop="name">Jeff Tan</p>
+           
+              <p class="site-description motion-element" itemprop="description">念念不忘 必有回响</p>
+          
+        </div>
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/archives/">
+                <span class="site-state-item-count">21</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-categories">
+              
+                <span class="site-state-item-count">15</span>
+                <span class="site-state-item-name">分类</span>
+              
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              
+                <span class="site-state-item-count">14</span>
+                <span class="site-state-item-name">标签</span>
+              
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2017</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Jeff Tan</span>
+
+  
+</div>
+
+
+  <div class="powered-by">
+    由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+  </div>
+
+  <span class="post-meta-divider">|</span>
+
+  <div class="theme-info">
+    主题 &mdash;
+    <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+      NexT.Mist
+    </a>
+  </div>
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.2"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.2"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.2"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.2"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.2"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

@@ -1,0 +1,742 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.2" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="PHP," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/images/headimg.png?v=5.1.2" />
+
+
+
+
+
+
+<meta name="description" content="PHP爬取正方课表">
+<meta name="keywords" content="PHP">
+<meta property="og:type" content="article">
+<meta property="og:title" content="PHP爬取正方教务系统课表">
+<meta property="og:url" content="http://yoursite.com/2017/04/23/PHP爬取正方课表/index.html">
+<meta property="og:site_name" content="Jeff的干货基地">
+<meta property="og:description" content="PHP爬取正方课表">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="http://7xr23j.com1.z0.glb.clouddn.com/%E3%80%90PHP%E7%88%AC%E5%8F%96%E8%AF%BE%E8%A1%A8%E3%80%91%E5%88%86%E6%9E%90%E5%85%83%E7%B4%A0.png">
+<meta property="og:image" content="http://7xr23j.com1.z0.glb.clouddn.com/%E3%80%90PHP%E7%88%AC%E5%8F%96%E8%AF%BE%E8%A1%A8%E3%80%91%E5%88%86%E6%9E%90%E9%A6%96%E9%A1%B5%E5%85%83%E7%B4%A0.png">
+<meta property="og:image" content="http://7xr23j.com1.z0.glb.clouddn.com/%E3%80%90PHP%E7%88%AC%E5%8F%96%E8%AF%BE%E8%A1%A8%E3%80%91%E8%AF%BE%E8%A1%A8%E5%A4%84%E7%90%86.png">
+<meta property="og:updated_time" content="2017-04-24T15:40:14.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="PHP爬取正方教务系统课表">
+<meta name="twitter:description" content="PHP爬取正方课表">
+<meta name="twitter:image" content="http://7xr23j.com1.z0.glb.clouddn.com/%E3%80%90PHP%E7%88%AC%E5%8F%96%E8%AF%BE%E8%A1%A8%E3%80%91%E5%88%86%E6%9E%90%E5%85%83%E7%B4%A0.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    sidebar: {"position":"left","display":"post","offset":12,"offset_float":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2017/04/23/PHP爬取正方课表/"/>
+
+
+
+
+
+  <title>PHP爬取正方教务系统课表 | Jeff的干货基地</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Jeff的干货基地</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/04/23/PHP爬取正方课表/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Jeff Tan">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/headimg.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Jeff的干货基地">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">PHP爬取正方教务系统课表</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-04-23T22:12:11+08:00">
+                2017-04-23
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/PHP/" itemprop="url" rel="index">
+                    <span itemprop="name">PHP</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>PHP爬取正方课表<br><a id="more"></a></p>
+<h3 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h3><p>好久不写博客，没有养成当一个程序员的好习惯，羞愧万分……想想从今日后得定时写博客，对知识的积累绝对是十分有用的。<br>今日分享一下我在某科创项目中使用PHP爬去我们学校正方教务系统课表的心路历程。</p>
+<h3 id="第一步：分析表单"><a href="#第一步：分析表单" class="headerlink" title="第一步：分析表单"></a>第一步：分析表单</h3><p><img src="http://7xr23j.com1.z0.glb.clouddn.com/%E3%80%90PHP%E7%88%AC%E5%8F%96%E8%AF%BE%E8%A1%A8%E3%80%91%E5%88%86%E6%9E%90%E5%85%83%E7%B4%A0.png" alt="xxxxxx"></p>
+<p>打开我们学校正方教务系统的登陆页面，在页面的任意处右键点击“检查”（本人使用的浏览器是Chrome），我们可以发现登陆正方教务系统的form中，要求post数据到<a href="http://202.116.160.170/default2.aspx" target="_blank" rel="external">http://202.116.160.170/default2.aspx</a>上，而数据包括__VIEWSTATE（这个必须查看页面元素才能发现，可以通过正则表达式获取其值）、txtUserName用户名、TextBox2密码，txtSecretCode验证码，shenfen身份（吐槽一下，name的命名都不按套路啊）。</p>
+<h3 id="第二步：获取验证码图片"><a href="#第二步：获取验证码图片" class="headerlink" title="第二步：获取验证码图片"></a>第二步：获取验证码图片</h3><p>注意上图的<a href="http://202.116.160.170/CheckCode.aspx" target="_blank" rel="external">http://202.116.160.170/CheckCode.aspx</a>，这是我们学校正方系统验证码的链接，通过使用curl，保存当前cookie以及下载验证码图片。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div></pre></td><td class="code"><pre><div class="line">session_start(); //开启session</div><div class="line">$id=session_id();</div><div class="line">$_SESSION[&apos;id&apos;]=$id;</div><div class="line"></div><div class="line">$cookie = dirname(__FILE__) . &apos;/cookie/&apos;.$_SESSION[&apos;id&apos;].&apos;.txt&apos;; //cookie路径，必须手动建立cookie目录</div><div class="line">$verify_code_url = &quot;http://202.116.160.170/CheckCode.aspx&quot;; //验证码地址</div><div class="line">$curl = curl_init();</div><div class="line">curl_setopt($curl, CURLOPT_URL, $verify_code_url);</div><div class="line">curl_setopt($curl, CURLOPT_COOKIEJAR, $cookie);  //保存cookie</div><div class="line">curl_setopt($curl, CURLOPT_HEADER, 0);</div><div class="line">curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);</div><div class="line">$img = curl_exec($curl);  //执行curl</div><div class="line">curl_close($curl);</div><div class="line">$fp = fopen(&quot;verifyCode.jpg&quot;,&quot;w&quot;);  //文件名</div><div class="line">fwrite($fp,$img);  //写入文件 </div><div class="line">fclose($fp);</div></pre></td></tr></table></figure>
+<h3 id="第三步：模拟登陆并获取学生姓名"><a href="#第三步：模拟登陆并获取学生姓名" class="headerlink" title="第三步：模拟登陆并获取学生姓名"></a>第三步：模拟登陆并获取学生姓名</h3><p>接着携带第一步提及的几个数据和第二步中获得的cookie，通过curl来post到<a href="http://202.116.160.170/default2.aspx" target="_blank" rel="external">http://202.116.160.170/default2.aspx</a>上，你会发现我们已经成功模拟登陆了正方教务系统。</p>
+<p><img src="http://7xr23j.com1.z0.glb.clouddn.com/%E3%80%90PHP%E7%88%AC%E5%8F%96%E8%AF%BE%E8%A1%A8%E3%80%91%E5%88%86%E6%9E%90%E9%A6%96%E9%A1%B5%E5%85%83%E7%B4%A0.png" alt="xxxxxx"></p>
+<p>那为何需要获取学生姓名呢？通过上图可知，在获取课表的url上，需要传学生姓名这个参数。我们可以在模拟登陆成功后，分析页面元素，通过正则表达式将学生姓名获取下来。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div></pre></td><td class="code"><pre><div class="line">function getName()</div><div class="line">&#123;</div><div class="line">	$_SESSION[&apos;xh&apos;]=$_POST[&apos;xh&apos;];</div><div class="line">    $xh=$_POST[&apos;xh&apos;];</div><div class="line">    $pw=$_POST[&apos;pw&apos;];</div><div class="line">    $code= $_POST[&apos;code&apos;];</div><div class="line">    $cookie = dirname(__FILE__) . &apos;/cookie/&apos;.$_SESSION[&apos;id&apos;].&apos;.txt&apos;;</div><div class="line">    $url=&quot;http://202.116.160.170/default2.aspx&quot;;  //教务处地址</div><div class="line">    $con1=login_post($url,$cookie,&apos;&apos;);</div><div class="line">    preg_match_all(&apos;/&lt;input type=&quot;hidden&quot; name=&quot;__VIEWSTATE&quot; value=&quot;([^&lt;&gt;]+)&quot; \/&gt;/&apos;, $con1, $vs); //获取__VIEWSTATE字段并存到$view数组中</div><div class="line">    $post=array(</div><div class="line">        &apos;__VIEWSTATE&apos;=&gt;$vs[1][0],</div><div class="line">        &apos;txtUserName&apos;=&gt;$xh,</div><div class="line">        &apos;TextBox2&apos;=&gt;$pw,</div><div class="line">        &apos;txtSecretCode&apos;=&gt;$code,</div><div class="line">        &apos;shenfen&apos;=&gt;&apos;%D1%A7%C9%FA&apos;,  //“学生”的gbk编码</div><div class="line">        &apos;Button1&apos;=&gt;&apos;&apos;,</div><div class="line">        &apos;lbLanguage&apos;=&gt;&apos;&apos;,</div><div class="line">        &apos;hidPdrs&apos;=&gt;&apos;&apos;,</div><div class="line">        &apos;hidsc&apos;=&gt;&apos;&apos;</div><div class="line">    );</div><div class="line">    $con2=login_post($url,$cookie,http_build_query($post)); //将数组连接成字符串</div><div class="line">    preg_match_all(&apos;/&lt;span id=&quot;xhxm&quot;&gt;([^&lt;&gt;]+)/&apos;, $con2, $xm);  //正则出的数据存到$xm数组中</div><div class="line">    $name=substr($xm[1][0],0,-4);  //字符串截取，获得学生姓名</div><div class="line">   	return $name;</div><div class="line">   	</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h3 id="第四步：获取和处理课表内容"><a href="#第四步：获取和处理课表内容" class="headerlink" title="第四步：获取和处理课表内容"></a>第四步：获取和处理课表内容</h3><p>携带之前获取的cookie以及课表url要求的学号、学生姓名和gnmkdm（常量），再次通过curl，我们可以获得整个课表页面的内容，此后利用Simple-HTML-DOM，解析课表页面的元素，对课表内容进行处理</p>
+<p><img src="http://7xr23j.com1.z0.glb.clouddn.com/%E3%80%90PHP%E7%88%AC%E5%8F%96%E8%AF%BE%E8%A1%A8%E3%80%91%E8%AF%BE%E8%A1%A8%E5%A4%84%E7%90%86.png" alt="xxxxxx"></p>
+<h3 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h3><p>在爬虫这一块上，本人也只是使用过PHP和Python来写过一些小玩意，说一下个人体会。先说Python，有成熟的库和框架，在import大量lib的基础上，代码量少。而PHP也有不少DOM操作库，例如<a href="http://simplehtmldom.sourceforge.net/manual.htm" target="_blank" rel="external">Simple-HTML-DOM</a><br>、<a href="https://github.com/TobiaszCudnik/phpquery" target="_blank" rel="external"> phpQuery</a>等，如今也有拓展pthreads支持多线程操作，curl_multi并行发起请求。而两种语言在爬虫效率上的瓶颈，应当是网络IO。</p>
+<p>附上脚本的github链接：<a href="https://github.com/jeff-tan/zf" target="_blank" rel="external">https://github.com/jeff-tan/zf</a></p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/PHP/" rel="tag"># PHP</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2016/10/02/Trait学习笔记（二）解决冲突与调整访问权限/" rel="next" title="Trait学习笔记（二）解决命名冲突与调整访问控制">
+                <i class="fa fa-chevron-left"></i> Trait学习笔记（二）解决命名冲突与调整访问控制
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2017/05/03/Laravel5.2开启跨域/" rel="prev" title="Laravel5.2开启跨域请求">
+                Laravel5.2开启跨域请求 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/headimg.png"
+               alt="Jeff Tan" />
+          <p class="site-author-name" itemprop="name">Jeff Tan</p>
+           
+              <p class="site-description motion-element" itemprop="description">念念不忘 必有回响</p>
+          
+        </div>
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/archives/">
+                <span class="site-state-item-count">21</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-categories">
+              
+                <span class="site-state-item-count">15</span>
+                <span class="site-state-item-name">分类</span>
+              
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              
+                <span class="site-state-item-count">14</span>
+                <span class="site-state-item-name">标签</span>
+              
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#前言"><span class="nav-number">1.</span> <span class="nav-text">前言</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#第一步：分析表单"><span class="nav-number">2.</span> <span class="nav-text">第一步：分析表单</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#第二步：获取验证码图片"><span class="nav-number">3.</span> <span class="nav-text">第二步：获取验证码图片</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#第三步：模拟登陆并获取学生姓名"><span class="nav-number">4.</span> <span class="nav-text">第三步：模拟登陆并获取学生姓名</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#第四步：获取和处理课表内容"><span class="nav-number">5.</span> <span class="nav-text">第四步：获取和处理课表内容</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#总结"><span class="nav-number">6.</span> <span class="nav-text">总结</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2017</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Jeff Tan</span>
+
+  
+</div>
+
+
+  <div class="powered-by">
+    由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+  </div>
+
+  <span class="post-meta-divider">|</span>
+
+  <div class="theme-info">
+    主题 &mdash;
+    <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+      NexT.Mist
+    </a>
+  </div>
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.2"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.2"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.2"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.2"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.2"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

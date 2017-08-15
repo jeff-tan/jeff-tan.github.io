@@ -1,0 +1,758 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.2" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="PHP," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/images/headimg.png?v=5.1.2" />
+
+
+
+
+
+
+<meta name="description" content="CGI、FastCGI、PHP-CGI、PHP-FPM介绍">
+<meta name="keywords" content="PHP">
+<meta property="og:type" content="article">
+<meta property="og:title" content="CGI、FastCGI、PHP-CGI、PHP-FPM介绍">
+<meta property="og:url" content="http://yoursite.com/2017/07/12/CGI、FastCGI、PHP-CGI、PHP-FPM介绍/index.html">
+<meta property="og:site_name" content="Jeff的干货基地">
+<meta property="og:description" content="CGI、FastCGI、PHP-CGI、PHP-FPM介绍">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="http://7xr23j.com1.z0.glb.clouddn.com/%E3%80%90CGI%E3%80%81FastCGI%E3%80%81PHP-CGI%E3%80%81PHP-FPM%E3%80%91html.png">
+<meta property="og:image" content="http://7xr23j.com1.z0.glb.clouddn.com/%E3%80%90CGI%E3%80%81FastCGI%E3%80%81PHP-CGI%E3%80%81PHP-FPM%E3%80%91cgi.png">
+<meta property="og:image" content="http://7xr23j.com1.z0.glb.clouddn.com/%E3%80%90CGI%E3%80%81FastCGI%E3%80%81PHP-CGI%E3%80%81PHP-FPM%E3%80%91fastcgi.png">
+<meta property="og:image" content="http://7xr23j.com1.z0.glb.clouddn.com/%E3%80%90CGI%E3%80%81FastCGI%E3%80%81PHP-CGI%E3%80%81PHP-FPM%E3%80%91update.png">
+<meta property="og:updated_time" content="2017-07-11T16:58:46.012Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="CGI、FastCGI、PHP-CGI、PHP-FPM介绍">
+<meta name="twitter:description" content="CGI、FastCGI、PHP-CGI、PHP-FPM介绍">
+<meta name="twitter:image" content="http://7xr23j.com1.z0.glb.clouddn.com/%E3%80%90CGI%E3%80%81FastCGI%E3%80%81PHP-CGI%E3%80%81PHP-FPM%E3%80%91html.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    sidebar: {"position":"left","display":"post","offset":12,"offset_float":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2017/07/12/CGI、FastCGI、PHP-CGI、PHP-FPM介绍/"/>
+
+
+
+
+
+  <title>CGI、FastCGI、PHP-CGI、PHP-FPM介绍 | Jeff的干货基地</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Jeff的干货基地</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/07/12/CGI、FastCGI、PHP-CGI、PHP-FPM介绍/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Jeff Tan">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/headimg.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Jeff的干货基地">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">CGI、FastCGI、PHP-CGI、PHP-FPM介绍</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-07-12T00:53:36+08:00">
+                2017-07-12
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/PHP/" itemprop="url" rel="index">
+                    <span itemprop="name">PHP</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>CGI、FastCGI、PHP-CGI、PHP-FPM介绍<br><a id="more"></a></p>
+<p>在网站架构中，Web Server充当内容的分发者，内容可分静态资源和动态资源。例如客户端请求的是index.html，Web Server就会将这个文件发送给浏览器，这里分发的是静态资源。</p>
+<p><img src="http://7xr23j.com1.z0.glb.clouddn.com/%E3%80%90CGI%E3%80%81FastCGI%E3%80%81PHP-CGI%E3%80%81PHP-FPM%E3%80%91html.png" alt="http://7xr23j.com1.z0.glb.clouddn.com/%E3%80%90CGI%E3%80%81FastCGI%E3%80%81PHP-CGI%E3%80%81PHP-FPM%E3%80%91html.png"></p>
+<p>假如请求的是请求的是 index.php，Web Server接收到index.php这个请求后，会启动对应的 CGI 程序，这里就是PHP的解析器。接下来PHP解析器会解析php.ini文件，初始化执行环境，然后处理请求，再以规定CGI规定的格式返回处理后的结果，退出进程，Web server再把结果返回给浏览器。这就是一个完整的动态PHP Web访问流程。</p>
+<p><img src="http://7xr23j.com1.z0.glb.clouddn.com/%E3%80%90CGI%E3%80%81FastCGI%E3%80%81PHP-CGI%E3%80%81PHP-FPM%E3%80%91cgi.png" alt="http://7xr23j.com1.z0.glb.clouddn.com/%E3%80%90CGI%E3%80%81FastCGI%E3%80%81PHP-CGI%E3%80%81PHP-FPM%E3%80%91cgi.png"></p>
+<p>这里提一下Apache的mod_php。</p>
+<p>mod_php 通过嵌入 PHP 解释器到 Apache 进程中，每个新的apache子进程都会加载次模块，会导致一些不必要的内存资源浪费。典型的就是处理CSS、JS之类的静态文件是完全没有必要加载解释器。</p>
+<h2 id="CGI"><a href="#CGI" class="headerlink" title="CGI"></a>CGI</h2><p>CGI：通用网关接口，是 Web Server 与 Web Application 之间数据交换的一种协议，定义了输入输出规范。接收到用户请求，启用让人诟病的fork-and-execute模式，即先创建cgi子进程，然后cgi子进程处理请求，处理完后结束这个子进程。</p>
+<h2 id="FastCGI"><a href="#FastCGI" class="headerlink" title="FastCGI"></a>FastCGI</h2><p>FastCGI：同 CGI，是一种通信协议，但比 CGI 在效率上做了一些优化。FastCGI像是一个常驻(long-live)型的CGI</p>
+<p><img src="http://7xr23j.com1.z0.glb.clouddn.com/%E3%80%90CGI%E3%80%81FastCGI%E3%80%81PHP-CGI%E3%80%81PHP-FPM%E3%80%91fastcgi.png" alt="http://7xr23j.com1.z0.glb.clouddn.com/%E3%80%90CGI%E3%80%81FastCGI%E3%80%81PHP-CGI%E3%80%81PHP-FPM%E3%80%91fastcgi.png"></p>
+<p>工作原理：</p>
+<ol>
+<li>Web Server启动时载入FastCGI进程管理器（Apache Module或IIS ISAPI等)</li>
+<li>FastCGI进程管理器自身初始化，启动多个CGI解释器进程(可建多个php-cgi)，并等待来自Web Server的连接。</li>
+<li>当客户端请求到达Web Server时，FastCGI进程管理器选择并连接到一个CGI解释器。Web server将CGI环境变量和标准输入发送到FastCGI子进程php-cgi。</li>
+<li>FastCGI子进程完成处理后，将标准输出和错误信息从同一连接返回Web Server。当FastCGI子进程关闭连接时，请求便告处理完成。FastCGI子进程接着等待，并处理来自FastCGI进程管理器(运行在Web Server中)的下一个连接。 在CGI模式中，php-cgi在此便退出了</li>
+</ol>
+<h2 id="PHP-CGI"><a href="#PHP-CGI" class="headerlink" title="PHP-CGI"></a>PHP-CGI</h2><p>PHP-CGI：是 PHP （Web Application）对 Web Server 提供的 CGI 协议的接口程序。因为PHP-CGI只是个CGI程序，他自己本身只能解析请求，返回结果，不会进程管理。<br>缺点：</p>
+<ol>
+<li>php-cgi变更php.ini配置后需重启php-cgi才能让新的php-ini生效，不可以平滑重启。</li>
+<li>直接杀死php-cgi进程，php就不能运行了。(PHP-FPM和Spawn-FCGI就没有这个问题，守护进程会平滑从新生成新的子进程。）</li>
+</ol>
+<h2 id="PHP-FPM"><a href="#PHP-FPM" class="headerlink" title="PHP-FPM"></a>PHP-FPM</h2><p>PHP-FPM：是 PHP（Web Application）对 Web Server 提供的 FastCGI 协议的接口程序，额外还提供了相对智能一些任务管理。（FastCGI 的进程管理器，PHP-FPM也是用于调度管理PHP解析器php-cgi的管理程序）PHP-FPM通过生成新的子进程可以实现php.ini修改后的平滑重启。</p>
+<h2 id="从两个层面讨论"><a href="#从两个层面讨论" class="headerlink" title="从两个层面讨论"></a>从两个层面讨论</h2><h4 id="1-PHP-解释器是否嵌入-Web-服务器进程内部执行"><a href="#1-PHP-解释器是否嵌入-Web-服务器进程内部执行" class="headerlink" title="1. PHP 解释器是否嵌入 Web 服务器进程内部执行"></a>1. PHP 解释器是否嵌入 Web 服务器进程内部执行</h4><p>mod_php 通过嵌入 PHP 解释器到 Apache 进程中，只能与 Apache 配合使用，而 cgi 和 fast-cgi 以独立的进程的形式出现，只要对应的Ｗeb服务器实现 cgi 或者 fast-cgi 协议，就能够处理 PHP 请求。</p>
+<h4 id="2-单个进程处理的请求数量"><a href="#2-单个进程处理的请求数量" class="headerlink" title="2. 单个进程处理的请求数量"></a>2. 单个进程处理的请求数量</h4><p>mod_php 和 fast-cgi 的模式在每个进程的生命周期内能够处理多个请求，而 cgi 的模式处理一个请求就马上销毁进程，在高并发的场景下 cgi 的性能非常糟糕。</p>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p><img src="http://7xr23j.com1.z0.glb.clouddn.com/%E3%80%90CGI%E3%80%81FastCGI%E3%80%81PHP-CGI%E3%80%81PHP-FPM%E3%80%91update.png" alt="http://7xr23j.com1.z0.glb.clouddn.com/%E3%80%90CGI%E3%80%81FastCGI%E3%80%81PHP-CGI%E3%80%81PHP-FPM%E3%80%91update.png"></p>
+<h2 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h2><p>CGI、FastCGI和PHP-FPM关系图解 <a href="http://www.awaimai.com/371.html" target="_blank" rel="external">http://www.awaimai.com/371.html</a></p>
+<p>如何通俗地解释 CGI、FastCGI、php-fpm 之间的关系？<a href="https://www.zhihu.com/question/30672017" target="_blank" rel="external">https://www.zhihu.com/question/30672017</a></p>
+<p>CGI，FastCGI，PHP-CGI与PHP-FPM <a href="http://www.thinkphp.cn/topic/42338.html" target="_blank" rel="external">http://www.thinkphp.cn/topic/42338.html</a></p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/PHP/" rel="tag"># PHP</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/07/09/优化Laravel网站访问速度/" rel="next" title="优化Laravel网站访问速度">
+                <i class="fa fa-chevron-left"></i> 优化Laravel网站访问速度
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2017/07/19/MySQL常用数据存储引擎区别/" rel="prev" title="MySQL常用数据存储引擎区别">
+                MySQL常用数据存储引擎区别 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/headimg.png"
+               alt="Jeff Tan" />
+          <p class="site-author-name" itemprop="name">Jeff Tan</p>
+           
+              <p class="site-description motion-element" itemprop="description">念念不忘 必有回响</p>
+          
+        </div>
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/archives/">
+                <span class="site-state-item-count">21</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-categories">
+              
+                <span class="site-state-item-count">15</span>
+                <span class="site-state-item-name">分类</span>
+              
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              
+                <span class="site-state-item-count">14</span>
+                <span class="site-state-item-name">标签</span>
+              
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#CGI"><span class="nav-number">1.</span> <span class="nav-text">CGI</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#FastCGI"><span class="nav-number">2.</span> <span class="nav-text">FastCGI</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#PHP-CGI"><span class="nav-number">3.</span> <span class="nav-text">PHP-CGI</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#PHP-FPM"><span class="nav-number">4.</span> <span class="nav-text">PHP-FPM</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#从两个层面讨论"><span class="nav-number">5.</span> <span class="nav-text">从两个层面讨论</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-PHP-解释器是否嵌入-Web-服务器进程内部执行"><span class="nav-number">5.0.1.</span> <span class="nav-text">1. PHP 解释器是否嵌入 Web 服务器进程内部执行</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-单个进程处理的请求数量"><span class="nav-number">5.0.2.</span> <span class="nav-text">2. 单个进程处理的请求数量</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#总结"><span class="nav-number">6.</span> <span class="nav-text">总结</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#参考资料"><span class="nav-number">7.</span> <span class="nav-text">参考资料</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2017</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Jeff Tan</span>
+
+  
+</div>
+
+
+  <div class="powered-by">
+    由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+  </div>
+
+  <span class="post-meta-divider">|</span>
+
+  <div class="theme-info">
+    主题 &mdash;
+    <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+      NexT.Mist
+    </a>
+  </div>
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.2"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.2"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.2"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.2"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.2"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

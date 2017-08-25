@@ -94,18 +94,18 @@
 
 
 
-<meta name="description" content="Laravel实践小记-中间件应用">
+<meta name="description" content="Laravel中路由分割以及隐式路由">
 <meta name="keywords" content="Laravel">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Laravel实践小记-中间件和事务应用">
-<meta property="og:url" content="http://yoursite.com/2017/08/01/Laravel实践小记-中间件应用/index.html">
+<meta property="og:title" content="Laravel中路由分割以及隐式路由">
+<meta property="og:url" content="http://yoursite.com/2017/08/05/Laravel中路由分割以及隐式路由/index.html">
 <meta property="og:site_name" content="Jeff的干货基地">
-<meta property="og:description" content="Laravel实践小记-中间件应用">
+<meta property="og:description" content="Laravel中路由分割以及隐式路由">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2017-08-15T17:16:27.580Z">
+<meta property="og:updated_time" content="2017-08-25T17:37:31.091Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Laravel实践小记-中间件和事务应用">
-<meta name="twitter:description" content="Laravel实践小记-中间件应用">
+<meta name="twitter:title" content="Laravel中路由分割以及隐式路由">
+<meta name="twitter:description" content="Laravel中路由分割以及隐式路由">
 
 
 
@@ -134,13 +134,13 @@
 
 
 
-  <link rel="canonical" href="http://yoursite.com/2017/08/01/Laravel实践小记-中间件应用/"/>
+  <link rel="canonical" href="http://yoursite.com/2017/08/05/Laravel中路由分割以及隐式路由/"/>
 
 
 
 
 
-  <title>Laravel实践小记-中间件和事务应用 | Jeff的干货基地</title>
+  <title>Laravel中路由分割以及隐式路由 | Jeff的干货基地</title>
   
 
 
@@ -267,7 +267,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/08/01/Laravel实践小记-中间件应用/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/08/05/Laravel中路由分割以及隐式路由/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Jeff Tan">
@@ -284,7 +284,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">Laravel实践小记-中间件和事务应用</h1>
+          <h1 class="post-title" itemprop="name headline">Laravel中路由分割以及隐式路由</h1>
         
 
         <div class="post-meta">
@@ -296,8 +296,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-08-01T12:01:54+08:00">
-                2017-08-01
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-08-05T14:20:22+08:00">
+                2017-08-05
               </time>
             
 
@@ -356,17 +356,21 @@
       
 
       
-        <p>Laravel实践小记-中间件应用<br><a id="more"></a></p>
-<h4 id="记录一次在开发app接口中使用Laravel中间件的过程："><a href="#记录一次在开发app接口中使用Laravel中间件的过程：" class="headerlink" title="记录一次在开发app接口中使用Laravel中间件的过程："></a>记录一次在开发app接口中使用Laravel中间件的过程：</h4><p>有两处使用到了自定义的中间件：<br>一开始控制器内的方法里面都得写上判断token是否有效的代码，感觉代码太冗余，为了实现复用，后来想到了使用中间件。除了注册、登录和发送验证码这几个接口以外，其余接口都要验证APP传来的token（令牌），可以将其余接口的对应的路由都置于该中间件下。</p>
-<p>先新建一个中间件checkToken.php<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div></pre></td><td class="code"><pre><div class="line">&lt;?php</div><div class="line"></div><div class="line">namespace App\Http\Middleware;</div><div class="line"></div><div class="line">use Closure;</div><div class="line">use App\AppToken;</div><div class="line">class CheckToken</div><div class="line">&#123;</div><div class="line">    /**</div><div class="line">     * Handle an incoming request.</div><div class="line">     *</div><div class="line">     * @param  \Illuminate\Http\Request  $request</div><div class="line">     * @param  \Closure  $next</div><div class="line">     * @return mixed</div><div class="line">     */</div><div class="line">    public function handle($request, Closure $next)</div><div class="line">    &#123;</div><div class="line"></div><div class="line">        $token = new AppToken();</div><div class="line">        $result = $token-&gt;ValidateToken($request-&gt;token); //检验token是否合法或过期</div><div class="line">        if ($result == false) &#123;</div><div class="line">           return redirect(&apos;/token/error&apos;); //向请求者返回token无效提示</div><div class="line">        &#125;</div><div class="line">        return $next($request);</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
-<p>将其写入Kernel.php中的$routeMiddleware内<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">protected $routeMiddleware = [</div><div class="line">        ......</div><div class="line">        &apos;token&apos; =&gt; \App\Http\Middleware\CheckToken::class,</div><div class="line">    ];</div></pre></td></tr></table></figure></p>
-<p>在路由中使用<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">Route::group([&apos;middleware&apos; =&gt; &apos;token&apos;], function () &#123;</div><div class="line">    ......</div><div class="line">&#125;);</div></pre></td></tr></table></figure></p>
-<p>这样就能让在路由组内的路由所对应控制器中的方法都先判断token是否有效，有效则继续方法内下面的逻辑，无效则直接返回token无效提示。</p>
-<p>所开发的APP内用户有管理员和普通成员两种不同身份，这两种身份都是相对于一个店铺而言的，两种身份可以操作的功能不同，虽然APP可以根据身份来选择性地显示不同界面，但是后端应当严格控制好每种身份可以执行的操作。所以后面使用了两个中间件，配合缓存来进行控制。代码就不贴了，跟上面使用token中间件的代码非常类似。</p>
+        <p>Laravel中路由分割以及隐式路由<br><a id="more"></a></p>
+<h3 id="routes-php分割"><a href="#routes-php分割" class="headerlink" title="routes.php分割"></a>routes.php分割</h3><blockquote>
+<p>注意：该分割方法适用于Laravel5.3以下的版本，Laravel5.3及之后的版本对此已经有了相应方案   </p>
+</blockquote>
+<p>假设有以下场景：      </p>
+<p>随着我们的项目规模越来越庞大，如果单单通过routes.php来定义成百上千条路由，想必管理起来会非常的不便。<br>因而想到了对routes.php中的路由进行分割。  </p>
+<p>找到app/Providers/RouteServiceProvider.php，对里面的map方法重新定义</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line">/**</div><div class="line"> * Define the routes for the application.</div><div class="line"> *</div><div class="line"> * @param  \Illuminate\Routing\Router $router</div><div class="line"> * @return void</div><div class="line"> */</div><div class="line">public function map(Router $router)</div><div class="line">&#123;</div><div class="line">    //$this-&gt;mapWebRoutes($router);</div><div class="line">    $router-&gt;group([&apos;namespace&apos; =&gt; $this-&gt;namespace], function ($router) &#123;</div><div class="line">        foreach (glob(app_path(&apos;Http/Routes&apos;) . &apos;/*.php&apos;) as $file) &#123;</div><div class="line">            $this-&gt;app-&gt;make(&apos;App\\Http\\Routes\\&apos; . basename($file, &apos;.php&apos;))-&gt;map($router);</div><div class="line">        &#125;</div><div class="line">    &#125;);</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>我们在app/Http目录下再新建名为Routes的文件夹，里面存放路由文件，并定义路由，如SellerMaterialRoutes.php</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div></pre></td><td class="code"><pre><div class="line">&lt;?php</div><div class="line">namespace App\Http\Routes;</div><div class="line"></div><div class="line">use Illuminate\Contracts\Routing\Registrar;</div><div class="line"></div><div class="line">class SellerMaterialRoutes</div><div class="line">&#123;</div><div class="line">    public function map(Registrar $route)</div><div class="line">    &#123;</div><div class="line">        $route-&gt;group([&apos;namespace&apos; =&gt; &apos;Seller\Material&apos;, &apos;prefix&apos; =&gt; &apos;seller-material&apos;], function ($route) &#123;</div><div class="line">            $route-&gt;post(&apos;/auth/get&apos;, &apos;StoreController@getAuth&apos;);</div><div class="line">            $route-&gt;post(&apos;/auth&apos;, &apos;StoreController@auth&apos;);</div><div class="line">            $route-&gt;post(&apos;/auth/dealt&apos;, &apos;StoreController@getAuthDealt&apos;);</div><div class="line">        &#125;);</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>我们不必担心效率会因为多划分出几个文件而降低，通过php artisan route:list后，路由只会读取缓存文件的路由规则，而分割routes.php里的路由后，管理起来会更方便。</p>
 <hr>
-<h4 id="Laravel中ORM与事务结合使用"><a href="#Laravel中ORM与事务结合使用" class="headerlink" title="Laravel中ORM与事务结合使用"></a>Laravel中ORM与事务结合使用</h4><p>在Laravel的ORM中，并没有一个现成的处理事务的可用方法，我们可以通过DB门面中的transaction方法<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div></pre></td><td class="code"><pre><div class="line">/**</div><div class="line">     * Execute a Closure within a transaction.</div><div class="line">     *</div><div class="line">     * @param  \Closure  $callback</div><div class="line">     * @return mixed</div><div class="line">     *</div><div class="line">     * @throws \Exception|\Throwable</div><div class="line">     */</div><div class="line">    public function transaction(Closure $callback)</div><div class="line">    &#123;</div><div class="line">        $this-&gt;beginTransaction();</div><div class="line"></div><div class="line">        // We&apos;ll simply execute the given callback within a try / catch block</div><div class="line">        // and if we catch any exception we can rollback the transaction</div><div class="line">        // so that none of the changes are persisted to the database.</div><div class="line">        try &#123;</div><div class="line">            $result = $callback($this);</div><div class="line"></div><div class="line">            $this-&gt;commit();</div><div class="line">        &#125;</div><div class="line"></div><div class="line">        // If we catch an exception, we will roll back so nothing gets messed</div><div class="line">        // up in the database. Then we&apos;ll re-throw the exception so it can</div><div class="line">        // be handled how the developer sees fit for their applications.</div><div class="line">        catch (Exception $e) &#123;</div><div class="line">            $this-&gt;rollBack();</div><div class="line"></div><div class="line">            throw $e;</div><div class="line">        &#125; catch (Throwable $e) &#123;</div><div class="line">            $this-&gt;rollBack();</div><div class="line"></div><div class="line">            throw $e;</div><div class="line">        &#125;</div><div class="line"></div><div class="line">        return $result;</div><div class="line">    &#125;</div></pre></td></tr></table></figure></p>
-<p>如果在开发过程中使用多个数据库的话，请手动指定数据库连接对象，否则有可能出现事务不会回滚的情况</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line">DB::connection(&apos;xxx&apos;)::transaction(function()&#123;</div><div class="line"></div><div class="line">   try&#123;</div><div class="line"></div><div class="line">   &#125;catch()&#123;</div><div class="line">        </div><div class="line">   &#125;catch()&#123;</div><div class="line"></div><div class="line">   &#125;</div><div class="line">   .... </div><div class="line">&#125;);</div></pre></td></tr></table></figure>
+<h3 id="隐式路由"><a href="#隐式路由" class="headerlink" title="隐式路由"></a>隐式路由</h3><p>想实现像TP、CI那样使用隐式路由吗？Laravel也能够做到<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"></div><div class="line">Route::any(&apos;/&#123;module&#125;/&#123;class&#125;/&#123;action&#125;&apos;, function($module, $class, $action) &#123;</div><div class="line">    $ctrl = App::make(&quot;\\App\\Http\\Controllers\\&quot; . $module . &quot;\\&quot; . $class . &quot;Controller&quot;);</div><div class="line">    return App::call([$ctrl, $action]);</div><div class="line">&#125;);</div></pre></td></tr></table></figure></p>
+<p>这样就能够实现隐式路由了。  </p>
+<p>至于显式路由和隐式路由的利弊，这里不展开评价，毕竟存在即合理嘛。</p>
 
       
     </div>
@@ -397,8 +401,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2017/07/31/几个设计模式的原则/" rel="next" title="几个设计模式的原则">
-                <i class="fa fa-chevron-left"></i> 几个设计模式的原则
+              <a href="/2017/08/01/Laravel实践小记-中间件和事务应用/" rel="next" title="Laravel实践小记-中间件和事务应用">
+                <i class="fa fa-chevron-left"></i> Laravel实践小记-中间件和事务应用
               </a>
             
           </div>
@@ -406,10 +410,6 @@
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2017/08/01/Laravel实践小记-中间件和事务应用/" rel="prev" title="Laravel实践小记-中间件和事务应用">
-                Laravel实践小记-中间件和事务应用 <i class="fa fa-chevron-right"></i>
-              </a>
             
           </div>
         </div>
@@ -543,7 +543,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#记录一次在开发app接口中使用Laravel中间件的过程："><span class="nav-number">1.</span> <span class="nav-text">记录一次在开发app接口中使用Laravel中间件的过程：</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Laravel中ORM与事务结合使用"><span class="nav-number">2.</span> <span class="nav-text">Laravel中ORM与事务结合使用</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#routes-php分割"><span class="nav-number">1.</span> <span class="nav-text">routes.php分割</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#隐式路由"><span class="nav-number">2.</span> <span class="nav-text">隐式路由</span></a></li></ol></div>
             
 
           </div>

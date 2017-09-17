@@ -78,7 +78,7 @@
 <link href="/css/main.css?v=5.1.2" rel="stylesheet" type="text/css" />
 
 
-  <meta name="keywords" content="Laravel," />
+  <meta name="keywords" content="Redis," />
 
 
 
@@ -94,18 +94,18 @@
 
 
 
-<meta name="description" content="优化Laravel网站访问速度">
-<meta name="keywords" content="Laravel">
+<meta name="description" content="Linux下安装Redis">
+<meta name="keywords" content="Redis">
 <meta property="og:type" content="article">
-<meta property="og:title" content="优化Laravel网站访问速度">
-<meta property="og:url" content="http://yoursite.com/2017/07/09/优化Laravel网站访问速度/index.html">
+<meta property="og:title" content="Linux下安装Redis">
+<meta property="og:url" content="http://yoursite.com/2017/08/05/Linux下安装Redis/index.html">
 <meta property="og:site_name" content="Jeff的干货基地">
-<meta property="og:description" content="优化Laravel网站访问速度">
+<meta property="og:description" content="Linux下安装Redis">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2017-07-09T06:01:27.618Z">
+<meta property="og:updated_time" content="2017-09-17T08:40:17.485Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="优化Laravel网站访问速度">
-<meta name="twitter:description" content="优化Laravel网站访问速度">
+<meta name="twitter:title" content="Linux下安装Redis">
+<meta name="twitter:description" content="Linux下安装Redis">
 
 
 
@@ -134,13 +134,13 @@
 
 
 
-  <link rel="canonical" href="http://yoursite.com/2017/07/09/优化Laravel网站访问速度/"/>
+  <link rel="canonical" href="http://yoursite.com/2017/08/05/Linux下安装Redis/"/>
 
 
 
 
 
-  <title>优化Laravel网站访问速度 | Jeff的干货基地</title>
+  <title>Linux下安装Redis | Jeff的干货基地</title>
   
 
 
@@ -267,7 +267,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/07/09/优化Laravel网站访问速度/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/08/05/Linux下安装Redis/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Jeff Tan">
@@ -284,7 +284,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">优化Laravel网站访问速度</h1>
+          <h1 class="post-title" itemprop="name headline">Linux下安装Redis</h1>
         
 
         <div class="post-meta">
@@ -296,8 +296,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-07-09T14:00:58+08:00">
-                2017-07-09
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-08-05T00:47:28+08:00">
+                2017-08-05
               </time>
             
 
@@ -319,8 +319,8 @@
               
               
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Laravel/" itemprop="url" rel="index">
-                    <span itemprop="name">Laravel</span>
+                  <a href="/categories/Redis/" itemprop="url" rel="index">
+                    <span itemprop="name">Redis</span>
                   </a>
                 </span>
 
@@ -356,17 +356,11 @@
       
 
       
-        <p>优化Laravel网站访问速度<br><a id="more"></a></p>
-<h1 id="1-关闭debug"><a href="#1-关闭debug" class="headerlink" title="1.关闭debug"></a>1.关闭debug</h1><p>打开.env文件，把debug设置为false.<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">APP_ENV=local</div><div class="line">APP_DEBUG=false</div><div class="line">APP_KEY=base64:sT/aTFeaE13eyao1Raee6jC9Ff+Yle1SE+wtyk0H</div></pre></td></tr></table></figure></p>
-<h1 id="2-缓存路由和配置"><a href="#2-缓存路由和配置" class="headerlink" title="2.缓存路由和配置"></a>2.缓存路由和配置</h1><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">php artisan route:cache</div><div class="line"></div><div class="line">php artisan config:cache</div></pre></td></tr></table></figure>
-<h1 id="3-Laravel优化命令"><a href="#3-Laravel优化命令" class="headerlink" title="3.Laravel优化命令"></a>3.Laravel优化命令</h1><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">php artisan optimize</div></pre></td></tr></table></figure>
-<h1 id="4-composer优化"><a href="#4-composer优化" class="headerlink" title="4.composer优化"></a>4.composer优化</h1><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">sudo composer dump-autoload optimize</div></pre></td></tr></table></figure>
-<h1 id="5-使用Laravel缓存"><a href="#5-使用Laravel缓存" class="headerlink" title="5.使用Laravel缓存"></a>5.使用Laravel缓存</h1><p>使用Laravel的Cache方法缓存内容，有文件缓存，数据库缓存，redis缓存，使用redis也可以用predis组件，也可以多种缓存方式结合。在Laravel中使用缓存就是这么优雅方便：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">$lists = Cache::remember(&apos;travel.destination.lists&apos;, 20, function () &#123;</div><div class="line">    return $this-&gt;destination-&gt;getList();</div><div class="line">&#125;);</div></pre></td></tr></table></figure></p>
-<h1 id="6-使用CDN"><a href="#6-使用CDN" class="headerlink" title="6.使用CDN"></a>6.使用CDN</h1><p>使用七牛、百度等CDN服务</p>
-<h1 id="7-使用PHP7并开启OPcache"><a href="#7-使用PHP7并开启OPcache" class="headerlink" title="7.使用PHP7并开启OPcache"></a>7.使用PHP7并开启OPcache</h1><p>参考<a href="https://blog.tanteng.me/2016/06/php7-opcache/" target="_blank" rel="external">https://blog.tanteng.me/2016/06/php7-opcache/</a></p>
-<h1 id="8-nginx开启gzip压缩"><a href="#8-nginx开启gzip压缩" class="headerlink" title="8.nginx开启gzip压缩"></a>8.nginx开启gzip压缩</h1><p>参考<a href="https://blog.tanteng.me/2016/06/nginx-gzip/" target="_blank" rel="external">https://blog.tanteng.me/2016/06/nginx-gzip/</a></p>
-<p>这不仅仅是针对Laravel网站的性能优化方法，其中很多是通用的网站性能优化的方法，当然还有很多可以优化的地方。</p>
-<p>注：转载出处<a href="https://blog.tanteng.me/2016/06/laravel-optimize/" target="_blank" rel="external">https://blog.tanteng.me/2016/06/laravel-optimize/</a></p>
+        <p>Linux下安装Redis<br><a id="more"></a></p>
+<p>redis下载地址<br><a href="https://redis.io/download" target="_blank" rel="external">https://redis.io/download</a></p>
+<p>上面有关于在Linux下安装redis的方法，这里不再重复。</p>
+<p>设置redis自动启动：<br>1.设置redis.conf中daemonize为yes<br>vi /usr/redis/redis-3.2.4/redis.conf<br>2.复制redis配置文件redis.conf<br>mkdir /etc/redis<br>cp /usr/redis/redis-3.2.4/redis.conf /etc/redis/6379.conf<br>3.复制redis启动脚本<br>cp /usr/redis/redis-3.2.4//utils/redis_init_script /etc/init.d/redis<br>4.修改启动脚本参数，指定redis-server、redis-cli、redis.conf的副本路径<br>vi /etc/init.d/redis<br>5.设置权限<br>chmod 777 /etc/init.d/redis</p>
+<p>在centos下设置开机自启动：chkconfig redisd on(unbuntu 用sudo update-rc.d redisd defaults，也可以安装rcconf，貌似没有redhat系列的chkchonfig命令好用)</p>
 
       
     </div>
@@ -384,7 +378,7 @@
       
         <div class="post-tags">
           
-            <a href="/tags/Laravel/" rel="tag"># Laravel</a>
+            <a href="/tags/Redis/" rel="tag"># Redis</a>
           
         </div>
       
@@ -397,8 +391,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2017/07/07/【Redis】数据类型/" rel="next" title="【Redis】数据类型">
-                <i class="fa fa-chevron-left"></i> 【Redis】数据类型
+              <a href="/2017/08/01/Linux常用命令归纳（一）/" rel="next" title="Linux常用命令归纳（一）">
+                <i class="fa fa-chevron-left"></i> Linux常用命令归纳（一）
               </a>
             
           </div>
@@ -407,8 +401,8 @@
 
           <div class="post-nav-prev post-nav-item">
             
-              <a href="/2017/07/12/CGI、FastCGI、PHP-CGI、PHP-FPM介绍/" rel="prev" title="CGI、FastCGI、PHP-CGI、PHP-FPM介绍">
-                CGI、FastCGI、PHP-CGI、PHP-FPM介绍 <i class="fa fa-chevron-right"></i>
+              <a href="/2017/08/05/Laravel中路由分割以及隐式路由/" rel="prev" title="Laravel中路由分割以及隐式路由">
+                Laravel中路由分割以及隐式路由 <i class="fa fa-chevron-right"></i>
               </a>
             
           </div>
@@ -461,17 +455,8 @@
       
 
       
-        <ul class="sidebar-nav motion-element">
-          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
-            文章目录
-          </li>
-          <li class="sidebar-nav-overview" data-target="site-overview">
-            站点概览
-          </li>
-        </ul>
-      
 
-      <section class="site-overview sidebar-panel">
+      <section class="site-overview sidebar-panel sidebar-panel-active">
         <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
           <img class="site-author-image" itemprop="image"
                src="/images/headimg.png"
@@ -533,22 +518,6 @@
 
       </section>
 
-      
-      <!--noindex-->
-        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
-          <div class="post-toc">
-
-            
-              
-            
-
-            
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#1-关闭debug"><span class="nav-number">1.</span> <span class="nav-text">1.关闭debug</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#2-缓存路由和配置"><span class="nav-number">2.</span> <span class="nav-text">2.缓存路由和配置</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#3-Laravel优化命令"><span class="nav-number">3.</span> <span class="nav-text">3.Laravel优化命令</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#4-composer优化"><span class="nav-number">4.</span> <span class="nav-text">4.composer优化</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#5-使用Laravel缓存"><span class="nav-number">5.</span> <span class="nav-text">5.使用Laravel缓存</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#6-使用CDN"><span class="nav-number">6.</span> <span class="nav-text">6.使用CDN</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#7-使用PHP7并开启OPcache"><span class="nav-number">7.</span> <span class="nav-text">7.使用PHP7并开启OPcache</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#8-nginx开启gzip压缩"><span class="nav-number">8.</span> <span class="nav-text">8.nginx开启gzip压缩</span></a></li></ol></div>
-            
-
-          </div>
-        </section>
-      <!--/noindex-->
       
 
       

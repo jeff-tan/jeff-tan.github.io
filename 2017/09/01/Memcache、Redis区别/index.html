@@ -78,7 +78,7 @@
 <link href="/css/main.css?v=5.1.2" rel="stylesheet" type="text/css" />
 
 
-  <meta name="keywords" content="Laravel," />
+  <meta name="keywords" content="Redis," />
 
 
 
@@ -94,18 +94,18 @@
 
 
 
-<meta name="description" content="Laravel中Facades浅析">
-<meta name="keywords" content="Laravel">
+<meta name="description" content="Laravel中路由分割以及隐式路由">
+<meta name="keywords" content="Redis">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Laravel中Facades浅析">
-<meta property="og:url" content="http://yoursite.com/2017/07/23/Laravel中Facades浅析/index.html">
+<meta property="og:title" content="Memcached &amp; Redis 区别">
+<meta property="og:url" content="http://yoursite.com/2017/09/01/Memcache、Redis区别/index.html">
 <meta property="og:site_name" content="Jeff的干货基地">
-<meta property="og:description" content="Laravel中Facades浅析">
+<meta property="og:description" content="Laravel中路由分割以及隐式路由">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2017-07-23T05:56:18.119Z">
+<meta property="og:updated_time" content="2017-09-28T03:41:44.837Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Laravel中Facades浅析">
-<meta name="twitter:description" content="Laravel中Facades浅析">
+<meta name="twitter:title" content="Memcached &amp; Redis 区别">
+<meta name="twitter:description" content="Laravel中路由分割以及隐式路由">
 
 
 
@@ -134,13 +134,13 @@
 
 
 
-  <link rel="canonical" href="http://yoursite.com/2017/07/23/Laravel中Facades浅析/"/>
+  <link rel="canonical" href="http://yoursite.com/2017/09/01/Memcache、Redis区别/"/>
 
 
 
 
 
-  <title>Laravel中Facades浅析 | Jeff的干货基地</title>
+  <title>Memcached & Redis 区别 | Jeff的干货基地</title>
   
 
 
@@ -267,7 +267,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/07/23/Laravel中Facades浅析/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/09/01/Memcache、Redis区别/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Jeff Tan">
@@ -284,7 +284,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">Laravel中Facades浅析</h1>
+          <h1 class="post-title" itemprop="name headline">Memcached & Redis 区别</h1>
         
 
         <div class="post-meta">
@@ -296,8 +296,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-07-23T13:56:15+08:00">
-                2017-07-23
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-09-01T14:20:22+08:00">
+                2017-09-01
               </time>
             
 
@@ -319,8 +319,8 @@
               
               
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Laravel/" itemprop="url" rel="index">
-                    <span itemprop="name">Laravel</span>
+                  <a href="/categories/Redis/" itemprop="url" rel="index">
+                    <span itemprop="name">Redis</span>
                   </a>
                 </span>
 
@@ -356,20 +356,36 @@
       
 
       
-        <p>Laravel中Facades浅析<br><a id="more"></a></p>
-<h2 id="Facades"><a href="#Facades" class="headerlink" title="Facades"></a>Facades</h2><h3 id="原理"><a href="#原理" class="headerlink" title="原理"></a>原理</h3><p>在 Laravel 应用程序环境（Context）中，Facades是个提供从容器访问对象的类。简单来说，Facades是通过__callStatic() 魔术方法，将静态方法映射到真正的方法上的。</p>
-<h3 id="举例"><a href="#举例" class="headerlink" title="举例"></a>举例</h3><p>这里通过Route门面来举例</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">Route::post(&apos;/material/class/create&apos;, &apos;ClassController@create&apos;);</div></pre></td></tr></table></figure>
-<p>我们查看Route所映射到的Illuminate\Support\Facades\Route类，发现没有静态方法post，只有一个getFacadeAccessor()方法，而所继承的父类Facade也没有post方法。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div></pre></td><td class="code"><pre><div class="line">&lt;?php</div><div class="line"></div><div class="line">namespace Illuminate\Support\Facades;</div><div class="line"></div><div class="line">/**</div><div class="line"> * @see \Illuminate\Routing\Router</div><div class="line"> */</div><div class="line">class Route extends Facade</div><div class="line">&#123;</div><div class="line">    /**</div><div class="line">     * Get the registered name of the component.</div><div class="line">     *</div><div class="line">     * @return string</div><div class="line">     */</div><div class="line">    protected static function getFacadeAccessor()</div><div class="line">    &#123;</div><div class="line">        return &apos;router&apos;;</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<p>但是可以发现父类实现了一个魔术方法__callStatic()</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div></pre></td><td class="code"><pre><div class="line">/**</div><div class="line"> * Handle dynamic, static calls to the object.</div><div class="line"> *</div><div class="line"> * @param  string  $method</div><div class="line"> * @param  array   $args</div><div class="line"> * @return mixed</div><div class="line"> */</div><div class="line">public static function __callStatic($method, $args)</div><div class="line">&#123;</div><div class="line">    $instance = static::getFacadeRoot();</div><div class="line"></div><div class="line">    if (! $instance) &#123;</div><div class="line">        throw new RuntimeException(&apos;A facade root has not been set.&apos;);</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    switch (count($args)) &#123;</div><div class="line">        case 0:</div><div class="line">            return $instance-&gt;$method();</div><div class="line">        case 1:</div><div class="line">            return $instance-&gt;$method($args[0]);</div><div class="line">        case 2:</div><div class="line">            return $instance-&gt;$method($args[0], $args[1]);</div><div class="line">        case 3:</div><div class="line">            return $instance-&gt;$method($args[0], $args[1], $args[2]);</div><div class="line">        case 4:</div><div class="line">            return $instance-&gt;$method($args[0], $args[1], $args[2], $args[3]);</div><div class="line">        default:</div><div class="line">            return call_user_func_array([$instance, $method], $args);</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<p>这个魔术方法通过static::getFacadeRoot()获取一个实例,然后调用实例的方法并传入参数</p>
-<p>我们再查看getFacadeRoot()方法<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">/**</div><div class="line"> * Get the root object behind the facade.</div><div class="line"> *</div><div class="line"> * @return mixed</div><div class="line"> */</div><div class="line">public static function getFacadeRoot()</div><div class="line">&#123;</div><div class="line">    return static::resolveFacadeInstance(static::getFacadeAccessor());</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
-<p>getFacadeAccessor()在这里对应是返回了”route”，追根溯源，再查看resolveFacadeInstance()方法</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div></pre></td><td class="code"><pre><div class="line">    /**</div><div class="line">     * Resolve the facade root instance from the container.</div><div class="line">     *</div><div class="line">     * @param  string|object  $name</div><div class="line">     * @return mixed</div><div class="line">     */</div><div class="line">protected static function resolveFacadeInstance($name)</div><div class="line">&#123;</div><div class="line">        if (is_object($name)) &#123;</div><div class="line">            return $name;</div><div class="line">        &#125;</div><div class="line"></div><div class="line">        if (isset(static::$resolvedInstance[$name])) &#123;</div><div class="line">            return static::$resolvedInstance[$name];</div><div class="line">        &#125;</div><div class="line"></div><div class="line">        return static::$resolvedInstance[$name] = static::$app[$name];</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<p>重点是：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">return static::$resolvedInstance[$name] = static::$app[$name];</div></pre></td></tr></table></figure></p>
-<p>在这里利用了app也就是服务容器创建了”router”，创建成功后放入resolvedInstance作为缓存，以便以后快速加载。<br>简单来说，就是返回了该$name的实例，在config/app.php中的provider可以看到关于route的服务提供者App\Providers\RouteServiceProvider::class，而RouteServiceProvider类依赖的是\Illuminate\Routing\Router，所有静态的方法实际上访问的都是这个类的方法。果然，我们能够在\Illuminate\Routing\Router中找到post方法。</p>
+        <p>Laravel中路由分割以及隐式路由<br><a id="more"></a></p>
+<h4 id="Memcached-amp-Redis-区别"><a href="#Memcached-amp-Redis-区别" class="headerlink" title="Memcached &amp; Redis 区别"></a>Memcached &amp; Redis 区别</h4><h5 id="Memcached"><a href="#Memcached" class="headerlink" title="Memcached"></a>Memcached</h5><p>Memcached与数据库端协同工作情况，其中的过程是这样的：</p>
+<ol>
+<li>检查用户请求的数据是缓存中是否有存在，如果有存在的话，只需要直接把请求的数据返回，无需查询数据库。</li>
+<li>如果请求的数据在缓存中找不到，这时候再去查询数据库。返回请求数据的同时，把数据存储到缓存中一份。</li>
+<li>保持缓存的“新鲜性”，每当数据发生变化的时候（比如，数据有被修改，或被删除的情况下），要同步的更新缓存信息，确保用户不会在缓存取到旧的数据。</li>
+</ol>
+<h5 id="Redis"><a href="#Redis" class="headerlink" title="Redis"></a>Redis</h5><p>Redis作为一个高性能的key-value数据库具有以下特征： </p>
+<ul>
+<li>多样的数据模型 </li>
+<li>持久化 </li>
+<li>主从同步</li>
+</ul>
+<p>Redis支持丰富的数据类型，最为常用的数据类型主要由五种：String、Hash、List、Set和Sorted Set。  </p>
+<p>Redis能够通过以下两种方式实现持久化：</p>
+<p>RDB 持久化，将 Redis 在内存中的的状态保存到硬盘中，相当于备份数据库状态。</p>
+<p>AOF 持久化（Append-Only-File），AOF 持久化是通过保存 Redis 服务器锁执行的写状态来记录数据库的。相当于备份数据库接收到的命令，所有被写入 AOF 的命令都是以 Redis 的协议格式来保存的。</p>
+<h5 id="综合"><a href="#综合" class="headerlink" title="综合"></a>综合</h5><ol>
+<li><p>性能上：<br>  性能上都很出色，具体到细节，由于Redis只使用单核，而Memcachedd可以使用多核，所以平均每一个核上Redis在存储小数据时比<br>Memcachedd性能更高。而在100k以上的数据中，Memcachedd性能要高于Redis，虽然Redis最近也在存储大数据的性能上进行优化，但是比起 Memcachedd，还是稍有逊色。</p>
+</li>
+<li><p>内存空间和数据量大小：<br>  Memcachedd可以修改最大内存，采用LRU算法。Redis增加了VM（虚拟内存）的特性，突破了物理内存的限制。</p>
+</li>
+<li><p>操作便利上：<br>  Memcachedd数据结构单一，仅用来缓存数据，而Redis支持更加丰富的数据类型，也可以在服务器端直接对数据进行丰富的操作,这样可以减少网络IO次数和数据体积。</p>
+</li>
+<li><p>可靠性上：<br>  Memcachedd不支持数据持久化，断电或重启后数据消失，但其稳定性是有保证的。Redis支持数据持久化和数据恢复，允许单点故障，但是同时也会付出性能的代价。</p>
+</li>
+<li><p>应用场景：<br>  Memcachedd：动态系统中减轻数据库负载，提升性能；做缓存，适合多读少写，大数据量的情况（如人人网大量查询用户信息、好友信息、文章信息等）。<br>  Redis：适用于对读写效率要求都很高，数据处理业务复杂和对安全性要求较高的系统（如新浪微博的计数和微博发布部分系统，对数据安全性、读写要求都很高）。</p>
+</li>
+</ol>
+<p>转载至：<a href="http://www.cnblogs.com/GardenKeeper/p/6297746.html" target="_blank" rel="external">http://www.cnblogs.com/GardenKeeper/p/6297746.html</a></p>
 
       
     </div>
@@ -387,7 +403,7 @@
       
         <div class="post-tags">
           
-            <a href="/tags/Laravel/" rel="tag"># Laravel</a>
+            <a href="/tags/Redis/" rel="tag"># Redis</a>
           
         </div>
       
@@ -400,8 +416,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2017/07/19/MySQL常用数据存储引擎区别/" rel="next" title="MySQL常用数据存储引擎区别">
-                <i class="fa fa-chevron-left"></i> MySQL常用数据存储引擎区别
+              <a href="/2017/08/05/Laravel中路由分割以及隐式路由/" rel="next" title="Laravel中路由分割以及隐式路由">
+                <i class="fa fa-chevron-left"></i> Laravel中路由分割以及隐式路由
               </a>
             
           </div>
@@ -410,8 +426,8 @@
 
           <div class="post-nav-prev post-nav-item">
             
-              <a href="/2017/07/31/几个设计模式的原则/" rel="prev" title="几个设计模式的原则">
-                几个设计模式的原则 <i class="fa fa-chevron-right"></i>
+              <a href="/2017/09/12/捣鼓ubuntu下PHP7.1下安装sqlserver拓展/" rel="prev" title="记录捣鼓ubuntu下PHP7.1下安装sqlserver拓展">
+                记录捣鼓ubuntu下PHP7.1下安装sqlserver拓展 <i class="fa fa-chevron-right"></i>
               </a>
             
           </div>
@@ -546,7 +562,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Facades"><span class="nav-number">1.</span> <span class="nav-text">Facades</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#原理"><span class="nav-number">1.1.</span> <span class="nav-text">原理</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#举例"><span class="nav-number">1.2.</span> <span class="nav-text">举例</span></a></li></ol></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#Memcached-amp-Redis-区别"><span class="nav-number">1.</span> <span class="nav-text">Memcached & Redis 区别</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#Memcached"><span class="nav-number">1.1.</span> <span class="nav-text">Memcached</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#Redis"><span class="nav-number">1.2.</span> <span class="nav-text">Redis</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#综合"><span class="nav-number">1.3.</span> <span class="nav-text">综合</span></a></li></ol></li></ol></div>
             
 
           </div>

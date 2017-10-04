@@ -94,18 +94,21 @@
 
 
 
-<meta name="description" content="总结了使用PHP开发时常用的正则表达式">
+<meta name="description" content="PHP代码的编译以及垃圾回收机制">
 <meta name="keywords" content="PHP">
 <meta property="og:type" content="article">
-<meta property="og:title" content="开发中常用的PHP正则表达式总结">
-<meta property="og:url" content="http://yoursite.com/2016/06/15/开发中常用的PHP正则表达式总结/index.html">
+<meta property="og:title" content="PHP代码的编译以及垃圾回收机制">
+<meta property="og:url" content="http://yoursite.com/2017/09/12/PHP代码的编译以及垃圾回收机制/index.html">
 <meta property="og:site_name" content="Jeff的干货基地">
-<meta property="og:description" content="总结了使用PHP开发时常用的正则表达式">
+<meta property="og:description" content="PHP代码的编译以及垃圾回收机制">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2016-06-15T14:11:07.394Z">
+<meta property="og:image" content="https://github.com/pangudashu/php7-internal/raw/master/img/zend_compile2.png">
+<meta property="og:image" content="https://github.com/pangudashu/php7-internal/raw/master/img/zend_compile_process.png">
+<meta property="og:updated_time" content="2017-10-04T12:38:31.758Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="开发中常用的PHP正则表达式总结">
-<meta name="twitter:description" content="总结了使用PHP开发时常用的正则表达式">
+<meta name="twitter:title" content="PHP代码的编译以及垃圾回收机制">
+<meta name="twitter:description" content="PHP代码的编译以及垃圾回收机制">
+<meta name="twitter:image" content="https://github.com/pangudashu/php7-internal/raw/master/img/zend_compile2.png">
 
 
 
@@ -134,13 +137,13 @@
 
 
 
-  <link rel="canonical" href="http://yoursite.com/2016/06/15/开发中常用的PHP正则表达式总结/"/>
+  <link rel="canonical" href="http://yoursite.com/2017/09/12/PHP代码的编译以及垃圾回收机制/"/>
 
 
 
 
 
-  <title>开发中常用的PHP正则表达式总结 | Jeff的干货基地</title>
+  <title>PHP代码的编译以及垃圾回收机制 | Jeff的干货基地</title>
   
 
 
@@ -267,7 +270,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2016/06/15/开发中常用的PHP正则表达式总结/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/09/12/PHP代码的编译以及垃圾回收机制/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Jeff Tan">
@@ -284,7 +287,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">开发中常用的PHP正则表达式总结</h1>
+          <h1 class="post-title" itemprop="name headline">PHP代码的编译以及垃圾回收机制</h1>
         
 
         <div class="post-meta">
@@ -296,8 +299,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2016-06-15T13:10:01+08:00">
-                2016-06-15
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-09-12T19:17:09+08:00">
+                2017-09-12
               </time>
             
 
@@ -356,12 +359,31 @@
       
 
       
-        <p>总结了使用PHP开发时常用的正则表达式<br><a id="more"></a></p>
-<h3 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h3><p>在进行web开发或者是App开发时，对于验证用户所填写的信息是否符合所要求的格式，正则表达式的出现，很好地解决了处理复杂字符串的需要。  </p>
-<p>下面总结了PHP开发中几个常用的正则表达式</p>
-<h3 id="代码"><a href="#代码" class="headerlink" title="代码"></a>代码</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div></pre></td><td class="code"><pre><div class="line">&apos;/^[\x&#123;4e00&#125;-\x&#123;9fa5&#125;]+$/u&apos; // 匹配utf-8中文字符串  </div><div class="line"></div><div class="line">&apos;/^[a-zA-Z][a-zA-Z0-9_]&#123;4,15&#125;$/&apos; //匹配帐号是否合法(字母开头，允许5-16字节，允许字母数字下划线)</div><div class="line"></div><div class="line">&apos;/^(\d&#123;4&#125;)$/&apos; //匹配年份 格式yyyy  </div><div class="line"></div><div class="line">&apos;/^0?([1-9])$|^(1[0-2])$/&apos; //匹配月份 格式mm  </div><div class="line"></div><div class="line">&apos;/^(\d&#123;4&#125;)-(0?\d&#123;1&#125;|1[0-2])-(0?\d&#123;1&#125;|[12]\d&#123;1&#125;|3[01])$/&apos; // 匹配日期 格式yyyy-mm-dd  </div><div class="line"></div><div class="line">&apos;/^(0|86|17951)?(13[0-9]|15[012356789]|1[78][0-9]|14[57])[0-9]&#123;8&#125;$/&apos; //匹配手机号码  </div><div class="line"></div><div class="line">&apos;/[1-9]\d&#123;5&#125;(?!\d)/&apos; //匹配邮编   </div><div class="line"></div><div class="line">/(^\d&#123;15&#125;$)|(^\d&#123;17&#125;([0-9]|X)$)/ //匹配身份证  </div><div class="line"></div><div class="line">&apos;/\w+([-+.]\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*/&apos; //匹配邮箱地址</div></pre></td></tr></table></figure>
-<p>当然这些正则表达式的匹配可以封装成一个类，代码如下：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div><div class="line">66</div><div class="line">67</div><div class="line">68</div><div class="line">69</div><div class="line">70</div><div class="line">71</div><div class="line">72</div><div class="line">73</div><div class="line">74</div><div class="line">75</div><div class="line">76</div><div class="line">77</div></pre></td><td class="code"><pre><div class="line">claa Regex &#123;</div><div class="line"></div><div class="line">	// 匹配utf-8中文字符串  </div><div class="line">	public static function Chinese($subject)</div><div class="line">	&#123;</div><div class="line">		$pattern = &apos;/^[\x&#123;4e00&#125;-\x&#123;9fa5&#125;]+$/u&apos;; </div><div class="line">		return Regex::Match($pattern,$subject);</div><div class="line">	&#125;</div><div class="line"></div><div class="line">	// 匹配帐号是否合法(字母开头，允许5-16字节，允许字母数字下划线)</div><div class="line">	public static function Account($subject)</div><div class="line">	&#123;</div><div class="line">		$pattern = &apos;/^[a-zA-Z][a-zA-Z0-9_]&#123;4,15&#125;$/&apos;;</div><div class="line">		return Regex::Match($pattern,$subject);</div><div class="line">	&#125;</div><div class="line"></div><div class="line">	// 匹配年份 格式yyyy</div><div class="line">	public static function Year($subject)</div><div class="line">	&#123;</div><div class="line">		$pattern = &apos;/^(\d&#123;4&#125;)$/&apos;;</div><div class="line">		return Regex::Match($pattern,$subject);</div><div class="line">	&#125;</div><div class="line"></div><div class="line">	// 匹配月份 格式mm</div><div class="line">	public static function Month($subject)</div><div class="line">	&#123;</div><div class="line">		$pattern = &apos;/^0?([1-9])$|^(1[0-2])$/&apos;;</div><div class="line">		return Regex::Match($pattern,$subject);</div><div class="line">	&#125;</div><div class="line"></div><div class="line">	// 匹配日期 格式yyyy-mm-dd</div><div class="line">	public static function Date($subject)</div><div class="line">	&#123;</div><div class="line">		$pattern = &apos;/^(\d&#123;4&#125;)-(0?\d&#123;1&#125;|1[0-2])-(0?\d&#123;1&#125;|[12]\d&#123;1&#125;|3[01])$/&apos;;</div><div class="line">		return Regex::Match($pattern,$subject);</div><div class="line">	&#125;</div><div class="line"></div><div class="line">	// 匹配手机号码</div><div class="line">	public static function Phone_Number($subject)</div><div class="line">	&#123;</div><div class="line">		$pattern = &apos;/^(0|86|17951)?(13[0-9]|15[012356789]|1[78][0-9]|14[57])[0-9]&#123;8&#125;$/&apos;;</div><div class="line">		return Regex::Match($pattern,$subject);</div><div class="line">	&#125;</div><div class="line"></div><div class="line">	// 匹配邮编</div><div class="line">	public static function Postcodes($subject)</div><div class="line">	&#123;</div><div class="line">		$pattern = &apos;/[1-9]\d&#123;5&#125;(?!\d)/&apos;;</div><div class="line">		return Regex::Match($pattern,$subject);</div><div class="line">	&#125;</div><div class="line"></div><div class="line">	// 匹配身份证号码</div><div class="line">	public static function Identity_Card_Number($subject)</div><div class="line">	&#123;</div><div class="line">		$pattern = &apos;/(^\d&#123;15&#125;$)|(^\d&#123;17&#125;([0-9]|X)$)/&apos;;</div><div class="line">		return Regex::Match($pattern,$subject);</div><div class="line">	&#125;</div><div class="line"></div><div class="line">	// 匹配邮箱地址</div><div class="line">	public static function Email_Address($subject)</div><div class="line">	&#123;</div><div class="line">		$pattern = &apos;/\w+([-+.]\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*/&apos;;</div><div class="line">		return Regex::Match($pattern,$subject);</div><div class="line">	</div><div class="line">	&#125;</div><div class="line"></div><div class="line">	//进行正则表达式匹配</div><div class="line">	public static function Match($pattern,$subject)</div><div class="line">	&#123;</div><div class="line">		if(preg_match($pattern, $subject))&#123;</div><div class="line">			return true;</div><div class="line">		&#125;</div><div class="line">		else&#123;</div><div class="line">			return false;</div><div class="line">		&#125;</div><div class="line">	&#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+        <p>PHP代码的编译以及垃圾回收机制<br><a id="more"></a></p>
+<h3 id="PHP代码的编译"><a href="#PHP代码的编译" class="headerlink" title="PHP代码的编译"></a>PHP代码的编译</h3><p>PHP的解析过程任务，就是将PHP代码转化为opcode数组，代码里所有信息都保存在opcode中，然后将opcode数组交给zend引擎执行</p>
+<p>PHP代码-&gt;opcode数组：PHP编译过程包括词法分析、语法分析，使用re2c、bison完成，旧的PHP版本直接生成了opcode，PHP7新增了抽象语法树（AST），在语法分析阶段生成AST，然后再生成opcode数组。</p>
+<p><img src="https://github.com/pangudashu/php7-internal/raw/master/img/zend_compile2.png" alt="image"></p>
+<p>PHP编译阶段的基本过程：</p>
+<p><img src="https://github.com/pangudashu/php7-internal/raw/master/img/zend_compile_process.png" alt="image"></p>
+<h3 id="PHP垃圾回收机制"><a href="#PHP垃圾回收机制" class="headerlink" title="PHP垃圾回收机制"></a>PHP垃圾回收机制</h3><p>对变量的内存管理，PHP使用了引用计数机制，当变量赋值、传递时并不会直接硬拷贝，而是增加了value的引用数，unset、return等释放变量时再减掉引用数，减掉后如果发现refcount为0则直接释放value，这是变量的基本gc过程。</p>
+<p>但是有一种情况是这个机制无法解决的，就是循环引用。</p>
+<p>简单的描述就是变量的内部成员引用了变量自身，比如数组中的某个元素指向了数组，这样数组的引用计数中就有一个来自自身成员，试图释放数组时因为其refcount仍然大于0而得不到释放，而实际上已经没有任何外部引用了，这种变量不可能再被使用，所以PHP引入了另外一个机制用来处理变量循环引用的问题。</p>
+<p>下面是一个数组循环引用的例子：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">$a = [1];</div><div class="line">$a[] = &amp;$a;</div><div class="line"></div><div class="line">unset($a);</div></pre></td></tr></table></figure>
+<p>如果一个变量value的refcount减少到0， 那么此value可以被释放掉，不属于垃圾；<br>如果一个变量value的refcount减少之后大于0，那么此zval还不能被释放，此zval可能成为一个垃圾；</p>
+<p>目前垃圾只会出现在array、object两种类型中，数组的情况上面已经介绍了，object的情况则是成员属性引用对象本身导致的，其它类型不会出现这种变量中的成员引用变量自身的情况，所以垃圾回收只会处理这两种类型的变量。</p>
+<h4 id="回收过程"><a href="#回收过程" class="headerlink" title="回收过程"></a>回收过程</h4><p>1、当变量的refcount减少后仍然大于0，PHP会将该变量放入一个buffer中，等这个buffer满了以后(10000个值)再统一进行处理。</p>
+<p>2、等到该buffer满了以后则启动垃圾检查过程，在该buffer中，对当前变量的所有成员进行深度遍历，然后把成员的refcount减1，最后再检查当前变量的引用，如果减为了0则为垃圾。</p>
+<p>垃圾是由于成员引用自身导致的，那么就对所有的成员减一遍引用，结果如果发现变量本身refcount变为了0则就表明其引用全部来自自身成员。</p>
+<p>具体的过程如下：</p>
+<p>(1) 从buffer链表的roots开始遍历，把当前value标为灰色(zend_refcounted_h.gc_info置为GC_GREY)，然后对当前value的成员进行深度优先遍历，把成员value的refcount减1，并且也标为灰色；</p>
+<p>(2) 重复遍历buffer链表，检查当前value引用是否为0，为0则表示确实是垃圾，把它标为白色(GC_WHITE)，如果不为0则排除了引用全部来自自身成员的可能，表示还有外部的引用，并不是垃圾，这时候因为步骤(1)对成员进行了refcount减1操作，需要再还原回去，对所有成员进行深度遍历，把成员refcount加1，同时标为黑色；</p>
+<p>(3) 再次遍历buffer链表，将非GC_WHITE的节点从roots链表中删除，最终roots链表中全部为真正的垃圾，最后将这些垃圾清除。</p>
+<p>参考：</p>
+<ul>
+<li>PHP代码的编译：<a href="https://github.com/pangudashu/php7-internal/blob/master/3/zend_compile.md" target="_blank" rel="external">https://github.com/pangudashu/php7-internal/blob/master/3/zend_compile.md</a></li>
+<li>PHP垃圾回收：<a href="https://github.com/pangudashu/php7-internal/blob/master/5/gc.md" target="_blank" rel="external">https://github.com/pangudashu/php7-internal/blob/master/5/gc.md</a></li>
+</ul>
 
       
     </div>
@@ -392,8 +414,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2016/06/08/Windows下搭建属于自己的Hexo博客/" rel="next" title="Windows下简单搭建Hexo博客并部署到Github">
-                <i class="fa fa-chevron-left"></i> Windows下简单搭建Hexo博客并部署到Github
+              <a href="/2017/09/12/捣鼓ubuntu下PHP7.1下安装sqlserver拓展/" rel="next" title="记录捣鼓ubuntu下PHP7.1下安装sqlserver拓展">
+                <i class="fa fa-chevron-left"></i> 记录捣鼓ubuntu下PHP7.1下安装sqlserver拓展
               </a>
             
           </div>
@@ -402,8 +424,8 @@
 
           <div class="post-nav-prev post-nav-item">
             
-              <a href="/2016/06/16/Python爬虫两例/" rel="prev" title="Python爬虫两例">
-                Python爬虫两例 <i class="fa fa-chevron-right"></i>
+              <a href="/2017/09/20/MySQL锁机制/" rel="prev" title="PHP代码的编译以及垃圾回收机制">
+                PHP代码的编译以及垃圾回收机制 <i class="fa fa-chevron-right"></i>
               </a>
             
           </div>
@@ -538,7 +560,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#前言"><span class="nav-number">1.</span> <span class="nav-text">前言</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#代码"><span class="nav-number">2.</span> <span class="nav-text">代码</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#PHP代码的编译"><span class="nav-number">1.</span> <span class="nav-text">PHP代码的编译</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#PHP垃圾回收机制"><span class="nav-number">2.</span> <span class="nav-text">PHP垃圾回收机制</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#回收过程"><span class="nav-number">2.1.</span> <span class="nav-text">回收过程</span></a></li></ol></li></ol></div>
             
 
           </div>

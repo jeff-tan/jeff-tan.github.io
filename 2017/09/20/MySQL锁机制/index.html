@@ -1,0 +1,798 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.2" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="MySQL,锁," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/images/headimg.png?v=5.1.2" />
+
+
+
+
+
+
+<meta name="description" content="PHP代码的编译以及垃圾回收机制">
+<meta name="keywords" content="MySQL,锁">
+<meta property="og:type" content="article">
+<meta property="og:title" content="PHP代码的编译以及垃圾回收机制">
+<meta property="og:url" content="http://yoursite.com/2017/09/20/MySQL锁机制/index.html">
+<meta property="og:site_name" content="Jeff的干货基地">
+<meta property="og:description" content="PHP代码的编译以及垃圾回收机制">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2017-10-04T13:54:48.127Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="PHP代码的编译以及垃圾回收机制">
+<meta name="twitter:description" content="PHP代码的编译以及垃圾回收机制">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    sidebar: {"position":"left","display":"post","offset":12,"offset_float":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2017/09/20/MySQL锁机制/"/>
+
+
+
+
+
+  <title>PHP代码的编译以及垃圾回收机制 | Jeff的干货基地</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Jeff的干货基地</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/09/20/MySQL锁机制/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Jeff Tan">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/headimg.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Jeff的干货基地">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">PHP代码的编译以及垃圾回收机制</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-09-20T23:53:17+08:00">
+                2017-09-20
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/MySQL/" itemprop="url" rel="index">
+                    <span itemprop="name">MySQL</span>
+                  </a>
+                </span>
+
+                
+                
+                  ， 
+                
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/MySQL/锁/" itemprop="url" rel="index">
+                    <span itemprop="name">锁</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>PHP代码的编译以及垃圾回收机制<br><a id="more"></a></p>
+<p>锁是计算机协调多个进程或线程并发访问某一资源的机制。</p>
+<p>一、MySQL 锁概述<br>MySQL 两种锁特性归纳 ：<br> -表级锁：开销小，加锁快；不会出现死锁；锁定粒度大，发生锁冲突的概率最高，并发度最低。<br> -行级锁：开销大，加锁慢；会出现死锁；锁定粒度小，发生锁冲突的概率最低，并发度也最高。</p>
+<p>MyISAM和Memory存储引擎采用的是表级锁；<br>InnoDB存储引擎既支持行级锁，也支持表级锁，但默认情况下采用行级锁。</p>
+<p>表级锁更适合于以查询为主，只有少量按索引条件更新数据的应用，如 web 应用；<br>而行级锁则更适合于有大量按索引条件并发更新少量不同数据，同时又有并发查询的应用。</p>
+<p>二、 MyISAM 表锁<br>1、MySQL 的表级锁有两种模式，表共享读锁(table read lock)和表独占写锁（table write lock）。<br>对MyISAM表的读操作，不会阻塞其他用户对同一表的读请求，但会阻塞对同一表的写请求；对MyISAM表的写操作，则会阻塞其他用户对同一表的读和写操作；MyISAM表的读操作和写操作之间，以及写操作之间是串行的。</p>
+<p>2、加锁<br>MyISAM在执行查询语句（select）前，会自动给涉及的所有表加读锁，在执行更新操作（update、delete、insert等）前，会自动给涉及的表加写锁，这个过程并不需要直接用 lock table 命令给MyISAM 表显示加锁。给 MyISAM表显式加锁，一般是为了在一定程度模拟事务操作 。<br>MyISAM在自动加锁的情况下，总是一次获得 sql 语句所需要的全部锁，所以显式加锁的时候，必须同时取得所有涉及表的锁，这也正是MyISAM表不会出现死锁（deadlock）的原因。</p>
+<p>3、并发插入<br>MyISAM表的读和写是串行的，但这是就总体而言的。在一定条件下，MyISAM表也支持查询和插入操作的并发进行。 </p>
+<p>4、锁调度<br>MyISAM的读锁和写锁是互斥的，读写操作时串行的。当一个进程请求某个MyISAM表的读锁，同时另一个进程也请求同一表的写锁时，写进程会先获得锁。即使读请求先到锁等待队列，写请求后到，写锁也会插到读锁请求之前，这是因为 MySQL认为写请求一般比读请求重要。这也正是 MyISAM表不太适合有大量更新操作和查询操作应用的原因，因为，大量的更新操作会造成查询操作很难获得读锁，从而可能导致永远阻塞。</p>
+<p>三、 InnoDB 锁<br>InnoDB与MyISAM的最大不同有两点，一是支持事务，二是采用了行级锁。</p>
+<p>1、并发事务处理存在的问题<br>相对于串行处理来说，并发事务处理能力大大增加数据库资源的利用率，提高数据库系统事务吞吐量，从而可以支持更多的用户，但并发事务处理也会带来一些问题：</p>
+<p>更新丢失（lost update）<br>当两个或多个事务选择同一行，然后基于最初选定的值更新该行时，由于每个事务都不知道其他事务的存在，就会发生丢失更新问题，最后的更新覆盖了由其他事务所做的更新。</p>
+<p>脏读（dirty reads）<br>一个事务正在对一条记录做修改，但未提交事务；这时，另一个事务也来读取同一条记录，然后使用了这些数据。<br>e.g.<br>1.Mary的原工资为1000，财务人员把她的工资改为了8000（但未提交事务）<br>2.Mary读取自己的工资，发现自己的工资变为了8000<br>3.而财务发现操作有误，回滚了事务，Mary的工资又变为了1000，像这样Mary读取的工资数8000是一个脏数据</p>
+<p>不可重复读（non-repeatable reads）<br>一个事务在读取某些数据后的某个时间，再次读取以前读过的数据，却发现其读出的数据已经发生了改变或某些记录已经被删除了，这种现象就是“不可重复读”。<br>e.g.<br>1.在事务1中，Mary读取了自己的工资为1000，操作并没有完成<br>2.在事务2中，财务人员修改了Mary的工资为2000，并提交了事务<br>3.在事务1中，Mary再次读取自己的工资时，工资变为了2000</p>
+<p>幻读（phantom reads）<br>一个事务按相同的查询条件重新读取以前检索过的数据，却发现其他事务插入了满足其查询条件的新数据，这种现象称为“幻读”。<br>e.g.<br>目前工资为1000的员工有10人<br>1.在事务1，读取所有工资为1000的员工<br>2.这时事务2向员工表插入一条员工记录，工资也为1000<br>3.事务1再次读取所有工资为1000的员工，发现读取到了11条记录</p>
+<p>不可重复读的重点在update和delete，幻读的重点在insert</p>
+<p>2.事务隔离级别</p>
+<p>并发事务处理带来的问题中，“更新丢失”，通常是可以避免的，需要应用程序对要更新的数据加必要的锁来解决。<br>“脏读”，“不可重复读”和“幻读”， 其实都是数据库一致性问题，必须由数据库提供一定的事务隔离机制来解决。<br>数据库实现事务隔离的方式，基本可以分为两种：</p>
+<ul>
+<li>在读取数据前，对其加锁，阻止其他事务对数据进行修改</li>
+<li>不加任何锁，通过一定机制生成一个数据请求时间点的一致性数据快照，这种方式叫做数据多版本并发控制。</li>
+</ul>
+<p>数据库的事务隔离越严格，并发副作用越小，但付出的代价也就越大，因为事务隔离实质上就是使事务在一定程度上“串行化”进行，这显然与“并发”是矛盾的。为了解决“隔离”与“并发”的矛盾，ISO/ANSI SQL92 定义了 4 个事务隔离级别，MySQL 实现了这四种级别，应用可以根据自己的业务逻辑要求，选择合适的隔离级别来平衡“隔离”与“并发”的矛盾。</p>
+<p>1.未提交读（Read Uncommitted）<br>允许脏读，但不允许更新丢失。如果一个事务已经开始写数据，则另外一个事务则不允许同时进行写操作，但允许其他事务读此行数据。可以通过“排他锁”实现。<br>2.已提交读（Read Committed）<br>允许不可重读读取，但不允许脏读。读取数据的事务允许其他事务继续访问该行数据，但是未提交的写事务将会禁止其他事务访问该行。可以通过“瞬间共享锁”和“排他锁”实现。<br>3.可重复读取（Repeatable Read）<br>禁止脏读和不可重复读取，但可能会出现幻读。读取数据的事务将会禁止写事务（但允许读事务），写事务则禁止任何其他事务。可以通过“共享锁”和“排他锁”实现。<br>4.序列化（Serializable）<br>要求事务序列化执行，事务只能一个接着一个地执行，不能并发执行。仅仅通过“行级锁”是无法实现事务序列化的，必须通过其他机制保证新插入的数据不会被刚执行查询操作的事务访问到。</p>
+<p>3.InnoDB的行锁模式以及加锁方法<br>InnoDB 实现了两种类型的行锁：</p>
+<ul>
+<li>共享锁（S）：允许获得共享锁的事务读取数据，阻止其他事务获得相同数据集的排他锁。</li>
+<li>排他锁（X）：允许获得排他锁的事务更新数据，阻止其他事务获取相同数据集的共享锁和排他锁。</li>
+</ul>
+<p>另外，为了允许行锁和表锁共存，事项多粒度锁机制，innodb 还有两种内部使用的意向锁，这两种意向锁都是表锁：</p>
+<ul>
+<li>意向共享锁（IS）：事务打算给数据行加行共享锁，事务在给一个数据行加共享锁前必须先取得该表的 IS 锁。</li>
+<li>意向排它锁（IX）: 事务打算给数据行加行排它锁，事务在给一个数据行加排它锁前必须先取得该表的 IX 锁。</li>
+</ul>
+<p>InnoDB会自动添加意向锁，不需要用户干预，对于 update、delete 和 insert 语句，InnoDB会自动给涉及数据集加排它锁（X）；对于普通 select 语句，InnoDB不会加任何锁。</p>
+<p>4.InnoDB行锁实现方式<br>InnoDB行锁是通过给索引项加锁来实现的，如果没有索引，InnoDB将通过隐藏的聚簇索引来对记录加锁。InnoDB行锁分为 3 种情形：</p>
+<ul>
+<li>record lock： 对索引项加锁</li>
+<li>gap lock： 对索引项之间的“间隙”、第一条记录前的“间隙”或最后一条记录的“间隙”加锁。</li>
+<li>next-key lock： 前两种的结合，对记录及其前面的间隙加锁。</li>
+</ul>
+<p>InnoDB行锁的这种实现方式意味着，只有通过索引条件检索数据，InnoDB才会使用行级锁，否则InnoDB将会对表中的所有记录加锁，实际效果和表锁一样。<br>同时可以分为以下几种情况：<br>(1) 在不通过索引条件查询时，InnoDB 会锁定表中的所有记录。<br>(2) 由于 MySQL 的行锁是针对索引加的锁，不是针对记录加的锁，所以虽然是访问不同行的记录，但是如果是使用相同的索引键，是会出现锁冲突的。<br>(3) 当表有多个索引的时候，不同的事务可以使用不同的索引锁定不同的行，不论是使用主键索引、唯一索引或普通索引，InnoDB都会使用行锁对数据加锁。<br>(4) 即便在条件中使用了索引字段，但是否使用索引来检索数据是由 MySQL 通过判断不同执行计划的代价来决定的，如果 MySQL 认为全表扫描效率更高，比如对一些很小的表，它就不会使用索引，这种情况下InnoDB也会对所有记录加锁。因此，在分析锁冲突时，检查 sql 的执行计划，以确认是否真正使用了索引。</p>
+<p>5.next-key 锁<br>当我们用范围条件而不是相等条件检索数据，并请求共享锁或排他锁时，InnoDB会给符合范围条件的已有数据记录的索引项加锁；对于键值在条件范围内但并不存在的记录，叫做“间隙（gap）”，InnoDB也会对这个“间隙”加锁，这种锁机制就是所谓的 next-key 锁。</p>
+<h1 id="这是一个范围条件的检索，innodb-不仅会对符合条件的-id-值为-101-的记录加锁，也会对-id-大于-101（这些记录并不存在）的“间隙”加锁。"><a href="#这是一个范围条件的检索，innodb-不仅会对符合条件的-id-值为-101-的记录加锁，也会对-id-大于-101（这些记录并不存在）的“间隙”加锁。" class="headerlink" title="这是一个范围条件的检索，innodb 不仅会对符合条件的 id 值为 101 的记录加锁，也会对 id 大于 101（这些记录并不存在）的“间隙”加锁。"></a>这是一个范围条件的检索，innodb 不仅会对符合条件的 id 值为 101 的记录加锁，也会对 id 大于 101（这些记录并不存在）的“间隙”加锁。</h1><p>select * from emp where id &gt; 100 for update;</p>
+<p>使用next-key锁的目的，一方面是为了防止幻读，以满足相关隔离级别的要求；另一个方面，是为了满足其恢复和复制的需要。</p>
+<p>在使用范围条件检索并锁定记录时，这种加锁机制会阻塞符合条件范围内键值的并发插入，这往往会造成严重的锁等待。因此，在实际开发中，尤其是并发插入比较多的应用，应该尽量优化业务逻辑，尽量使用相等条件来访问更新数据，避免使用范围条件。</p>
+<p>6.恢复和复制<br>MySQL 通过 binlog 记录执行成功的 insert、update 、delete 等更新数据的 sql 语句，并由此实现 MySQL 数据库的恢复和主从复制。</p>
+<p>MySQL 5.6 支持 3 种 日志格式，即基于语句的日志格式 sbl，基于行的日志格式 rbl 和混合格式。它还支持 4 种复制模式：</p>
+<ul>
+<li>基于 sql 语句的复制 sbr：这也是 MySQL 最早支持的复制模式。</li>
+<li>基于 行数据的复制 rbr： 这是 MySQL5.1 以后喀什支持的复制模式，主要优点是支持对非安全 sql 的复制模式。</li>
+<li>混合复制模式：对安全的 sql 语句采用基于 sql 语句的复制模式，对于非安全的 sql 语句采用局于行的复制模式。</li>
+<li>使用全局事务id（gtids）的复制：主要是解决主从自动同步一致的问题。</li>
+</ul>
+<p>对基于语句日志格式（sbl）的恢复和复制而言，由于 MySQL 的 binlog 是按照事务提交的先后顺序记录的，因此要正确恢复或复制数据，就必须满足：<br>在一个事务未提交前，其他并发事务不能插入满足其锁定条件的任何记录，也就是不允许出现幻读。这已经超过了“可重复读”隔离级别的要求，实际上是要求事务要串行化。这也是许多情况下，InnoDB 要用 next-key 锁的原因。</p>
+<p>7.InnoDB什么时候使用表锁<br>（1）事务需要更新大部分或全部数据，表又比较大，如果使用默认的行锁，不仅这个事务执行效率低，而且可能造成其他事务长时间锁等待和锁冲突，这种情况下可以考虑使用表锁。<br>（2）事务涉及多个表，比较复杂，很可能引起死锁，造成大量事务回滚。这种情况也可以考虑一次性锁定多个表，从而避免死锁，减少数据库因事务回滚带来的开销。</p>
+<p>当然，应用中这两种事务不能太多，否则，就应该考虑使用 MyISAM表了。 </p>
+<p>在InnoDB下，使用表锁要注意以下两点：<br>（1）使用 lock tables 虽然可以给InnoDB加表级锁，但必须说明的是，表锁不是由InnoDB存储引擎管理的，而是由其上层 MySQL server 负责的，仅当 autocommit=0、innodb_table_locks=1(默认设置)时，InnoDB层才知道 MySQL 加的表锁，MySQL server 也才能够感知 InnoDB加的行锁，这种情况下，InnoDB才能自动识别涉及到的锁。<br>（2）在用 lock_tables 对 innodb 表加锁时要注意，要将 autocommit 设为 0，否则 MySQL 不会给表加锁；事务结束前，不要用 unlock tables 释放表锁，因为 unlock tables 会隐含的提交事务；commit 或 rollback 并不能释放用 lock tables 加的表锁，必须用 unlock tables 释放表锁。</p>
+<p>8.关于死锁<br>MyISAM表锁是 deadlock free 的，这是因为MyISAM总是一次获取所需的全部锁，要么全部满足，要么等待，因此不会出现死锁。但在InnoDB中，除单个 sql 组成的事务外，锁是逐步获得的，这就决定了在 InnoDB中发生死锁是可能的。</p>
+<p>两个事务都需要获得对方持有的排他锁才能继续完成事务，这种循环锁等待就是典型的死锁。</p>
+<p>发生死锁后，InnoDB一般都能自动检测到，并使一个事务释放锁回退，另一个事务获得锁，继续完成事务。但在涉及外部锁或表锁的情况下，InnoDB并不能完全自动检测到死锁，只需要通过设置锁等待超时参数 innodb_lock_wait_timeout 来解决。需要说明的是，这个参数并不是只用来解决死锁问题，在并发访问比较高的情况下，如果大量事务因无法立即获得所需的锁而挂起，会占用大量计算机资源，造成严重的性能问题，甚至拖垮数据库。</p>
+<p>通常来说，死锁都是应用设计的问题，通过调整业务流程，数据库对象设计、事务大小、以及访问数据库的 sql 语句，绝大部分死锁都可以避免。</p>
+<p>几种避免死锁的方法：<br>(1) 在应用中，如果不同的程序会并发存取多个表，应尽量约定以相同的顺序来访问表，这样可以大大降低产生死锁的机会。<br>(2) 在程序以批量方式处理数据的时候，如果事先对数据排序，保证每个线程按固定的顺序来处理记录，也可以大大降低出现死锁的可能。<br>(3) 在事务中，如果要更新记录，应该申请足够级别的锁，即排他锁，而不应先申请共享锁，更新时再申请排他锁，因为当用户申请排他锁时，其他事务可能又已经获得了相同记录的共享锁，从而造成锁冲突，甚至死锁。<br>(4) 在 repeatable-read 隔离级别下，如果两个线程同时对相同条件记录用 select … for update 加排他锁，在没有符合该条件记录情况下，两个线程过会加锁成功。程序发现记录尚不存在，就试图插入一条新记录，如果两个线程都这么做，就会出现死锁。这种情况下，将隔离级别改成 read committed ，就可避免问题。<br>(5) 当隔离级别为 read committed 时，如果两个线程都先执行 select … for update, 判断是否存在符合条件的记录，如果没有，就插入记录。此时，只有一个线程能插入成功，另一个线程会出现锁等待，当第 1 个线程提交后，第 2 个线程会因主键重复出错，但虽然这个线程出错了，却会获得一个排他锁，如果有第 3 个线程又来申请排他锁，也会出现死锁。对于这种情况，可以直接做插入操作，然后再捕获主键重异常，或者在遇到主键重复错误时，总是执行 rollback 释放获得的排他锁</p>
+<p>尽管通过上面介绍的设计和 sql 优化等措施，可以大大减少死锁，但死锁很难完全避免。因此，在程序设计中总是捕获并处理死锁异常是一个很好的编程习惯。<br>如果出现死锁，可以用 show innodb status 命令来确定最后一个死锁产生的原因。返回结果中包括死锁相关事务的详细信息，如引发死锁的 sql 语句，事务已经获得的锁，正在等待什么锁，以及被回滚的事务等。可以据此分析产生死锁的原因。</p>
+<p>参考：<a href="https://segmentfault.com/a/1190000011164489#articleHeader2" target="_blank" rel="external">https://segmentfault.com/a/1190000011164489#articleHeader2</a></p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/MySQL/" rel="tag"># MySQL</a>
+          
+            <a href="/tags/锁/" rel="tag"># 锁</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/09/12/PHP代码的编译以及垃圾回收机制/" rel="next" title="PHP代码的编译以及垃圾回收机制">
+                <i class="fa fa-chevron-left"></i> PHP代码的编译以及垃圾回收机制
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/headimg.png"
+               alt="Jeff Tan" />
+          <p class="site-author-name" itemprop="name">Jeff Tan</p>
+           
+              <p class="site-description motion-element" itemprop="description">念念不忘 必有回响</p>
+          
+        </div>
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/archives/">
+                <span class="site-state-item-count">28</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-categories">
+              <a href="/categories/index.html">
+                <span class="site-state-item-count">19</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              <a href="/tags/index.html">
+                <span class="site-state-item-count">17</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#这是一个范围条件的检索，innodb-不仅会对符合条件的-id-值为-101-的记录加锁，也会对-id-大于-101（这些记录并不存在）的“间隙”加锁。"><span class="nav-number">1.</span> <span class="nav-text">这是一个范围条件的检索，innodb 不仅会对符合条件的 id 值为 101 的记录加锁，也会对 id 大于 101（这些记录并不存在）的“间隙”加锁。</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2017</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Jeff Tan</span>
+
+  
+</div>
+
+
+  <div class="powered-by">
+    由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+  </div>
+
+  <span class="post-meta-divider">|</span>
+
+  <div class="theme-info">
+    主题 &mdash;
+    <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+      NexT.Mist
+    </a>
+  </div>
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.2"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.2"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.2"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.2"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.2"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

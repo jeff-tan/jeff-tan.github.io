@@ -102,7 +102,7 @@
 <meta property="og:site_name" content="Jeff的干货基地">
 <meta property="og:description" content="MySQL锁机制">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2017-10-05T06:20:50.286Z">
+<meta property="og:updated_time" content="2017-10-05T06:22:09.893Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="MySQL锁机制">
 <meta name="twitter:description" content="MySQL锁机制">
@@ -410,7 +410,7 @@
 </ul>
 <p>InnoDB行锁的这种实现方式意味着，只有通过索引条件检索数据，InnoDB才会使用行级锁，否则InnoDB将会对表中的所有记录加锁，实际效果和表锁一样。<br>同时可以分为以下几种情况：<br>(1) 在不通过索引条件查询时，InnoDB 会锁定表中的所有记录。<br>(2) 由于 MySQL 的行锁是针对索引加的锁，不是针对记录加的锁，所以虽然是访问不同行的记录，但是如果是使用相同的索引键，是会出现锁冲突的。<br>(3) 当表有多个索引的时候，不同的事务可以使用不同的索引锁定不同的行，不论是使用主键索引、唯一索引或普通索引，InnoDB都会使用行锁对数据加锁。<br>(4) 即便在条件中使用了索引字段，但是否使用索引来检索数据是由 MySQL 通过判断不同执行计划的代价来决定的，如果 MySQL 认为全表扫描效率更高，比如对一些很小的表，它就不会使用索引，这种情况下InnoDB也会对所有记录加锁。因此，在分析锁冲突时，检查 sql 的执行计划，以确认是否真正使用了索引。</p>
 <p>5.next-key 锁<br>当我们用范围条件而不是相等条件检索数据，并请求共享锁或排他锁时，InnoDB会给符合范围条件的已有数据记录的索引项加锁；对于键值在条件范围内但并不存在的记录，叫做“间隙（gap）”，InnoDB也会对这个“间隙”加锁，这种锁机制就是所谓的 next-key 锁。</p>
-<h1 id="这是一个范围条件的检索，innodb-不仅会对符合条件的-id-值为-101-的记录加锁，也会对-id-大于-101（这些记录并不存在）的“间隙”加锁。"><a href="#这是一个范围条件的检索，innodb-不仅会对符合条件的-id-值为-101-的记录加锁，也会对-id-大于-101（这些记录并不存在）的“间隙”加锁。" class="headerlink" title="这是一个范围条件的检索，innodb 不仅会对符合条件的 id 值为 101 的记录加锁，也会对 id 大于 101（这些记录并不存在）的“间隙”加锁。"></a>这是一个范围条件的检索，innodb 不仅会对符合条件的 id 值为 101 的记录加锁，也会对 id 大于 101（这些记录并不存在）的“间隙”加锁。</h1><p>select * from emp where id &gt; 100 for update;</p>
+<p>select * from emp where id &gt; 100 for update;<br>这是一个范围条件的检索，innodb 不仅会对符合条件的 id 值为 101 的记录加锁，也会对 id 大于 101（这些记录并不存在）的“间隙”加锁。</p>
 <p>使用next-key锁的目的，一方面是为了防止幻读，以满足相关隔离级别的要求；另一个方面，是为了满足其恢复和复制的需要。</p>
 <p>在使用范围条件检索并锁定记录时，这种加锁机制会阻塞符合条件范围内键值的并发插入，这往往会造成严重的锁等待。因此，在实际开发中，尤其是并发插入比较多的应用，应该尽量优化业务逻辑，尽量使用相等条件来访问更新数据，避免使用范围条件。</p>
 <p>6.恢复和复制<br>MySQL 通过 binlog 记录执行成功的 insert、update 、delete 等更新数据的 sql 语句，并由此实现 MySQL 数据库的恢复和主从复制。</p>
@@ -524,17 +524,8 @@
       
 
       
-        <ul class="sidebar-nav motion-element">
-          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
-            文章目录
-          </li>
-          <li class="sidebar-nav-overview" data-target="site-overview">
-            站点概览
-          </li>
-        </ul>
-      
 
-      <section class="site-overview sidebar-panel">
+      <section class="site-overview sidebar-panel sidebar-panel-active">
         <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
           <img class="site-author-image" itemprop="image"
                src="/images/headimg.png"
@@ -596,22 +587,6 @@
 
       </section>
 
-      
-      <!--noindex-->
-        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
-          <div class="post-toc">
-
-            
-              
-            
-
-            
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#这是一个范围条件的检索，innodb-不仅会对符合条件的-id-值为-101-的记录加锁，也会对-id-大于-101（这些记录并不存在）的“间隙”加锁。"><span class="nav-number">1.</span> <span class="nav-text">这是一个范围条件的检索，innodb 不仅会对符合条件的 id 值为 101 的记录加锁，也会对 id 大于 101（这些记录并不存在）的“间隙”加锁。</span></a></li></ol></div>
-            
-
-          </div>
-        </section>
-      <!--/noindex-->
       
 
       

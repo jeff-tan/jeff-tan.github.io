@@ -104,7 +104,7 @@
 <meta property="og:locale" content="zh-Hans">
 <meta property="og:image" content="https://pic1.zhimg.com/v2-8720bd64871a5452df583fdab8207d64_b.jpg">
 <meta property="og:image" content="https://pic3.zhimg.com/v2-2af488004591cbc12cd82c44518523de_b.jpg">
-<meta property="og:updated_time" content="2017-10-11T04:05:26.191Z">
+<meta property="og:updated_time" content="2017-10-11T04:14:49.039Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="常见面试题整理-计算机网络篇">
 <meta name="twitter:description" content="常见面试题整理-计算机网络篇">
@@ -367,8 +367,51 @@
 <li>TCP面向字节流，UDP面向报文</li>
 <li>TCP数据传输慢，UDP快</li>
 </ul>
-<p>(2)请简单说一下你了解的端口及对应的服务？<br>|服务|端口|<br>|—|—|<br>|HTTP|80|<br>|HTTPS|443|<br>|FTP|21|<br>|SSH|22|<br>|Telnet|23|<br>|SMTP|25|<br>|POP3|110|<br>|MySQL|3306|</p>
-<p>(3)TCP三次握手与四次分手<br><img src="https://pic1.zhimg.com/v2-8720bd64871a5452df583fdab8207d64_b.jpg" alt="image"><br>三次握手的过程：<br>1.第一次握手：建立连接。客户端发送连接请求报文段，将SYN位设置为1，Sequence Number为x；然后，客户端进入SYN_SEND状态，等待服务器的确认;<br>2.第二次握手：服务器收到SYN报文段。服务器收到客户端的SYN报文段，需要对这个SYN报文段进行确认，设置Acknowledgment Number为x+1(Sequence Number+1)；同时，自己自己还要发送SYN请求信息，将SYN位设置为1，Sequence Number为y；服务器端将上述所有信息放到一个报文段（即SYN+ACK报文段）中，一并发送给客户端，此时服务器进入SYN_RECV状态；<br>3.第三次握手：客户端收到服务器的SYN+ACK报文段。然后将Acknowledgment Number设置为y+1，向服务器发送ACK报文段，这个报文段发送完毕以后，客户端和服务器端都进入ESTABLISHED状态，完成TCP三次握手。</p>
+<p>(2)请简单说一下你了解的端口及对应的服务？</p>
+<table>
+<thead>
+<tr>
+<th>服务</th>
+<th>端口</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>HTTP</td>
+<td>80</td>
+</tr>
+<tr>
+<td>HTTPS</td>
+<td>443</td>
+</tr>
+<tr>
+<td>FTP</td>
+<td>21</td>
+</tr>
+<tr>
+<td>SSH</td>
+<td>22</td>
+</tr>
+<tr>
+<td>Telnet</td>
+<td>23</td>
+</tr>
+<tr>
+<td>SMTP</td>
+<td>25</td>
+</tr>
+<tr>
+<td>POP3</td>
+<td>110</td>
+</tr>
+<tr>
+<td>MySQL</td>
+<td>3306</td>
+</tr>
+</tbody>
+</table>
+<p>(3)TCP三次握手与四次分手<br><img src="https://pic1.zhimg.com/v2-8720bd64871a5452df583fdab8207d64_b.jpg" alt="image"></p>
+<p>三次握手的过程：<br>1.第一次握手：建立连接。客户端发送连接请求报文段，将SYN位设置为1，Sequence Number为x；然后，客户端进入SYN_SEND状态，等待服务器的确认;<br>2.第二次握手：服务器收到SYN报文段。服务器收到客户端的SYN报文段，需要对这个SYN报文段进行确认，设置Acknowledgment Number为x+1(Sequence Number+1)；同时，自己自己还要发送SYN请求信息，将SYN位设置为1，Sequence Number为y；服务器端将上述所有信息放到一个报文段（即SYN+ACK报文段）中，一并发送给客户端，此时服务器进入SYN_RECV状态；<br>3.第三次握手：客户端收到服务器的SYN+ACK报文段。然后将Acknowledgment Number设置为y+1，向服务器发送ACK报文段，这个报文段发送完毕以后，客户端和服务器端都进入ESTABLISHED状态，完成TCP三次握手。</p>
 <p>为什么要三次握手：<br>在谢希仁的《计算机网络》中是这样说的：</p>
 <blockquote>
 <p>为了防止已失效的连接请求报文段突然又传送到了服务端，导致服务端一直等待而浪费资源。</p>
@@ -384,7 +427,49 @@
 <li>B类：172.16.0.0 - 172.31.255.255</li>
 <li>C类：192.168.0.0 - 192.168.255.255</li>
 </ul>
-<p>(5)IP地址分为哪几类？简单说一下各个分类<br>IPv4：<br>|类别|网络号|地址范围|网络号|主机号|<br>|—|—–|——|—–|—–|<br>|A类|以0开头|1.0.0.0-127.255.255.255|8位|24位|<br>|B类|以10开头|128.0.0.0-191.255.255.255|16位|16位|<br>|C类|以110开头|192.0.0.0-223.255.255.255|24位|8位|<br>|D类|前四位固定为1110，后面为多播地址，所以D类地址为多播地址|<br>|E类|前五位固定为11110，后面保留为今后使用|</p>
+<p>(5)IP地址分为哪几类？简单说一下各个分类<br>IPv4：</p>
+<table>
+<thead>
+<tr>
+<th>类别</th>
+<th>网络号</th>
+<th>地址范围</th>
+<th>网络号</th>
+<th>主机号</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>A类</td>
+<td>以0开头</td>
+<td>1.0.0.0-127.255.255.255</td>
+<td>8位</td>
+<td>24位</td>
+</tr>
+<tr>
+<td>B类</td>
+<td>以10开头</td>
+<td>128.0.0.0-191.255.255.255</td>
+<td>16位</td>
+<td>16位</td>
+</tr>
+<tr>
+<td>C类</td>
+<td>以110开头</td>
+<td>192.0.0.0-223.255.255.255</td>
+<td>24位</td>
+<td>8位</td>
+</tr>
+<tr>
+<td>D类</td>
+<td>前四位固定为1110，后面为多播地址，所以D类地址为多播地址</td>
+</tr>
+<tr>
+<td>E类</td>
+<td>前五位固定为11110，后面保留为今后使用</td>
+</tr>
+</tbody>
+</table>
 <p>IPv6：采用128bit，首部固定部分为40字节。</p>
 <p>(6)OSI七层模型、五层协议<br><img src="https://pic3.zhimg.com/v2-2af488004591cbc12cd82c44518523de_b.jpg" alt="image"></p>
 <p>五层协议：物理层、数据链路层、网络层、传输层、应用层</p>
@@ -399,7 +484,37 @@
 <li>OPTIONS：返回所有可用的方法，检查服务器支持哪些方法</li>
 <li>CONNECT：用于SSL隧道的基于代理的请求</li>
 </ul>
-<p>(8)简述HTTP中GET和POST的区别<br>|请求方式|数据位置|明文密文|数据安全|长度限制|应用场景|<br>|——|——-|——|——-|——|——|<br>|GET|URL后|明文|不安全|长度较小|查询数据|<br>|POST|HTTP正文|可明可密|安全|支持较大数据传输|修改数据|</p>
+<p>(8)简述HTTP中GET和POST的区别</p>
+<table>
+<thead>
+<tr>
+<th>请求方式</th>
+<th>数据位置</th>
+<th>明文密文</th>
+<th>数据安全</th>
+<th>长度限制</th>
+<th>应用场景</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>GET</td>
+<td>URL后</td>
+<td>明文</td>
+<td>不安全</td>
+<td>长度较小</td>
+<td>查询数据</td>
+</tr>
+<tr>
+<td>POST</td>
+<td>HTTP正文</td>
+<td>可明可密</td>
+<td>安全</td>
+<td>支持较大数据传输</td>
+<td>修改数据</td>
+</tr>
+</tbody>
+</table>
 
       
     </div>

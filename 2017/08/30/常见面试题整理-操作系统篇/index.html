@@ -1,0 +1,762 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.2" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="操作系统," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/images/headimg.png?v=5.1.2" />
+
+
+
+
+
+
+<meta name="description" content="常见面试题整理-操作系统篇">
+<meta name="keywords" content="操作系统">
+<meta property="og:type" content="article">
+<meta property="og:title" content="常见面试题整理-操作系统篇">
+<meta property="og:url" content="http://yoursite.com/2017/08/30/常见面试题整理-操作系统篇/index.html">
+<meta property="og:site_name" content="Jeff的干货基地">
+<meta property="og:description" content="常见面试题整理-操作系统篇">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2017-10-11T04:05:26.887Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="常见面试题整理-操作系统篇">
+<meta name="twitter:description" content="常见面试题整理-操作系统篇">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    sidebar: {"position":"left","display":"post","offset":12,"offset_float":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2017/08/30/常见面试题整理-操作系统篇/"/>
+
+
+
+
+
+  <title>常见面试题整理-操作系统篇 | Jeff的干货基地</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Jeff的干货基地</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/08/30/常见面试题整理-操作系统篇/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Jeff Tan">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/headimg.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Jeff的干货基地">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">常见面试题整理-操作系统篇</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-08-30T15:23:45+08:00">
+                2017-08-30
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/操作系统/" itemprop="url" rel="index">
+                    <span itemprop="name">操作系统</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>常见面试题整理-操作系统篇<br><a id="more"></a></p>
+<p>（一）请分别简单说一说进程和线程以及它们的区别。</p>
+<ul>
+<li>进程是具有一定功能的程序关于某个数据集合上的一次运行活动，进程是<strong>系统</strong>进行<strong>资源调度</strong>和<strong>分配</strong>的一个<strong>独立单位</strong>。</li>
+<li><strong>线程是进程的实体</strong>，是<strong>CPU调度和分派的基本单位</strong>，它是<strong>比进程更小</strong>的能<strong>独立运行</strong>的<strong>基本单位</strong>。</li>
+<li><strong>一个进程</strong>可以有<strong>多个线程</strong>，<strong>多个线程</strong>也可以<strong>并发执行</strong></li>
+</ul>
+<p>（二）线程同步的方式有哪些？</p>
+<ul>
+<li><strong>互斥量</strong>：采用<strong>互斥对象机制</strong>，只有拥有互斥对象的线程才有访问公共资源的权限。因为互斥对象只有一个，所以可以<strong>保证公共资源不会被多个线程同时访问</strong>。</li>
+<li><strong>信号量</strong>：它允许<strong>同一时刻多个线程访问同一资源</strong>，但是需要<strong>控制同一时刻访问此资源的最大线程数量</strong>。</li>
+<li><strong>事件</strong>（信号）：通过<strong>通知操作</strong>的方式来保持多线程同步，还可以方便的实现多线程优先级的比较操作。</li>
+</ul>
+<p>（三）进程的通信方式有哪些？</p>
+<p>主要分为：<strong>管道、系统IPC（包括消息队列、信号量、共享内存）、SOCKET</strong></p>
+<p>管道主要分为：普通管道PIPE 、流管道（s_pipe）、命名管道（name_pipe）</p>
+<ul>
+<li><strong>管道</strong>是一种<strong>半双工</strong>的通信方式，<strong>数据只能单向流动</strong>，并且只能在<strong>具有亲缘关系</strong>的<strong>进程</strong>间流动，进程的亲缘关系通常是父子进程</li>
+<li><strong>命名管道</strong>也是半双工的通信方式，它允许<strong>无亲缘关系</strong>的<strong>进程</strong>间进行通信</li>
+<li><strong>信号量</strong>是一个<strong>计数器</strong>，用来<strong>控制多个进程对资源的访问</strong>，它通常作为一种<strong>锁机制</strong>。</li>
+<li><strong>消息队列</strong>是消息的<strong>链表</strong>，<strong>存放在内核</strong>中并由<strong>消息队列标识符标识</strong>。</li>
+<li><strong>信号</strong>是一种比较复杂的通信方式，用于<strong>通知接收进程某个事件已经发生</strong>。</li>
+<li><strong>共享内存</strong>就是<strong>映射一段能被其它进程访问的内存</strong>，这段共享内存由一个进程创建，但是多个进程可以访问。</li>
+</ul>
+<p>（四）什么是缓冲区溢出？有什么危害？其原因是什么？</p>
+<p><strong>缓冲区溢出</strong>是指当计算机向缓冲区<strong>填充数据</strong>时<strong>超出</strong>了缓冲区本身的<strong>容量</strong>，<strong>溢出的数据覆盖</strong>在<strong>合法数据</strong>上。</p>
+<p>危害有以下两点：</p>
+<ul>
+<li><strong>程序崩溃</strong>，导致拒绝额服务</li>
+<li>跳转并且<strong>执行</strong>一段<strong>恶意代码</strong></li>
+</ul>
+<p>造成缓冲区溢出的主要原因是程序中<strong>没有仔细检查用户输入</strong>。 </p>
+<p>（五）进程有哪几种状态？</p>
+<ul>
+<li><strong>就绪</strong>状态：进程已获得除处理机以外的所需资源，等待分配处理机资源</li>
+<li><strong>运行</strong>状态：占用处理机资源运行，处于此状态的进程数小于等于CPU数</li>
+<li><strong>阻塞</strong>状态： 进程等待某种条件，在条件满足之前无法执行 </li>
+</ul>
+<p>（六）分页和分段有什么区别？</p>
+<ul>
+<li><strong>段</strong>是信息的<strong>逻辑单位</strong>，它是根据用户的需要划分的，因此段对用户是<strong>可见</strong>的 ；<strong>页</strong>是信息的<strong>物理单位</strong>，是为了管理主存的方便而划分的，对用户是<strong>透明</strong>的。</li>
+<li><strong>段大小不固定</strong>，由它所完成的功能决定；<strong>页大大小固定</strong>，由系统决定</li>
+<li><strong>段</strong>向用户提供<strong>二维地址空间</strong>；<strong>页</strong>向用户提供的是<strong>一维地址空间</strong></li>
+<li><strong>段便于存储保护和信息的共享</strong>，<strong>页</strong>的<strong>保护和共享受到限制</strong>。</li>
+</ul>
+<p>（七） 操作系统中进程调度策略有哪几种？</p>
+<p><strong>FCFS(先来先服务)，优先级，时间片轮转，多级反馈</strong></p>
+<p>（八）说一说进程同步有哪几种机制。</p>
+<p><strong>原子操作、信号量机制、自旋锁管程、会合、分布式系统</strong></p>
+<p>（九）什么是死锁？死锁产生的条件？</p>
+<p>在<strong>两个或者多个并发进程</strong>中，如果每个进程持有某种资源而又等待其它进程释放它或它们现在保持着的资源，在未改变这种状态之前都不能向前推进，称这一组进程产生了死锁。通俗的讲就是两个或多个进程<strong>无限期</strong>的<strong>阻塞、相互等待</strong>的一种状态。</p>
+<p>死锁产生的四个条件（有一个条件不成立，则不会产生死锁）</p>
+<ul>
+<li><strong>互斥</strong>：一个资源一次只能被一个进程使用</li>
+<li><strong>请求与保持</strong>：一个进程因请求资源而阻塞时，对已获得源保持不释放</li>
+<li><strong>不剥夺</strong>：进程获得的资源，在未完全使用完之前，不能强行剥夺</li>
+<li><strong>循环等待</strong>：若干进程之间形成一种头尾相接的环形等待资源关系 </li>
+</ul>
+<p>（十）说一说死锁的处理基本策略和常用方法。</p>
+<p>解决死锁的基本方法： </p>
+<p><strong>预防死锁、避免死锁、检测死锁、解除死锁</strong> </p>
+<p>解决死锁的常用策略： </p>
+<p><strong>鸵鸟策略、预防策略、避免策略、检测与解除死锁</strong></p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/操作系统/" rel="tag"># 操作系统</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/08/05/Laravel中路由分割以及隐式路由/" rel="next" title="Laravel中路由分割以及隐式路由">
+                <i class="fa fa-chevron-left"></i> Laravel中路由分割以及隐式路由
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2017/08/30/常见面试题整理-计算机网络篇/" rel="prev" title="常见面试题整理-计算机网络篇">
+                常见面试题整理-计算机网络篇 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+
+      <section class="site-overview sidebar-panel sidebar-panel-active">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/headimg.png"
+               alt="Jeff Tan" />
+          <p class="site-author-name" itemprop="name">Jeff Tan</p>
+           
+              <p class="site-description motion-element" itemprop="description">念念不忘 必有回响</p>
+          
+        </div>
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/archives/">
+                <span class="site-state-item-count">30</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-categories">
+              <a href="/categories/index.html">
+                <span class="site-state-item-count">21</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              <a href="/tags/index.html">
+                <span class="site-state-item-count">19</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2017</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Jeff Tan</span>
+
+  
+</div>
+
+
+  <div class="powered-by">
+    由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+  </div>
+
+  <span class="post-meta-divider">|</span>
+
+  <div class="theme-info">
+    主题 &mdash;
+    <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+      NexT.Mist
+    </a>
+  </div>
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.2"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.2"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.2"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.2"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.2"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

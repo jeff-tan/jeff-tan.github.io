@@ -78,7 +78,7 @@
 <link href="/css/main.css?v=5.1.2" rel="stylesheet" type="text/css" />
 
 
-  <meta name="keywords" content="Redis,Memcached," />
+  <meta name="keywords" content="Hexo, NexT" />
 
 
 
@@ -94,18 +94,16 @@
 
 
 
-<meta name="description" content="Memcached &amp;amp; Redis 区别">
-<meta name="keywords" content="Redis,Memcached">
-<meta property="og:type" content="article">
-<meta property="og:title" content="Memcached &amp; Redis 区别">
-<meta property="og:url" content="http://yoursite.com/2017/09/01/Memcache、Redis区别/index.html">
+<meta name="description" content="念念不忘 必有回响">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Jeff的干货基地">
+<meta property="og:url" content="http://yoursite.com/page/4/index.html">
 <meta property="og:site_name" content="Jeff的干货基地">
-<meta property="og:description" content="Memcached &amp;amp; Redis 区别">
+<meta property="og:description" content="念念不忘 必有回响">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2017-09-28T04:02:08.654Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Memcached &amp; Redis 区别">
-<meta name="twitter:description" content="Memcached &amp;amp; Redis 区别">
+<meta name="twitter:title" content="Jeff的干货基地">
+<meta name="twitter:description" content="念念不忘 必有回响">
 
 
 
@@ -134,13 +132,13 @@
 
 
 
-  <link rel="canonical" href="http://yoursite.com/2017/09/01/Memcache、Redis区别/"/>
+  <link rel="canonical" href="http://yoursite.com/page/4/"/>
 
 
 
 
 
-  <title>Memcached & Redis 区别 | Jeff的干货基地</title>
+  <title>Jeff的干货基地</title>
   
 
 
@@ -159,7 +157,9 @@
     
   
 
-  <div class="container sidebar-position-left page-post-detail ">
+  <div class="container sidebar-position-left 
+   page-home 
+ ">
     <div class="headband"></div>
 
     <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
@@ -252,9 +252,9 @@
         <div class="content-wrap">
           <div id="content" class="content">
             
-
-  <div id="posts" class="posts-expand">
+  <section id="posts" class="posts-expand">
     
+      
 
   
 
@@ -267,7 +267,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/09/01/Memcache、Redis区别/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2016/06/08/Windows下搭建属于自己的Hexo博客/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Jeff Tan">
@@ -284,7 +284,9 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">Memcached & Redis 区别</h1>
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2016/06/08/Windows下搭建属于自己的Hexo博客/" itemprop="url">Windows下简单搭建Hexo博客并部署到Github</a></h1>
         
 
         <div class="post-meta">
@@ -296,8 +298,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-09-01T14:20:22+08:00">
-                2017-09-01
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2016-06-08T11:39:53+08:00">
+                2016-06-08
               </time>
             
 
@@ -319,19 +321,8 @@
               
               
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Memcached/" itemprop="url" rel="index">
-                    <span itemprop="name">Memcached</span>
-                  </a>
-                </span>
-
-                
-                
-                  ， 
-                
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Memcached/Redis/" itemprop="url" rel="index">
-                    <span itemprop="name">Redis</span>
+                  <a href="/categories/Hexo/" itemprop="url" rel="index">
+                    <span itemprop="name">Hexo</span>
                   </a>
                 </span>
 
@@ -367,37 +358,16 @@
       
 
       
-        <p>Memcached &amp; Redis 区别<br><a id="more"></a></p>
-<h4 id="Memcached-amp-Redis-区别"><a href="#Memcached-amp-Redis-区别" class="headerlink" title="Memcached &amp; Redis 区别"></a>Memcached &amp; Redis 区别</h4><h5 id="Memcached"><a href="#Memcached" class="headerlink" title="Memcached"></a>Memcached</h5><p>Memcached与数据库端协同工作情况，其中的过程是这样的：</p>
-<ol>
-<li>检查用户请求的数据是缓存中是否有存在，如果有存在的话，只需要直接把请求的数据返回，无需查询数据库。</li>
-<li>如果请求的数据在缓存中找不到，这时候再去查询数据库。返回请求数据的同时，把数据存储到缓存中一份。</li>
-<li>保持缓存的“新鲜性”，每当数据发生变化的时候（比如，数据有被修改，或被删除的情况下），要同步的更新缓存信息，确保用户不会在缓存取到旧的数据。</li>
-</ol>
-<h5 id="Redis"><a href="#Redis" class="headerlink" title="Redis"></a>Redis</h5><p>Redis作为一个高性能的key-value数据库具有以下特征： </p>
-<ul>
-<li>多样的数据类型</li>
-<li>持久化 </li>
-<li>主从同步</li>
-</ul>
-<p>Redis支持丰富的数据类型，最为常用的数据类型主要由五种：String、Hash、List、Set和Sorted Set。  </p>
-<p>Redis能够通过以下两种方式实现持久化：</p>
-<p>RDB 持久化，将 Redis 在内存中的的状态保存到硬盘中，相当于备份数据库状态。</p>
-<p>AOF 持久化（Append-Only-File），AOF 持久化是通过保存 Redis 服务器锁执行的写状态来记录数据库的。相当于备份数据库接收到的命令，所有被写入 AOF 的命令都是以 Redis 的协议格式来保存的。</p>
-<h5 id="综合"><a href="#综合" class="headerlink" title="综合"></a>综合</h5><ol>
-<li><p>性能上：<br>  性能上都很出色，具体到细节，由于Redis只使用单核，而Memcachedd可以使用多核，所以平均每一个核上Redis在存储小数据时比<br>Memcachedd性能更高。而在100k以上的数据中，Memcachedd性能要高于Redis，虽然Redis最近也在存储大数据的性能上进行优化，但是比起 Memcachedd，还是稍有逊色。</p>
-</li>
-<li><p>内存空间和数据量大小：<br>  Memcachedd可以修改最大内存，采用LRU算法。Redis增加了VM（虚拟内存）的特性，突破了物理内存的限制。</p>
-</li>
-<li><p>操作便利上：<br>  Memcachedd数据结构单一，仅用来缓存数据，而Redis支持更加丰富的数据类型，也可以在服务器端直接对数据进行丰富的操作,这样可以减少网络IO次数和数据体积。</p>
-</li>
-<li><p>可靠性上：<br>  Memcachedd不支持数据持久化，断电或重启后数据消失，但其稳定性是有保证的。Redis支持数据持久化和数据恢复，允许单点故障，但是同时也会付出性能的代价。</p>
-</li>
-<li><p>应用场景：<br>  Memcachedd：动态系统中减轻数据库负载，提升性能；做缓存，适合多读少写，大数据量的情况（如人人网大量查询用户信息、好友信息、文章信息等）。<br>  Redis：适用于对读写效率要求都很高，数据处理业务复杂和对安全性要求较高的系统（如新浪微博的计数和微博发布部分系统，对数据安全性、读写要求都很高）。</p>
-</li>
-</ol>
-<p>转载至：<a href="http://www.cnblogs.com/GardenKeeper/p/6297746.html" target="_blank" rel="external">http://www.cnblogs.com/GardenKeeper/p/6297746.html</a></p>
-
+        
+          <p>在Windows下简单几步就能拥有属于自己的Hexo博客<br>
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2016/06/08/Windows下搭建属于自己的Hexo博客/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
+        
       
     </div>
     
@@ -412,42 +382,14 @@
 
     <footer class="post-footer">
       
-        <div class="post-tags">
-          
-            <a href="/tags/Redis/" rel="tag"># Redis</a>
-          
-            <a href="/tags/Memcached/" rel="tag"># Memcached</a>
-          
-        </div>
+
+      
+
       
 
       
       
-      
-
-      
-        <div class="post-nav">
-          <div class="post-nav-next post-nav-item">
-            
-              <a href="/2017/08/30/常见面试题整理-计算机网络篇/" rel="next" title="常见面试题整理-计算机网络篇">
-                <i class="fa fa-chevron-left"></i> 常见面试题整理-计算机网络篇
-              </a>
-            
-          </div>
-
-          <span class="post-nav-divider"></span>
-
-          <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2017/09/12/捣鼓ubuntu下PHP7.1下安装sqlserver拓展/" rel="prev" title="记录捣鼓ubuntu下PHP7.1下安装sqlserver拓展">
-                记录捣鼓ubuntu下PHP7.1下安装sqlserver拓展 <i class="fa fa-chevron-right"></i>
-              </a>
-            
-          </div>
-        </div>
-      
-
-      
+        <div class="post-eof"></div>
       
     </footer>
   </div>
@@ -457,11 +399,14 @@
   </article>
 
 
+    
+  </section>
 
-    <div class="post-spread">
-      
-    </div>
-  </div>
+  
+  <nav class="pagination">
+    <a class="extend prev" rel="prev" href="/page/3/"><i class="fa fa-angle-left"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/3/">3</a><span class="page-number current">4</span>
+  </nav>
+
 
 
           </div>
@@ -469,10 +414,6 @@
 
 
           
-  <div class="comments" id="comments">
-    
-  </div>
-
 
         </div>
         
@@ -493,17 +434,8 @@
       
 
       
-        <ul class="sidebar-nav motion-element">
-          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
-            文章目录
-          </li>
-          <li class="sidebar-nav-overview" data-target="site-overview">
-            站点概览
-          </li>
-        </ul>
-      
 
-      <section class="site-overview sidebar-panel">
+      <section class="site-overview sidebar-panel sidebar-panel-active">
         <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
           <img class="site-author-image" itemprop="image"
                src="/images/headimg.png"
@@ -565,22 +497,6 @@
 
       </section>
 
-      
-      <!--noindex-->
-        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
-          <div class="post-toc">
-
-            
-              
-            
-
-            
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#Memcached-amp-Redis-区别"><span class="nav-number">1.</span> <span class="nav-text">Memcached & Redis 区别</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#Memcached"><span class="nav-number">1.1.</span> <span class="nav-text">Memcached</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#Redis"><span class="nav-number">1.2.</span> <span class="nav-text">Redis</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#综合"><span class="nav-number">1.3.</span> <span class="nav-text">综合</span></a></li></ol></li></ol></div>
-            
-
-          </div>
-        </section>
-      <!--/noindex-->
       
 
       
@@ -704,10 +620,10 @@
   
 
   
-  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.2"></script>
+    <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.2"></script>
 <script type="text/javascript" src="/js/src/post-details.js?v=5.1.2"></script>
 
-
+  
 
   
 

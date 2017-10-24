@@ -104,7 +104,7 @@
 <meta property="og:locale" content="zh-Hans">
 <meta property="og:image" content="http://7xr23j.com1.z0.glb.clouddn.com/%E3%80%90%E5%B8%B8%E8%A7%81%E9%9D%A2%E8%AF%95%E9%A2%98%E6%95%B4%E7%90%86-%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E3%80%91TCP%E4%B8%89%E6%AC%A1%E6%8F%A1%E6%89%8B%E5%92%8C%E5%9B%9B%E6%AC%A1%E5%88%86%E6%89%8B.jpg">
 <meta property="og:image" content="http://7xr23j.com1.z0.glb.clouddn.com/%E3%80%90%E5%B8%B8%E8%A7%81%E9%9D%A2%E8%AF%95%E9%A2%98%E6%95%B4%E7%90%86-%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E3%80%91OSI%E4%B8%83%E5%B1%82%E6%A8%A1%E5%9E%8B.jpg">
-<meta property="og:updated_time" content="2017-10-24T08:31:18.600Z">
+<meta property="og:updated_time" content="2017-10-24T08:38:17.457Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="常见面试题整理-计算机网络篇">
 <meta name="twitter:description" content="常见面试题整理-计算机网络篇">
@@ -410,7 +410,58 @@
 </tr>
 </tbody>
 </table>
-<p>(3)常见的HTTP状态码<br>|状态码|状态码英文介绍|说明|<br>|—–|—–|—–|<br>|200|OK|请求成功|<br>|302|Temporarily Moved|重定向|<br>|403|Forbidden|服务器拒绝客户端请求|<br>|404|Not Found|无法找到客户端所请求的资源|<br>|405|Method Not Allowed|客户端请求方法被禁止|<br>|500|Internal Server Error|服务器内部错误|<br>|502|Bad Gateway|无效网关|<br>|503|Service Unavailable|服务不可达|</p>
+<p>(3)常见的HTTP状态码</p>
+<table>
+<thead>
+<tr>
+<th>状态码</th>
+<th>状态码英文介绍</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>200</td>
+<td>OK</td>
+<td>请求成功</td>
+</tr>
+<tr>
+<td>302</td>
+<td>Temporarily Moved</td>
+<td>重定向</td>
+</tr>
+<tr>
+<td>403</td>
+<td>Forbidden</td>
+<td>服务器拒绝客户端请求</td>
+</tr>
+<tr>
+<td>404</td>
+<td>Not Found</td>
+<td>无法找到客户端所请求的资源</td>
+</tr>
+<tr>
+<td>405</td>
+<td>Method Not Allowed</td>
+<td>客户端请求方法被禁止</td>
+</tr>
+<tr>
+<td>500</td>
+<td>Internal Server Error</td>
+<td>服务器内部错误</td>
+</tr>
+<tr>
+<td>502</td>
+<td>Bad Gateway</td>
+<td>无效网关</td>
+</tr>
+<tr>
+<td>503</td>
+<td>Service Unavailable</td>
+<td>服务不可达</td>
+</tr>
+</tbody>
+</table>
 <p>(4)TCP三次握手与四次分手<br><img src="http://7xr23j.com1.z0.glb.clouddn.com/%E3%80%90%E5%B8%B8%E8%A7%81%E9%9D%A2%E8%AF%95%E9%A2%98%E6%95%B4%E7%90%86-%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E3%80%91TCP%E4%B8%89%E6%AC%A1%E6%8F%A1%E6%89%8B%E5%92%8C%E5%9B%9B%E6%AC%A1%E5%88%86%E6%89%8B.jpg" alt="image"></p>
 <p>三次握手的过程：<br>1.第一次握手：建立连接。客户端发送连接请求报文段，将SYN位设置为1，Sequence Number为x；然后，客户端进入SYN_SEND状态，等待服务器的确认;<br>2.第二次握手：服务器收到SYN报文段。服务器收到客户端的SYN报文段，需要对这个SYN报文段进行确认，设置Acknowledgment Number为x+1(Sequence Number+1)；同时，自己自己还要发送SYN请求信息，将SYN位设置为1，Sequence Number为y；服务器端将上述所有信息放到一个报文段（即SYN+ACK报文段）中，一并发送给客户端，此时服务器进入SYN_RECV状态；<br>3.第三次握手：客户端收到服务器的SYN+ACK报文段。然后将Acknowledgment Number设置为y+1，向服务器发送ACK报文段，这个报文段发送完毕以后，客户端和服务器端都进入ESTABLISHED状态，完成TCP三次握手。</p>
 <p>为什么要三次握手：<br>在谢希仁的《计算机网络》中是这样说的：</p>

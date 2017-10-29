@@ -78,7 +78,7 @@
 <link href="/css/main.css?v=5.1.2" rel="stylesheet" type="text/css" />
 
 
-  <meta name="keywords" content="PHP," />
+  <meta name="keywords" content="数据库," />
 
 
 
@@ -94,21 +94,18 @@
 
 
 
-<meta name="description" content="PHP代码的编译以及垃圾回收机制">
-<meta name="keywords" content="PHP">
+<meta name="description" content="悲观锁 &amp;amp; 乐观锁">
+<meta name="keywords" content="数据库">
 <meta property="og:type" content="article">
-<meta property="og:title" content="PHP代码的编译以及垃圾回收机制">
-<meta property="og:url" content="http://yoursite.com/2017/09/15/PHP代码的编译以及垃圾回收机制/index.html">
+<meta property="og:title" content="悲观锁 &amp; 乐观锁">
+<meta property="og:url" content="http://yoursite.com/2017/10/02/悲观锁 & 乐观锁/index.html">
 <meta property="og:site_name" content="Jeff的干货基地">
-<meta property="og:description" content="PHP代码的编译以及垃圾回收机制">
+<meta property="og:description" content="悲观锁 &amp;amp; 乐观锁">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:image" content="https://github.com/pangudashu/php7-internal/raw/master/img/zend_compile2.png">
-<meta property="og:image" content="https://github.com/pangudashu/php7-internal/raw/master/img/zend_compile_process.png">
-<meta property="og:updated_time" content="2017-10-05T06:20:48.758Z">
+<meta property="og:updated_time" content="2017-10-29T15:34:38.194Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="PHP代码的编译以及垃圾回收机制">
-<meta name="twitter:description" content="PHP代码的编译以及垃圾回收机制">
-<meta name="twitter:image" content="https://github.com/pangudashu/php7-internal/raw/master/img/zend_compile2.png">
+<meta name="twitter:title" content="悲观锁 &amp; 乐观锁">
+<meta name="twitter:description" content="悲观锁 &amp;amp; 乐观锁">
 
 
 
@@ -137,13 +134,13 @@
 
 
 
-  <link rel="canonical" href="http://yoursite.com/2017/09/15/PHP代码的编译以及垃圾回收机制/"/>
+  <link rel="canonical" href="http://yoursite.com/2017/10/02/悲观锁 & 乐观锁/"/>
 
 
 
 
 
-  <title>PHP代码的编译以及垃圾回收机制 | Jeff的干货基地</title>
+  <title>悲观锁 & 乐观锁 | Jeff的干货基地</title>
   
 
 
@@ -270,7 +267,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/09/15/PHP代码的编译以及垃圾回收机制/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/10/02/悲观锁 & 乐观锁/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Jeff Tan">
@@ -287,7 +284,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">PHP代码的编译以及垃圾回收机制</h1>
+          <h1 class="post-title" itemprop="name headline">悲观锁 & 乐观锁</h1>
         
 
         <div class="post-meta">
@@ -299,8 +296,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-09-15T19:17:09+08:00">
-                2017-09-15
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-10-02T01:20:18+08:00">
+                2017-10-02
               </time>
             
 
@@ -322,8 +319,8 @@
               
               
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/PHP/" itemprop="url" rel="index">
-                    <span itemprop="name">PHP</span>
+                  <a href="/categories/数据库/" itemprop="url" rel="index">
+                    <span itemprop="name">数据库</span>
                   </a>
                 </span>
 
@@ -359,31 +356,22 @@
       
 
       
-        <p>PHP代码的编译以及垃圾回收机制<br><a id="more"></a></p>
-<h3 id="PHP代码的编译"><a href="#PHP代码的编译" class="headerlink" title="PHP代码的编译"></a>PHP代码的编译</h3><p>PHP的解析过程任务，就是将PHP代码转化为opcode数组，代码里所有信息都保存在opcode中，然后将opcode数组交给zend引擎执行</p>
-<p>PHP代码-&gt;opcode数组：PHP编译过程包括词法分析、语法分析，使用re2c、bison完成，旧的PHP版本直接生成了opcode，PHP7新增了抽象语法树（AST），在语法分析阶段生成AST，然后再生成opcode数组。</p>
-<p><img src="https://github.com/pangudashu/php7-internal/raw/master/img/zend_compile2.png" alt="image"></p>
-<p>PHP编译阶段的基本过程：</p>
-<p><img src="https://github.com/pangudashu/php7-internal/raw/master/img/zend_compile_process.png" alt="image"></p>
-<h3 id="PHP垃圾回收机制"><a href="#PHP垃圾回收机制" class="headerlink" title="PHP垃圾回收机制"></a>PHP垃圾回收机制</h3><p>对变量的内存管理，PHP使用了引用计数机制，当变量赋值、传递时并不会直接硬拷贝，而是增加了value的引用数，unset、return等释放变量时再减掉引用数，减掉后如果发现refcount为0则直接释放value，这是变量的基本gc过程。</p>
-<p>但是有一种情况是这个机制无法解决的，就是循环引用。</p>
-<p>简单的描述就是变量的内部成员引用了变量自身，比如数组中的某个元素指向了数组，这样数组的引用计数中就有一个来自自身成员，试图释放数组时因为其refcount仍然大于0而得不到释放，而实际上已经没有任何外部引用了，这种变量不可能再被使用，所以PHP引入了另外一个机制用来处理变量循环引用的问题。</p>
-<p>下面是一个数组循环引用的例子：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">$a = [1];</div><div class="line">$a[] = &amp;$a;</div><div class="line"></div><div class="line">unset($a);</div></pre></td></tr></table></figure>
-<p>如果一个变量value的refcount减少到0， 那么此value可以被释放掉，不属于垃圾；<br>如果一个变量value的refcount减少之后大于0，那么此zval还不能被释放，此zval可能成为一个垃圾；</p>
-<p>目前垃圾只会出现在array、object两种类型中，数组的情况上面已经介绍了，object的情况则是成员属性引用对象本身导致的，其它类型不会出现这种变量中的成员引用变量自身的情况，所以垃圾回收只会处理这两种类型的变量。</p>
-<h4 id="回收过程"><a href="#回收过程" class="headerlink" title="回收过程"></a>回收过程</h4><p>1、当变量的refcount减少后仍然大于0，PHP会将该变量放入一个buffer中，等这个buffer满了以后(10000个值)再统一进行处理。</p>
-<p>2、等到该buffer满了以后则启动垃圾检查过程，在该buffer中，对当前变量的所有成员进行深度遍历，然后把成员的refcount减1，最后再检查当前变量的引用，如果减为了0则为垃圾。</p>
-<p>垃圾是由于成员引用自身导致的，那么就对所有的成员减一遍引用，结果如果发现变量本身refcount变为了0则就表明其引用全部来自自身成员。</p>
-<p>具体的过程如下：</p>
-<p>(1) 从buffer链表的roots开始遍历，把当前value标为灰色(zend_refcounted_h.gc_info置为GC_GREY)，然后对当前value的成员进行深度优先遍历，把成员value的refcount减1，并且也标为灰色；</p>
-<p>(2) 重复遍历buffer链表，检查当前value引用是否为0，为0则表示确实是垃圾，把它标为白色(GC_WHITE)，如果不为0则排除了引用全部来自自身成员的可能，表示还有外部的引用，并不是垃圾，这时候因为步骤(1)对成员进行了refcount减1操作，需要再还原回去，对所有成员进行深度遍历，把成员refcount加1，同时标为黑色；</p>
-<p>(3) 再次遍历buffer链表，将非GC_WHITE的节点从roots链表中删除，最终roots链表中全部为真正的垃圾，最后将这些垃圾清除。</p>
-<p>参考：</p>
-<ul>
-<li>PHP代码的编译：<a href="https://github.com/pangudashu/php7-internal/blob/master/3/zend_compile.md" target="_blank" rel="external">https://github.com/pangudashu/php7-internal/blob/master/3/zend_compile.md</a></li>
-<li>PHP垃圾回收：<a href="https://github.com/pangudashu/php7-internal/blob/master/5/gc.md" target="_blank" rel="external">https://github.com/pangudashu/php7-internal/blob/master/5/gc.md</a></li>
-</ul>
+        <p>悲观锁 &amp; 乐观锁<br><a id="more"></a></p>
+<h3 id="悲观锁"><a href="#悲观锁" class="headerlink" title="悲观锁"></a>悲观锁</h3><p>在关系数据库管理系统里，悲观并发控制（又名“悲观锁”，Pessimistic Concurrency Control，缩写“PCC”）是一种并发控制的方法。如果一个事务执行的操作的某行数据应用了锁，那只有当这个事务把锁释放，其他事务才能够执行与该锁冲突的操作。悲观并发控制主要用于数据争用激烈的环境，以及发生并发冲突时使用锁保护数据的成本要低于回滚事务的成本的环境中。</p>
+<p>悲观锁的实现，往往依靠数据库提供的锁机制 （也只有数据库层提供的锁机制才能真正保证数据访问的排他性，否则，即使在本系统中实现了加锁机制，也无法保证外部系统不会修改数据）</p>
+<p>在数据库中，悲观锁的流程如下：<br>1、在对任意记录进行修改前，先尝试为该记录加上排他锁<br>2、加锁失败，说明该记录正在被修改，当前查询应该等待或抛出异常<br>3、加锁成功，就可以对记录进行修改，事务完成后就会解锁</p>
+<p>MySQL InnoDB中使用悲观锁<br>1、关闭MySQL自动提交属性，当你执行一个更新操作后，MySQL会立刻将结果进行提交<br>2、使用select…for update开启排他锁的方式实现了悲观锁</p>
+<p>使用场景<br>冲突频率高（写操作比较多的情况下），重试代价大，适合采用悲观锁</p>
+<p>优点<br>在并发情况下，保证了数据不丢失</p>
+<p>缺点<br>加锁会给数据库带来额外的开销，增加了出现死锁的可能性，也降低了并行性</p>
+<h3 id="乐观锁"><a href="#乐观锁" class="headerlink" title="乐观锁"></a>乐观锁</h3><p>乐观锁（ Optimistic Locking ） 相对悲观锁而言，乐观锁假设认为数据一般情况下不会造成冲突，所以在数据进行提交更新的时候，才会正式对数据的冲突与否进行检测，如果发现冲突了，则让返回用户错误的信息，让用户决定如何去做。</p>
+<p>相对于悲观锁，在对数据库进行处理的时候，乐观锁并不会使用数据库提供的锁机制。一般的实现乐观锁的方式就是记录数据版本。</p>
+<p>数据版本,为数据增加的一个版本标识。当读取数据时，将版本标识的值一同读出，数据每更新一次，同时对版本标识进行更新。当我们提交更新的时候，判断数据库表对应记录的当前版本信息与第一次取出来的版本标识进行比对，如果数据库表当前版本号与第一次取出来的版本标识值相等，则予以更新，否则认为是过期数据。</p>
+<p>实现数据版本有两种方式，第一种是使用版本号，第二种是使用时间戳。</p>
+<p>假设使用版本号来实现乐观锁，可以在数据初始化时指定一个版本号，每次对数据的更新操作都对版本号执行+1操作。并判断当前版本号是不是该数据的最新的版本号。</p>
+<p>使用场景<br>冲突比较少（主要是读操作）</p>
+<p>优点<br>省去大量锁的开销，不会产生死锁</p>
+<p>缺点<br>冲突比较多时，需要多次重试才能成功</p>
 
       
     </div>
@@ -401,7 +389,7 @@
       
         <div class="post-tags">
           
-            <a href="/tags/PHP/" rel="tag"># PHP</a>
+            <a href="/tags/数据库/" rel="tag"># 数据库</a>
           
         </div>
       
@@ -414,8 +402,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2017/09/12/捣鼓ubuntu下PHP7.1下安装sqlserver拓展/" rel="next" title="记录捣鼓ubuntu下PHP7.1下安装sqlserver拓展">
-                <i class="fa fa-chevron-left"></i> 记录捣鼓ubuntu下PHP7.1下安装sqlserver拓展
+              <a href="/2017/09/30/分表分库设计/" rel="next" title="分表分库设计">
+                <i class="fa fa-chevron-left"></i> 分表分库设计
               </a>
             
           </div>
@@ -424,8 +412,8 @@
 
           <div class="post-nav-prev post-nav-item">
             
-              <a href="/2017/09/20/MySQL锁机制/" rel="prev" title="MySQL锁机制">
-                MySQL锁机制 <i class="fa fa-chevron-right"></i>
+              <a href="/2017/10/03/MySQL索引介绍/" rel="prev" title="MySQL索引介绍">
+                MySQL索引介绍 <i class="fa fa-chevron-right"></i>
               </a>
             
           </div>
@@ -560,7 +548,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#PHP代码的编译"><span class="nav-number">1.</span> <span class="nav-text">PHP代码的编译</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#PHP垃圾回收机制"><span class="nav-number">2.</span> <span class="nav-text">PHP垃圾回收机制</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#回收过程"><span class="nav-number">2.1.</span> <span class="nav-text">回收过程</span></a></li></ol></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#悲观锁"><span class="nav-number">1.</span> <span class="nav-text">悲观锁</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#乐观锁"><span class="nav-number">2.</span> <span class="nav-text">乐观锁</span></a></li></ol></div>
             
 
           </div>

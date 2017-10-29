@@ -103,7 +103,7 @@
 <meta property="og:description" content="B树和B+树的区别">
 <meta property="og:locale" content="zh-Hans">
 <meta property="og:image" content="http://7xr23j.com1.z0.glb.clouddn.com/B%E6%A0%91%E5%92%8CB+%E6%A0%91%E5%8C%BA%E5%88%AB.png">
-<meta property="og:updated_time" content="2017-10-29T13:00:21.103Z">
+<meta property="og:updated_time" content="2017-10-29T13:02:32.257Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="B树和B+树的区别">
 <meta name="twitter:description" content="B树和B+树的区别">
@@ -373,7 +373,7 @@
 <h4 id="为什么B-树比B树更加适合作为索引？"><a href="#为什么B-树比B树更加适合作为索引？" class="headerlink" title="为什么B+树比B树更加适合作为索引？"></a>为什么B+树比B树更加适合作为索引？</h4><ul>
 <li>B+树的内部结点能够存放更多的索引项，一次能够查找的关键字会更多，减少了I/O操作</li>
 <li>增删文件（结点）时，效率更高，因为B树的叶子结点包含了所有关键字，并以有序的链表结构存储，这样可很好提高增删效率</li>
-<li>查找效率更稳定，每次查询过程中，需要遍历从根结点到叶子结点的某条路径</li>
+<li>查找效率更稳定，每次查询过程中，需要遍历从根结点到叶子结点的某条路径，而路径的长度是相同的，因此每次查询的效率相当</li>
 </ul>
 
       

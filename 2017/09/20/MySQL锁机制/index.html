@@ -102,7 +102,7 @@
 <meta property="og:site_name" content="Jeff的干货基地">
 <meta property="og:description" content="MySQL锁机制">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2017-10-05T06:22:09.893Z">
+<meta property="og:updated_time" content="2017-10-29T06:02:24.824Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="MySQL锁机制">
 <meta name="twitter:description" content="MySQL锁机制">
@@ -369,7 +369,11 @@
       
         <p>MySQL锁机制<br><a id="more"></a></p>
 <p>锁是计算机协调多个进程或线程并发访问某一资源的机制。</p>
-<p>一、MySQL 锁概述<br>MySQL 两种锁特性归纳 ：<br> -表级锁：开销小，加锁快；不会出现死锁；锁定粒度大，发生锁冲突的概率最高，并发度最低。<br> -行级锁：开销大，加锁慢；会出现死锁；锁定粒度小，发生锁冲突的概率最低，并发度也最高。</p>
+<p>一、MySQL 锁概述<br>MySQL 两种锁特性归纳 ：</p>
+<ul>
+<li>表级锁：开销小，加锁快；不会出现死锁；锁定粒度大，发生锁冲突的概率最高，并发度最低。</li>
+<li>行级锁：开销大，加锁慢；会出现死锁；锁定粒度小，发生锁冲突的概率最低，并发度也最高。</li>
+</ul>
 <p>MyISAM和Memory存储引擎采用的是表级锁；<br>InnoDB存储引擎既支持行级锁，也支持表级锁，但默认情况下采用行级锁。</p>
 <p>表级锁更适合于以查询为主，只有少量按索引条件更新数据的应用，如 web 应用；<br>而行级锁则更适合于有大量按索引条件并发更新少量不同数据，同时又有并发查询的应用。</p>
 <p>二、 MyISAM 表锁<br>1、MySQL 的表级锁有两种模式，表共享读锁(table read lock)和表独占写锁（table write lock）。<br>对MyISAM表的读操作，不会阻塞其他用户对同一表的读请求，但会阻塞对同一表的写请求；对MyISAM表的写操作，则会阻塞其他用户对同一表的读和写操作；MyISAM表的读操作和写操作之间，以及写操作之间是串行的。</p>

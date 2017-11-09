@@ -102,7 +102,7 @@
 <meta property="og:site_name" content="Jeff的干货基地">
 <meta property="og:description" content="MySQL常用数据存储引擎区别">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2017-07-19T15:27:19.266Z">
+<meta property="og:updated_time" content="2017-11-07T17:00:35.506Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="MySQL常用数据存储引擎区别">
 <meta name="twitter:description" content="MySQL常用数据存储引擎区别">
@@ -380,8 +380,8 @@
 <tbody>
 <tr>
 <td>存储结构</td>
-<td>.frm文件存储表定义；·MYD (MYData)文件存储表的数据；.MYI (MYIndex)文件存储表的索引。</td>
-<td>所有的表都保存在同一个数据文件中（也可能是多个文件，或者是独立的表空间文件），InnoDB表的大小只受限于操作系统文件的大小，一般为2GB</td>
+<td>.frm文件存储表结构定义信息；·MYD (MYData)文件存储表的数据；.MYI (MYIndex)文件存储表的索引，每一个表都被存放为上述三种物理文件</td>
+<td>.frm文件还是存储表结构定义信息，但表数据和索引是存放在一起的；允许每张表单独使用独享表空间存放或所有表一起使用共享表空间存放</td>
 </tr>
 <tr>
 <td>存储空间</td>
@@ -573,7 +573,7 @@
           
             <div class="site-state-item site-state-posts">
               <a href="/archives/">
-                <span class="site-state-item-count">40</span>
+                <span class="site-state-item-count">43</span>
                 <span class="site-state-item-name">日志</span>
               </a>
             </div>

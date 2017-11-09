@@ -106,7 +106,7 @@
 <meta property="og:image" content="http://7xr23j.com1.z0.glb.clouddn.com/%E3%80%90CGI%E3%80%81FastCGI%E3%80%81PHP-CGI%E3%80%81PHP-FPM%E3%80%91cgi.png">
 <meta property="og:image" content="http://7xr23j.com1.z0.glb.clouddn.com/%E3%80%90CGI%E3%80%81FastCGI%E3%80%81PHP-CGI%E3%80%81PHP-FPM%E3%80%91fastcgi.png">
 <meta property="og:image" content="http://7xr23j.com1.z0.glb.clouddn.com/%E3%80%90CGI%E3%80%81FastCGI%E3%80%81PHP-CGI%E3%80%81PHP-FPM%E3%80%91update.png">
-<meta property="og:updated_time" content="2017-11-09T12:30:21.321Z">
+<meta property="og:updated_time" content="2017-11-09T12:37:23.921Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="CGI、FastCGI、PHP-CGI、PHP-FPM介绍">
 <meta name="twitter:description" content="CGI、FastCGI、PHP-CGI、PHP-FPM介绍">
@@ -381,7 +381,7 @@
 <h2 id="PHP-CGI"><a href="#PHP-CGI" class="headerlink" title="PHP-CGI"></a>PHP-CGI</h2><p>PHP-CGI：是 PHP （Web Application）对 Web Server 提供的 CGI 协议的接口程序。因为PHP-CGI只是个CGI程序，他自己本身只能解析请求，返回结果，不会进程管理。<br>缺点：</p>
 <ol>
 <li>php-cgi变更php.ini配置后需重启php-cgi才能让新的php-ini生效，不可以平滑重启。</li>
-<li>直接杀死php-cgi进程，php就不能运行了。(PHP-FPM和Spawn-FCGI就没有这个问题，守护进程会平滑从新生成新的子进程。）</li>
+<li>直接杀死php-cgi进程，php就不能运行了。(PHP-FPM和Spawn-FCGI就没有这个问题，守护进程会平滑地重新生成新的子进程。）</li>
 </ol>
 <h2 id="PHP-FPM"><a href="#PHP-FPM" class="headerlink" title="PHP-FPM"></a>PHP-FPM</h2><p>PHP-FPM：是 PHP（Web Application）对 Web Server 提供的 FastCGI 协议的接口程序，额外还提供了相对智能一些任务管理。（FastCGI 的进程管理器，PHP-FPM也是用于调度管理PHP解析器php-cgi的管理程序）PHP-FPM通过生成新的子进程可以实现php.ini修改后的平滑重启。</p>
 <h2 id="从两个层面讨论"><a href="#从两个层面讨论" class="headerlink" title="从两个层面讨论"></a>从两个层面讨论</h2><h4 id="1-PHP-解释器是否嵌入-Web-服务器进程内部执行"><a href="#1-PHP-解释器是否嵌入-Web-服务器进程内部执行" class="headerlink" title="1. PHP 解释器是否嵌入 Web 服务器进程内部执行"></a>1. PHP 解释器是否嵌入 Web 服务器进程内部执行</h4><p>mod_php 通过嵌入 PHP 解释器到 Apache 进程中，只能与 Apache 配合使用，而 cgi 和 fast-cgi 以独立的进程的形式出现，只要对应的Ｗeb服务器实现 cgi 或者 fast-cgi 协议，就能够处理 PHP 请求。</p>

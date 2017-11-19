@@ -102,7 +102,7 @@
 <meta property="og:site_name" content="Jeff的干货基地">
 <meta property="og:description" content="Redis持久化">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2017-11-19T12:04:30.343Z">
+<meta property="og:updated_time" content="2017-11-19T15:50:11.070Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="【Redis】持久化">
 <meta name="twitter:description" content="Redis持久化">
@@ -366,7 +366,13 @@
 <li>当子进程写入完所有数据后，会用该临时文件替换旧的RDB文件，至此一次快照操作完成</li>
 </ol>
 <p>在执行fork函数的时候，操作系统（类Unix操作系统）会使用写时复制的策略，即在fork函数执行的一刻，父、子进程共享同一内存数据，当父进程要更改其中某片数据时（如执行一个写命令），操作系统会将该片数据复制一份，以确保子进程的数据不受影响，所以新的RDB文件存储的是执行fork一刻的内存数据</p>
-<h3 id="AOF方式"><a href="#AOF方式" class="headerlink" title="AOF方式"></a>AOF方式</h3>
+<p>RDB文件是经过压缩的二进制格式，所占用的空间会小于内存中的数据大小</p>
+<p>对于缓存数据的持久化，可以使用RDB方式，因为丢失最近几秒的数据或者丢失最近更新的几十个键并不会有太大的影响</p>
+<h3 id="AOF方式"><a href="#AOF方式" class="headerlink" title="AOF方式"></a>AOF方式</h3><p>AOF方式的持久化是将Redis执行的每一条写命令，追加到硬盘中的AOF文件</p>
+<p>AOF文件的内容正是Redis客户端向Redis发送的原始通信协议</p>
+<p>对于非临时数据的持久化，一般会使用AOF方式，因为AOF方式的持久化可能丢失的数据更少</p>
+<p>参考：《Redis入门指南 第2版》</p>
+
       
     </div>
     

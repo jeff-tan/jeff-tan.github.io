@@ -78,7 +78,7 @@
 <link href="/css/main.css?v=5.1.2" rel="stylesheet" type="text/css" />
 
 
-  <meta name="keywords" content="Hexo, NexT" />
+  <meta name="keywords" content="Redis," />
 
 
 
@@ -94,16 +94,18 @@
 
 
 
-<meta name="description" content="念念不忘 必有回响">
-<meta property="og:type" content="website">
-<meta property="og:title" content="Jeff的干货基地">
-<meta property="og:url" content="http://yoursite.com/categories/LNMP/Nginx/index.html">
+<meta name="description" content="Redis持久化">
+<meta name="keywords" content="Redis">
+<meta property="og:type" content="article">
+<meta property="og:title" content="【Redis】持久化">
+<meta property="og:url" content="http://yoursite.com/2017/08/10/【Redis】持久化/index.html">
 <meta property="og:site_name" content="Jeff的干货基地">
-<meta property="og:description" content="念念不忘 必有回响">
+<meta property="og:description" content="Redis持久化">
 <meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2017-11-19T12:04:30.343Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Jeff的干货基地">
-<meta name="twitter:description" content="念念不忘 必有回响">
+<meta name="twitter:title" content="【Redis】持久化">
+<meta name="twitter:description" content="Redis持久化">
 
 
 
@@ -132,13 +134,13 @@
 
 
 
-  <link rel="canonical" href="http://yoursite.com/categories/LNMP/Nginx/"/>
+  <link rel="canonical" href="http://yoursite.com/2017/08/10/【Redis】持久化/"/>
 
 
 
 
 
-  <title>分类: Nginx | Jeff的干货基地</title>
+  <title>【Redis】持久化 | Jeff的干货基地</title>
   
 
 
@@ -157,7 +159,7 @@
     
   
 
-  <div class="container sidebar-position-left  ">
+  <div class="container sidebar-position-left page-post-detail ">
     <div class="headband"></div>
 
     <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
@@ -251,55 +253,182 @@
           <div id="content" class="content">
             
 
-  
-  
-  
-  <div class="post-block category">
+  <div id="posts" class="posts-expand">
+    
 
-    <div id="posts" class="posts-collapse">
-      <div class="collection-title">
-        <h1>Nginx<small>分类</small>
-        </h1>
-      </div>
+  
 
-      
-        
+  
+  
+  
 
   <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/08/10/【Redis】持久化/">
 
-      <h2 class="post-title">
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Jeff Tan">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/headimg.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Jeff的干货基地">
+    </span>
+
+    
+      <header class="post-header">
+
         
-            <a class="post-title-link" href="/2016/09/06/分享LNMP1.3下Thinkphp的Nginx配置/" itemprop="url">
-              
-                <span itemprop="name">分享LNMP1.3下Thinkphp的Nginx配置</span>
-              
-            </a>
         
-      </h2>
+          <h1 class="post-title" itemprop="name headline">【Redis】持久化</h1>
+        
 
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated"
-              datetime="2016-09-06T21:14:25+08:00"
-              content="2016-09-06" >
-          09-06
-        </time>
-      </div>
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-08-10T18:30:45+08:00">
+                2017-08-10
+              </time>
+            
 
-    </header>
-  </article>
+            
 
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Redis/" itemprop="url" rel="index">
+                    <span itemprop="name">Redis</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
 
       
-    </div>
+      
 
+      
+        <p>Redis持久化<br><a id="more"></a></p>
+<h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><p>我们希望Redis能够将数据从内存中以某种形式同步到硬盘中，使得重启后可以根据硬盘中的记录恢复数据，这一过程就是持久化。</p>
+<p>Redis支持两种方式的持久化，一种是RDB方式，另一种是AOF方式，前者会根据指定规则将内存中的数据储存在硬盘上，而后者在每次执行命令后将命本身记录下来。两种持久化方式可以单独使用其中一种，但更多情况下是将两者结合使用。</p>
+<h3 id="RDB方式"><a href="#RDB方式" class="headerlink" title="RDB方式"></a>RDB方式</h3><p>RDB方式的持久化是通过快照完成的，当满足一定条件时，Redis会自动将内存中的所有数据生成一份副本并储存在硬盘上，这个过程称为“快照”</p>
+<h4 id="原理"><a href="#原理" class="headerlink" title="原理"></a>原理</h4><ol>
+<li>Redis使用fork函数复制一份当前进程（父进程）的副本（子进程）</li>
+<li>父进程继续接受并处理客户端发来的命令，子进程开始将内存中的数据写入硬盘中的临时文件</li>
+<li>当子进程写入完所有数据后，会用该临时文件替换旧的RDB文件，至此一次快照操作完成</li>
+</ol>
+<p>在执行fork函数的时候，操作系统（类Unix操作系统）会使用写时复制的策略，即在fork函数执行的一刻，父、子进程共享同一内存数据，当父进程要更改其中某片数据时（如执行一个写命令），操作系统会将该片数据复制一份，以确保子进程的数据不受影响，所以新的RDB文件存储的是执行fork一刻的内存数据</p>
+<h3 id="AOF方式"><a href="#AOF方式" class="headerlink" title="AOF方式"></a>AOF方式</h3>
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Redis/" rel="tag"># Redis</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/08/05/Laravel中路由分割以及隐式路由/" rel="next" title="Laravel中路由分割以及隐式路由">
+                <i class="fa fa-chevron-left"></i> Laravel中路由分割以及隐式路由
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2017/08/25/【设计模式】单例模式/" rel="prev" title="【设计模式】单例模式">
+                【设计模式】单例模式 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
   </div>
   
   
   
+  </article>
 
-  
 
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
 
 
           </div>
@@ -307,6 +436,10 @@
 
 
           
+  <div class="comments" id="comments">
+    
+  </div>
+
 
         </div>
         
@@ -327,8 +460,17 @@
       
 
       
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
 
-      <section class="site-overview sidebar-panel sidebar-panel-active">
+      <section class="site-overview sidebar-panel">
         <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
           <img class="site-author-image" itemprop="image"
                src="/images/headimg.png"
@@ -390,6 +532,22 @@
 
       </section>
 
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#概述"><span class="nav-number">1.</span> <span class="nav-text">概述</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#RDB方式"><span class="nav-number">1.1.</span> <span class="nav-text">RDB方式</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#原理"><span class="nav-number">1.1.1.</span> <span class="nav-text">原理</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#AOF方式"><span class="nav-number">1.2.</span> <span class="nav-text">AOF方式</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
       
 
       
@@ -513,10 +671,10 @@
   
 
   
-    <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.2"></script>
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.2"></script>
 <script type="text/javascript" src="/js/src/post-details.js?v=5.1.2"></script>
 
-  
+
 
   
 

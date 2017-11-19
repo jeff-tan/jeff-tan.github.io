@@ -104,7 +104,7 @@
 <meta property="og:locale" content="zh-Hans">
 <meta property="og:image" content="https://github.com/pangudashu/php7-internal/raw/master/img/zend_compile2.png">
 <meta property="og:image" content="https://github.com/pangudashu/php7-internal/raw/master/img/zend_compile_process.png">
-<meta property="og:updated_time" content="2017-10-05T06:20:48.758Z">
+<meta property="og:updated_time" content="2017-11-18T12:30:08.700Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="PHP代码的编译以及垃圾回收机制">
 <meta name="twitter:description" content="PHP代码的编译以及垃圾回收机制">
@@ -370,7 +370,7 @@
 <p>简单的描述就是变量的内部成员引用了变量自身，比如数组中的某个元素指向了数组，这样数组的引用计数中就有一个来自自身成员，试图释放数组时因为其refcount仍然大于0而得不到释放，而实际上已经没有任何外部引用了，这种变量不可能再被使用，所以PHP引入了另外一个机制用来处理变量循环引用的问题。</p>
 <p>下面是一个数组循环引用的例子：</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">$a = [1];</div><div class="line">$a[] = &amp;$a;</div><div class="line"></div><div class="line">unset($a);</div></pre></td></tr></table></figure>
-<p>如果一个变量value的refcount减少到0， 那么此value可以被释放掉，不属于垃圾；<br>如果一个变量value的refcount减少之后大于0，那么此zval还不能被释放，此zval可能成为一个垃圾；</p>
+<p>如果一个变量value的refcount减少到0， 那么此value可以被释放掉，不属于垃圾；<br>如果一个变量value的refcount减少之后大于0，那么此value还不能被释放，此value可能成为一个垃圾；</p>
 <p>目前垃圾只会出现在array、object两种类型中，数组的情况上面已经介绍了，object的情况则是成员属性引用对象本身导致的，其它类型不会出现这种变量中的成员引用变量自身的情况，所以垃圾回收只会处理这两种类型的变量。</p>
 <h4 id="回收过程"><a href="#回收过程" class="headerlink" title="回收过程"></a>回收过程</h4><p>1、当变量的refcount减少后仍然大于0，PHP会将该变量放入一个buffer中，等这个buffer满了以后(10000个值)再统一进行处理。</p>
 <p>2、等到该buffer满了以后则启动垃圾检查过程，在该buffer中，对当前变量的所有成员进行深度遍历，然后把成员的refcount减1，最后再检查当前变量的引用，如果减为了0则为垃圾。</p>
@@ -503,7 +503,7 @@
           
             <div class="site-state-item site-state-posts">
               <a href="/archives/">
-                <span class="site-state-item-count">43</span>
+                <span class="site-state-item-count">45</span>
                 <span class="site-state-item-name">日志</span>
               </a>
             </div>

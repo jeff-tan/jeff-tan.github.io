@@ -78,7 +78,7 @@
 <link href="/css/main.css?v=5.1.2" rel="stylesheet" type="text/css" />
 
 
-  <meta name="keywords" content="Laravel," />
+  <meta name="keywords" content="数据库," />
 
 
 
@@ -94,18 +94,18 @@
 
 
 
-<meta name="description" content="Laravel中Facades浅析">
-<meta name="keywords" content="Laravel">
+<meta name="description" content="事物隔离级别介绍">
+<meta name="keywords" content="数据库">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Laravel中Facades浅析">
-<meta property="og:url" content="http://yoursite.com/2017/07/23/Laravel中Facades浅析/index.html">
+<meta property="og:title" content="事务隔离级别介绍">
+<meta property="og:url" content="http://yoursite.com/2017/07/12/数据库隔离级别介绍/index.html">
 <meta property="og:site_name" content="Jeff的干货基地">
-<meta property="og:description" content="Laravel中Facades浅析">
+<meta property="og:description" content="事物隔离级别介绍">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2017-07-23T05:56:18.119Z">
+<meta property="og:updated_time" content="2017-11-19T12:05:09.346Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Laravel中Facades浅析">
-<meta name="twitter:description" content="Laravel中Facades浅析">
+<meta name="twitter:title" content="事务隔离级别介绍">
+<meta name="twitter:description" content="事物隔离级别介绍">
 
 
 
@@ -134,13 +134,13 @@
 
 
 
-  <link rel="canonical" href="http://yoursite.com/2017/07/23/Laravel中Facades浅析/"/>
+  <link rel="canonical" href="http://yoursite.com/2017/07/12/数据库隔离级别介绍/"/>
 
 
 
 
 
-  <title>Laravel中Facades浅析 | Jeff的干货基地</title>
+  <title>事务隔离级别介绍 | Jeff的干货基地</title>
   
 
 
@@ -267,7 +267,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/07/23/Laravel中Facades浅析/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/07/12/数据库隔离级别介绍/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Jeff Tan">
@@ -284,7 +284,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">Laravel中Facades浅析</h1>
+          <h1 class="post-title" itemprop="name headline">事务隔离级别介绍</h1>
         
 
         <div class="post-meta">
@@ -296,8 +296,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-07-23T13:56:15+08:00">
-                2017-07-23
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-07-12T18:30:45+08:00">
+                2017-07-12
               </time>
             
 
@@ -319,8 +319,8 @@
               
               
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Laravel/" itemprop="url" rel="index">
-                    <span itemprop="name">Laravel</span>
+                  <a href="/categories/数据库/" itemprop="url" rel="index">
+                    <span itemprop="name">数据库</span>
                   </a>
                 </span>
 
@@ -356,20 +356,21 @@
       
 
       
-        <p>Laravel中Facades浅析<br><a id="more"></a></p>
-<h2 id="Facades"><a href="#Facades" class="headerlink" title="Facades"></a>Facades</h2><h3 id="原理"><a href="#原理" class="headerlink" title="原理"></a>原理</h3><p>在 Laravel 应用程序环境（Context）中，Facades是个提供从容器访问对象的类。简单来说，Facades是通过__callStatic() 魔术方法，将静态方法映射到真正的方法上的。</p>
-<h3 id="举例"><a href="#举例" class="headerlink" title="举例"></a>举例</h3><p>这里通过Route门面来举例</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">Route::post(&apos;/material/class/create&apos;, &apos;ClassController@create&apos;);</div></pre></td></tr></table></figure>
-<p>我们查看Route所映射到的Illuminate\Support\Facades\Route类，发现没有静态方法post，只有一个getFacadeAccessor()方法，而所继承的父类Facade也没有post方法。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div></pre></td><td class="code"><pre><div class="line">&lt;?php</div><div class="line"></div><div class="line">namespace Illuminate\Support\Facades;</div><div class="line"></div><div class="line">/**</div><div class="line"> * @see \Illuminate\Routing\Router</div><div class="line"> */</div><div class="line">class Route extends Facade</div><div class="line">&#123;</div><div class="line">    /**</div><div class="line">     * Get the registered name of the component.</div><div class="line">     *</div><div class="line">     * @return string</div><div class="line">     */</div><div class="line">    protected static function getFacadeAccessor()</div><div class="line">    &#123;</div><div class="line">        return &apos;router&apos;;</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<p>但是可以发现父类实现了一个魔术方法__callStatic()</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div></pre></td><td class="code"><pre><div class="line">/**</div><div class="line"> * Handle dynamic, static calls to the object.</div><div class="line"> *</div><div class="line"> * @param  string  $method</div><div class="line"> * @param  array   $args</div><div class="line"> * @return mixed</div><div class="line"> */</div><div class="line">public static function __callStatic($method, $args)</div><div class="line">&#123;</div><div class="line">    $instance = static::getFacadeRoot();</div><div class="line"></div><div class="line">    if (! $instance) &#123;</div><div class="line">        throw new RuntimeException(&apos;A facade root has not been set.&apos;);</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    switch (count($args)) &#123;</div><div class="line">        case 0:</div><div class="line">            return $instance-&gt;$method();</div><div class="line">        case 1:</div><div class="line">            return $instance-&gt;$method($args[0]);</div><div class="line">        case 2:</div><div class="line">            return $instance-&gt;$method($args[0], $args[1]);</div><div class="line">        case 3:</div><div class="line">            return $instance-&gt;$method($args[0], $args[1], $args[2]);</div><div class="line">        case 4:</div><div class="line">            return $instance-&gt;$method($args[0], $args[1], $args[2], $args[3]);</div><div class="line">        default:</div><div class="line">            return call_user_func_array([$instance, $method], $args);</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<p>这个魔术方法通过static::getFacadeRoot()获取一个实例,然后调用实例的方法并传入参数</p>
-<p>我们再查看getFacadeRoot()方法<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">/**</div><div class="line"> * Get the root object behind the facade.</div><div class="line"> *</div><div class="line"> * @return mixed</div><div class="line"> */</div><div class="line">public static function getFacadeRoot()</div><div class="line">&#123;</div><div class="line">    return static::resolveFacadeInstance(static::getFacadeAccessor());</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
-<p>getFacadeAccessor()在这里对应是返回了”route”，追根溯源，再查看resolveFacadeInstance()方法</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div></pre></td><td class="code"><pre><div class="line">    /**</div><div class="line">     * Resolve the facade root instance from the container.</div><div class="line">     *</div><div class="line">     * @param  string|object  $name</div><div class="line">     * @return mixed</div><div class="line">     */</div><div class="line">protected static function resolveFacadeInstance($name)</div><div class="line">&#123;</div><div class="line">        if (is_object($name)) &#123;</div><div class="line">            return $name;</div><div class="line">        &#125;</div><div class="line"></div><div class="line">        if (isset(static::$resolvedInstance[$name])) &#123;</div><div class="line">            return static::$resolvedInstance[$name];</div><div class="line">        &#125;</div><div class="line"></div><div class="line">        return static::$resolvedInstance[$name] = static::$app[$name];</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<p>重点是：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">return static::$resolvedInstance[$name] = static::$app[$name];</div></pre></td></tr></table></figure></p>
-<p>在这里利用了app也就是服务容器创建了”router”，创建成功后放入resolvedInstance作为缓存，以便以后快速加载。<br>简单来说，就是返回了该$name的实例，在config/app.php中的provider可以看到关于route的服务提供者App\Providers\RouteServiceProvider::class，而RouteServiceProvider类依赖的是\Illuminate\Routing\Router，所有静态的方法实际上访问的都是这个类的方法。果然，我们能够在\Illuminate\Routing\Router中找到post方法。</p>
+        <p>事物隔离级别介绍<br><a id="more"></a></p>
+<h3 id="并发事务处理存在的问题"><a href="#并发事务处理存在的问题" class="headerlink" title="并发事务处理存在的问题"></a>并发事务处理存在的问题</h3><p>相对于串行处理来说，并发事务处理能力大大增加数据库资源的利用率，提高数据库系统事务吞吐量，从而可以支持更多的用户，但并发事务处理也会带来一些问题：</p>
+<p>更新丢失（lost update）<br>当两个或多个事务选择同一行，然后基于最初选定的值更新该行时，由于每个事务都不知道其他事务的存在，就会发生丢失更新问题，最后的更新覆盖了由其他事务所做的更新。</p>
+<p>脏读（dirty reads）<br>一个事务正在对一条记录做修改，但未提交事务；这时，另一个事务也来读取同一条记录，然后使用了这些数据。<br>e.g.<br>1.Mary的原工资为1000，财务人员把她的工资改为了8000（但未提交事务）<br>2.Mary读取自己的工资，发现自己的工资变为了8000<br>3.而财务发现操作有误，回滚了事务，Mary的工资又变为了1000，像这样Mary读取的工资数8000是一个脏数据</p>
+<p>不可重复读（non-repeatable reads）<br>一个事务在读取某些数据后的某个时间，再次读取以前读过的数据，却发现其读出的数据已经发生了改变或某些记录已经被删除了，这种现象就是“不可重复读”。<br>e.g.<br>1.在事务1中，Mary读取了自己的工资为1000，操作并没有完成<br>2.在事务2中，财务人员修改了Mary的工资为2000，并提交了事务<br>3.在事务1中，Mary再次读取自己的工资时，工资变为了2000</p>
+<p>幻读（phantom reads）<br>一个事务按相同的查询条件重新读取以前检索过的数据，却发现其他事务插入了满足其查询条件的新数据，这种现象称为“幻读”。<br>e.g.<br>目前工资为1000的员工有10人<br>1.在事务1，读取所有工资为1000的员工<br>2.这时事务2向员工表插入一条员工记录，工资也为1000<br>3.事务1再次读取所有工资为1000的员工，发现读取到了11条记录</p>
+<p>不可重复读的重点在update和delete，幻读的重点在insert</p>
+<h3 id="事务隔离级别"><a href="#事务隔离级别" class="headerlink" title="事务隔离级别"></a>事务隔离级别</h3><p>并发事务处理带来的问题中，“更新丢失”，通常是可以避免的，需要应用程序对要更新的数据加必要的锁来解决。<br>“脏读”，“不可重复读”和“幻读”， 其实都是数据库一致性问题，必须由数据库提供一定的事务隔离机制来解决。<br>数据库实现事务隔离的方式，基本可以分为两种：</p>
+<ul>
+<li>在读取数据前，对其加锁，阻止其他事务对数据进行修改</li>
+<li>不加任何锁，通过一定机制生成一个数据请求时间点的一致性数据快照，这种方式叫做数据多版本并发控制。</li>
+</ul>
+<p>数据库的事务隔离越严格，并发副作用越小，但付出的代价也就越大，因为事务隔离实质上就是使事务在一定程度上“串行化”进行，这显然与“并发”是矛盾的。为了解决“隔离”与“并发”的矛盾，ISO/ANSI SQL92 定义了 4 个事务隔离级别，MySQL 实现了这四种级别，应用可以根据自己的业务逻辑要求，选择合适的隔离级别来平衡“隔离”与“并发”的矛盾。</p>
+<p>1.未提交读（Read Uncommitted）<br>允许脏读，但不允许更新丢失。如果一个事务已经开始写数据，则另外一个事务则不允许同时进行写操作，但允许其他事务读此行数据。可以通过“排他锁”实现。<br>2.已提交读（Read Committed）<br>允许不可重读读取，但不允许脏读。读取数据的事务允许其他事务继续访问该行数据，但是未提交的写事务将会禁止其他事务访问该行。可以通过“瞬间共享锁”和“排他锁”实现。<br>3.可重复读取（Repeatable Read）<br>禁止脏读和不可重复读取，但可能会出现幻读。读取数据的事务将会禁止写事务（但允许读事务），写事务则禁止任何其他事务。可以通过“共享锁”和“排他锁”实现。<br>4.序列化（Serializable）<br>要求事务序列化执行，事务只能一个接着一个地执行，不能并发执行。仅仅通过“行级锁”是无法实现事务序列化的，必须通过其他机制保证新插入的数据不会被刚执行查询操作的事务访问到。</p>
+<p>在MySQL中，事务的默认隔离级别是可重复读（Repeatable Read）</p>
 
       
     </div>
@@ -387,7 +388,7 @@
       
         <div class="post-tags">
           
-            <a href="/tags/Laravel/" rel="tag"># Laravel</a>
+            <a href="/tags/数据库/" rel="tag"># 数据库</a>
           
         </div>
       
@@ -400,8 +401,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2017/07/19/MySQL常用数据存储引擎区别/" rel="next" title="MySQL常用数据存储引擎区别">
-                <i class="fa fa-chevron-left"></i> MySQL常用数据存储引擎区别
+              <a href="/2017/07/12/CGI、FastCGI、PHP-CGI、PHP-FPM介绍/" rel="next" title="CGI、FastCGI、PHP-CGI、PHP-FPM介绍">
+                <i class="fa fa-chevron-left"></i> CGI、FastCGI、PHP-CGI、PHP-FPM介绍
               </a>
             
           </div>
@@ -410,8 +411,8 @@
 
           <div class="post-nav-prev post-nav-item">
             
-              <a href="/2017/07/31/几个设计模式的原则/" rel="prev" title="几个设计模式的原则">
-                几个设计模式的原则 <i class="fa fa-chevron-right"></i>
+              <a href="/2017/07/19/MySQL常用数据存储引擎区别/" rel="prev" title="MySQL常用数据存储引擎区别">
+                MySQL常用数据存储引擎区别 <i class="fa fa-chevron-right"></i>
               </a>
             
           </div>
@@ -546,7 +547,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Facades"><span class="nav-number">1.</span> <span class="nav-text">Facades</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#原理"><span class="nav-number">1.1.</span> <span class="nav-text">原理</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#举例"><span class="nav-number">1.2.</span> <span class="nav-text">举例</span></a></li></ol></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#并发事务处理存在的问题"><span class="nav-number">1.</span> <span class="nav-text">并发事务处理存在的问题</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#事务隔离级别"><span class="nav-number">2.</span> <span class="nav-text">事务隔离级别</span></a></li></ol></div>
             
 
           </div>

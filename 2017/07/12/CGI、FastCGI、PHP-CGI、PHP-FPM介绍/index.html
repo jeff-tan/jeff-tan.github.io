@@ -104,9 +104,8 @@
 <meta property="og:locale" content="zh-Hans">
 <meta property="og:image" content="http://7xr23j.com1.z0.glb.clouddn.com/%E3%80%90CGI%E3%80%81FastCGI%E3%80%81PHP-CGI%E3%80%81PHP-FPM%E3%80%91html.png">
 <meta property="og:image" content="http://7xr23j.com1.z0.glb.clouddn.com/%E3%80%90CGI%E3%80%81FastCGI%E3%80%81PHP-CGI%E3%80%81PHP-FPM%E3%80%91cgi.png">
-<meta property="og:image" content="http://7xr23j.com1.z0.glb.clouddn.com/%E3%80%90CGI%E3%80%81FastCGI%E3%80%81PHP-CGI%E3%80%81PHP-FPM%E3%80%91fastcgi.png">
 <meta property="og:image" content="http://7xr23j.com1.z0.glb.clouddn.com/%E3%80%90CGI%E3%80%81FastCGI%E3%80%81PHP-CGI%E3%80%81PHP-FPM%E3%80%91update.png">
-<meta property="og:updated_time" content="2017-11-09T12:37:23.921Z">
+<meta property="og:updated_time" content="2017-11-14T06:41:06.312Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="CGI、FastCGI、PHP-CGI、PHP-FPM介绍">
 <meta name="twitter:description" content="CGI、FastCGI、PHP-CGI、PHP-FPM介绍">
@@ -368,22 +367,16 @@
 <p><img src="http://7xr23j.com1.z0.glb.clouddn.com/%E3%80%90CGI%E3%80%81FastCGI%E3%80%81PHP-CGI%E3%80%81PHP-FPM%E3%80%91cgi.png" alt="http://7xr23j.com1.z0.glb.clouddn.com/%E3%80%90CGI%E3%80%81FastCGI%E3%80%81PHP-CGI%E3%80%81PHP-FPM%E3%80%91cgi.png"></p>
 <p>这里提一下Apache的mod_php。</p>
 <p>mod_php 通过嵌入 PHP 解释器到 apache 进程中，每个新的apache子进程都会加载一次模块，会导致一些不必要的内存资源浪费。典型的就是处理CSS、JS之类的静态文件是完全没有必要加载解释器。</p>
-<h2 id="CGI"><a href="#CGI" class="headerlink" title="CGI"></a>CGI</h2><p>CGI：通用网关接口，是 Web Server 与 Web Application 之间数据交换的一种协议，定义了输入输出规范。接收到用户请求，启用让人诟病的fork-and-execute模式，即先创建cgi子进程，然后cgi子进程处理请求，处理完后结束这个子进程。</p>
-<h2 id="FastCGI"><a href="#FastCGI" class="headerlink" title="FastCGI"></a>FastCGI</h2><p>FastCGI：同 CGI，是一种通信协议，但比 CGI 在效率上做了一些优化。FastCGI像是一个常驻(long-live)型的CGI</p>
-<p><img src="http://7xr23j.com1.z0.glb.clouddn.com/%E3%80%90CGI%E3%80%81FastCGI%E3%80%81PHP-CGI%E3%80%81PHP-FPM%E3%80%91fastcgi.png" alt="http://7xr23j.com1.z0.glb.clouddn.com/%E3%80%90CGI%E3%80%81FastCGI%E3%80%81PHP-CGI%E3%80%81PHP-FPM%E3%80%91fastcgi.png"></p>
-<p>工作原理：</p>
-<ol>
-<li>Web Server启动时载入FastCGI进程管理器（Apache Module或IIS ISAPI等)</li>
-<li>FastCGI进程管理器自身初始化，启动多个CGI解释器进程(可建多个php-cgi)，并等待来自Web Server的连接。</li>
-<li>当客户端请求到达Web Server时，FastCGI进程管理器选择并连接到一个CGI解释器。Web server将CGI环境变量和标准输入发送到FastCGI子进程php-cgi。</li>
-<li>FastCGI子进程完成处理后，将标准输出和错误信息从同一连接返回Web Server。当FastCGI子进程关闭连接时，请求便告处理完成。FastCGI子进程接着等待，并处理来自FastCGI进程管理器(运行在Web Server中)的下一个连接。 在CGI模式中，php-cgi在此便退出了</li>
-</ol>
+<h2 id="CGI"><a href="#CGI" class="headerlink" title="CGI"></a>CGI</h2><p>CGI：通用网关接口，是 Web Server 与 Web Application 之间的一种通信协议，定义了输入输出规范。接收到用户请求，启用让人诟病的fork-and-execute模式，即先创建cgi子进程，然后cgi子进程处理请求，处理完后结束这个子进程。</p>
+<h2 id="FastCGI"><a href="#FastCGI" class="headerlink" title="FastCGI"></a>FastCGI</h2><p>FastCGI：同 CGI，也是 Web Server 与 Web Application 之间的一种通信协议，但比 CGI 在效率上做了一些优化。FastCGI像是一个常驻(long-live)型的CGI</p>
 <h2 id="PHP-CGI"><a href="#PHP-CGI" class="headerlink" title="PHP-CGI"></a>PHP-CGI</h2><p>PHP-CGI：是 PHP （Web Application）对 Web Server 提供的 CGI 协议的接口程序。因为PHP-CGI只是个CGI程序，他自己本身只能解析请求，返回结果，不会进程管理。<br>缺点：</p>
 <ol>
 <li>php-cgi变更php.ini配置后需重启php-cgi才能让新的php-ini生效，不可以平滑重启。</li>
 <li>直接杀死php-cgi进程，php就不能运行了。(PHP-FPM和Spawn-FCGI就没有这个问题，守护进程会平滑地重新生成新的子进程。）</li>
 </ol>
 <h2 id="PHP-FPM"><a href="#PHP-FPM" class="headerlink" title="PHP-FPM"></a>PHP-FPM</h2><p>PHP-FPM：是 PHP（Web Application）对 Web Server 提供的 FastCGI 协议的接口程序，额外还提供了相对智能一些任务管理。（FastCGI 的进程管理器，PHP-FPM也是用于调度管理PHP解析器php-cgi的管理程序）PHP-FPM通过生成新的子进程可以实现php.ini修改后的平滑重启。</p>
+<p>概括来说，fpm的实现就是创建一个master进程，在master进程中创建并监听socket，然后fork出多个子进程，这些子进程各自accept请求，子进程的处理非常简单，它在启动后阻塞在accept上，有请求到达后开始读取请求数据，读取完成后开始处理然后再返回，在这期间是不会接收其它请求的，也就是说fpm的子进程同时只能响应一个请求，只有把这个请求处理完成后才会accept下一个请求。</p>
+<p>fpm的master进程与worker进程之间不会直接进行通信，master通过共享内存获取worker进程的信息，比如worker进程当前状态、已处理请求数等，当master进程要杀掉一个worker进程时则通过发送信号的方式通知worker进程。</p>
 <h2 id="从两个层面讨论"><a href="#从两个层面讨论" class="headerlink" title="从两个层面讨论"></a>从两个层面讨论</h2><h4 id="1-PHP-解释器是否嵌入-Web-服务器进程内部执行"><a href="#1-PHP-解释器是否嵌入-Web-服务器进程内部执行" class="headerlink" title="1. PHP 解释器是否嵌入 Web 服务器进程内部执行"></a>1. PHP 解释器是否嵌入 Web 服务器进程内部执行</h4><p>mod_php 通过嵌入 PHP 解释器到 Apache 进程中，只能与 Apache 配合使用，而 cgi 和 fast-cgi 以独立的进程的形式出现，只要对应的Ｗeb服务器实现 cgi 或者 fast-cgi 协议，就能够处理 PHP 请求。</p>
 <h4 id="2-单个进程处理的请求数量"><a href="#2-单个进程处理的请求数量" class="headerlink" title="2. 单个进程处理的请求数量"></a>2. 单个进程处理的请求数量</h4><p>mod_php 和 fast-cgi 的模式在每个进程的生命周期内能够处理多个请求，而 cgi 的模式处理一个请求就马上销毁进程，在高并发的场景下 cgi 的性能非常糟糕。</p>
 <h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p><img src="http://7xr23j.com1.z0.glb.clouddn.com/%E3%80%90CGI%E3%80%81FastCGI%E3%80%81PHP-CGI%E3%80%81PHP-FPM%E3%80%91update.png" alt="http://7xr23j.com1.z0.glb.clouddn.com/%E3%80%90CGI%E3%80%81FastCGI%E3%80%81PHP-CGI%E3%80%81PHP-FPM%E3%80%91update.png"></p>
@@ -430,8 +423,8 @@
 
           <div class="post-nav-prev post-nav-item">
             
-              <a href="/2017/07/19/MySQL常用数据存储引擎区别/" rel="prev" title="MySQL常用数据存储引擎区别">
-                MySQL常用数据存储引擎区别 <i class="fa fa-chevron-right"></i>
+              <a href="/2017/07/12/数据库隔离级别介绍/" rel="prev" title="事务隔离级别介绍">
+                事务隔离级别介绍 <i class="fa fa-chevron-right"></i>
               </a>
             
           </div>
@@ -509,7 +502,7 @@
           
             <div class="site-state-item site-state-posts">
               <a href="/archives/">
-                <span class="site-state-item-count">43</span>
+                <span class="site-state-item-count">45</span>
                 <span class="site-state-item-name">日志</span>
               </a>
             </div>

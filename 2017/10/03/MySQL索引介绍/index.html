@@ -102,7 +102,7 @@
 <meta property="og:site_name" content="Jeff的干货基地">
 <meta property="og:description" content="MySQL索引介绍">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2017-10-25T06:41:53.890Z">
+<meta property="og:updated_time" content="2017-11-13T10:41:39.176Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="MySQL索引介绍">
 <meta name="twitter:description" content="MySQL索引介绍">
@@ -357,8 +357,16 @@
 
       
         <p>MySQL索引介绍<br><a id="more"></a></p>
-<p>索引是一种特殊的文件(InnoDB数据表上的索引是表空间的一个组成部分)，它们包含着对数据表里所有记录的引用指针。更通俗的说，数据库索引好比是一本书前面的目录，能<strong>加快数据库的查询速度</strong>。</p>
-<p>索引分为<strong>聚簇索引</strong>和<strong>非聚簇索引</strong>两种，聚簇索引是顺序结构与数据存储物理结构一致的一种索引，并且一个表的聚簇索引只能有唯一的一条；非聚簇索引记录的物理顺序与逻辑顺序没有必然的联系，与数据的存储物理结构没有关系；一个表对应的非聚簇索引可以有多条，根据不同列的约束可以建立不同要求的非聚簇索引；聚簇索引能提高多行检索的速度，而非聚簇索引对于单行的检索很快。</p>
+<p>索引是一种特殊的文件(InnoDB数据表上的索引是表空间的一个组成部分)，它包含着对数据表里所有记录的引用指针，更通俗的说，索引好比是一本书的目录。</p>
+<h3 id="索引的好处"><a href="#索引的好处" class="headerlink" title="索引的好处"></a>索引的好处</h3><ul>
+<li><strong>提高数据检索的效率，加快检索时间，减少了检索过程中要读取的数据量</strong></li>
+<li><strong>降低数据的排序成本（CPU资源的消耗）</strong>，当排序字段或分组字段（分组操作是需要先排序后分组的）与索引字段刚好一致时，MySQL将不会在取得数据后进行排序，因为每个索引中的数据都是索引键键值进行排序后存放的，根据索引存放的数据已经满足了客户的排序要求</li>
+</ul>
+<h3 id="索引的弊端"><a href="#索引的弊端" class="headerlink" title="索引的弊端"></a>索引的弊端</h3><ul>
+<li>当对表中的数据进行增加、删除和修改的时候，<strong>索引需要动态的维护，增加了一定的IO量和计算量</strong></li>
+<li><strong>占用一定的存储空间</strong>，且会随着表内数据的增加而增加</li>
+</ul>
+<h3 id="聚簇索引和非聚簇索引"><a href="#聚簇索引和非聚簇索引" class="headerlink" title="聚簇索引和非聚簇索引"></a>聚簇索引和非聚簇索引</h3><p>索引分为<strong>聚簇索引</strong>和<strong>非聚簇索引</strong>两种，聚簇索引是顺序结构与数据存储物理结构一致的一种索引，并且一个表的聚簇索引只能有唯一的一条；非聚簇索引记录的物理顺序与逻辑顺序没有必然的联系，与数据的存储物理结构没有关系；一个表对应的非聚簇索引可以有多条，根据不同列的约束可以建立不同要求的非聚簇索引；聚簇索引能提高多行检索的速度，而非聚簇索引对于单行的检索很快。</p>
 <p>滥用索引会带来反作用，索引会降低更新表的速度，如进行插入、更新、删除操作。因为更新表时，MySQL不仅要保存数据，而且需要更新索引文件。索引同时会占用一定的物理空间。</p>
 <h3 id="普通索引"><a href="#普通索引" class="headerlink" title="普通索引"></a>普通索引</h3><p>普通索引(由关键字KEY或INDEX定义的索引)的唯一任务是加快对数据的访问速度。因此，应该只为那些最经常出现在<strong>查询条件(WHERE column = …)或排序条件(ORDER BY column)中的数据列创建索引</strong>。只要有可能，就应该选择一个数据最整齐、最紧凑的数据列(如一个整数类型的数据列)来创建索引。 </p>
 <h3 id="唯一索引"><a href="#唯一索引" class="headerlink" title="唯一索引"></a>唯一索引</h3><p>与普通索引类似，不同的就是：<strong>索引列的值必须唯一，但允许有空值（注意和主键不同）</strong>。如果是<strong>组合索引</strong>，则<strong>列值的组合必须唯一</strong>，创建方法和普通索引类似。</p>
@@ -369,7 +377,6 @@
 <p>文本字段上的普通索引只能加快对出现在字段内容最前面的字符串(也就是字段内容开头的字符)进行检索操作。如果字段里存放的是由几个、甚至是多个单词构成的较大段文字，普通索引就没什么作用了。这种检索往往以LIKE %word%的形式出现，这对MySQL来说很复杂，如果需要处理的数据量很大，响应时间就会很长。</p>
 <p>这类场合正是全文索引(full-text index)可以大显身手的地方。在生成这种类型的索引时，MySQL将把在文本中出现的所有单词创建为一份清单，查询操作将根据这份清单去检索有关的数据记录。全文索引即可以随数据表一同创建，也可以等日后有必要时再使用下面这条命令添加：</p>
 <p>ALTER TABLE table_name ADD FULLTEXT(column1, column2)<br>有了全文索引，就可以用SELECT查询命令去检索那些包含着一个或多个给定单词的数据记录了。下面是这类查询命令的基本语法：<br>SELECT * FROM table_name<br>WHERE MATCH(column1, column2) AGAINST(‘word1’, ‘word2’, ‘word3’)<br>上面这条命令将把column1和column2字段里有word1、word2和word3的数据记录全部查询出来。 </p>
-<h3 id="单列索引、多列索引"><a href="#单列索引、多列索引" class="headerlink" title="单列索引、多列索引"></a>单列索引、多列索引</h3><p>多个单列索引与单个多列索引的查询效果不同，因为执行查询时，MySQL只能使用一个索引，会从多个索引中选择一个限制最为严格的索引。</p>
 <h3 id="组合索引（最左前缀匹配原则）"><a href="#组合索引（最左前缀匹配原则）" class="headerlink" title="组合索引（最左前缀匹配原则）"></a>组合索引（最左前缀匹配原则）</h3><p>平时用的SQL查询语句一般都有比较多的限制条件，所以为了进一步榨取MySQL的效率，就要考虑建立组合索引。例如上表中针对title和time建立一个组合索引：ALTER TABLE article ADD INDEX index_titme_time (title(50),time(10))。建立这样的组合索引，其实是相当于分别建立了下面两组组合索引：<br>–title,time<br>–title</p>
 <p>为什么没有time这样的组合索引呢？这是因为MySQL组合索引“最左前缀”的结果。简单的理解就是只从最左面的开始组合。并不是只要包含这两列的查询都会用到该组合索引，如下面的几个SQL所示：</p>
 <p>使用到上面的索引：<br>SELECT <em> FROM article WHREE title=’测试’ AND time=1234567890;<br>SELECT </em> FROM article WHREE title=’测试’;<br>不使用上面的索引：<br>SELECT * FROM article WHREE time=1234567890;</p>
@@ -384,13 +391,25 @@
 </li>
 <li><p>like语句操作<br>一般情况下不鼓励使用like操作，如果非使用不可，如何使用也是一个问题。like “%aaa%” 不会使用索引而like “aaa%”可以使用索引。</p>
 </li>
-<li><p>不要在列上进行运算<br>例如：select <em> from users where YEAR(adddate)&lt;2007，将在每个行上进行运算，这将导致索引失效而进行全表扫描，因此我们可以改成：select </em> from users where adddate&lt;’2007-01-01′。</p>
+<li><p>不要在列上进行运算<br>例如：select <em> from users where YEAR(add_date)&lt;2007，将在每个行上进行运算，这将导致索引失效而进行全表扫描，因此我们可以改成：select </em> from users where add_date&lt;’2007-01-01′。</p>
 </li>
 <li><p>选择区分度高的列作为索引<br>区分度的公式是count(distinct col)/count(*)，表示字段不重复的比例，比例越大我们扫描的记录数越少，唯一键的区分度是1，而一些状态、性别字段可能在大数据面前区分度就是0，那可能有人会问，这个比例有什么经验值吗？使用场景不同，这个值也很难确定，一般需要join的字段我们都要求是0.1以上，即平均1条扫描10条记录。</p>
 </li>
 <li><p>尽量的扩展索引，不要新建索引<br>比如表中已经有a的索引，现在要加(a,b)的索引，那么只需要修改原来的索引即可。</p>
 </li>
 </ol>
+<h3 id="如何判定是否需要建立索引？"><a href="#如何判定是否需要建立索引？" class="headerlink" title="如何判定是否需要建立索引？"></a>如何判定是否需要建立索引？</h3><ol>
+<li><p>较频繁地作为查询条件的字段应该建立索引</p>
+</li>
+<li><p>唯一性太差的字段不适合单独建立索引，即使频繁作为查询条件<br>唯一性太差的字段主要有哪些呢？如状态字段、类型字段等，这些字段中存放的数值可能总共就是那么几个或十几个，每个值对应的数据可能有成千上万。对于这类字段，即使建立了索引，MySQL Query Optimizer大多数情况也不会选择这种索引；假设选择了这种索引，这可能会带来极大的性能问题，因为索引的每个键值对应大量记录，那么储存引擎在根据索引访问数据的时候会带来大量的随机IO，甚至可能会出现大量的重复IO。不仅如此，如果一个键值对应了太多<br>的记录，也就是说通过该键值会返回占整个表比例很大的记录时，由于根据索引访问数据产生的都是随机IO，其效率会比全表扫描的顺序IO效率低很多</p>
+</li>
+</ol>
+<p>具体原因和例子可见《MySQL性能调优与架构设计》P373-374</p>
+<ol>
+<li>更新非常频繁的字段不适合建立索引</li>
+</ol>
+<h3 id="单键索引还是组合索引？"><a href="#单键索引还是组合索引？" class="headerlink" title="单键索引还是组合索引？"></a>单键索引还是组合索引？</h3><p>在很多时候，where子句中的过滤条件可能是多个字段。此时就应判断是仅仅为过滤性最好的字段建立单键索引，还是在所有字段（过滤条件）上建立一个组合索引。单键索引过滤的记录并不完整，和组合索引相比，存储引擎将访问更多的记录，有着更高的IO成本，查询效率比组合索引要低。但是组合索引因为有多个字段存在，理论上被更新的可能性会比单键索引要大，索引更新的成本更高。</p>
+<p>创建多个单键索引的做法更加不可取，因为</p>
 
       
     </div>
@@ -510,7 +529,7 @@
           
             <div class="site-state-item site-state-posts">
               <a href="/archives/">
-                <span class="site-state-item-count">43</span>
+                <span class="site-state-item-count">45</span>
                 <span class="site-state-item-name">日志</span>
               </a>
             </div>
@@ -567,7 +586,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#普通索引"><span class="nav-number">1.</span> <span class="nav-text">普通索引</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#唯一索引"><span class="nav-number">2.</span> <span class="nav-text">唯一索引</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#主索引"><span class="nav-number">3.</span> <span class="nav-text">主索引</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#外键索引"><span class="nav-number">4.</span> <span class="nav-text">外键索引</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#全文索引（FULLTEXT）"><span class="nav-number">5.</span> <span class="nav-text">全文索引（FULLTEXT）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#单列索引、多列索引"><span class="nav-number">6.</span> <span class="nav-text">单列索引、多列索引</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#组合索引（最左前缀匹配原则）"><span class="nav-number">7.</span> <span class="nav-text">组合索引（最左前缀匹配原则）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#建立索引需要注意的点："><span class="nav-number">8.</span> <span class="nav-text">建立索引需要注意的点：</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#索引的好处"><span class="nav-number">1.</span> <span class="nav-text">索引的好处</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#索引的弊端"><span class="nav-number">2.</span> <span class="nav-text">索引的弊端</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#聚簇索引和非聚簇索引"><span class="nav-number">3.</span> <span class="nav-text">聚簇索引和非聚簇索引</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#普通索引"><span class="nav-number">4.</span> <span class="nav-text">普通索引</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#唯一索引"><span class="nav-number">5.</span> <span class="nav-text">唯一索引</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#主索引"><span class="nav-number">6.</span> <span class="nav-text">主索引</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#外键索引"><span class="nav-number">7.</span> <span class="nav-text">外键索引</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#全文索引（FULLTEXT）"><span class="nav-number">8.</span> <span class="nav-text">全文索引（FULLTEXT）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#组合索引（最左前缀匹配原则）"><span class="nav-number">9.</span> <span class="nav-text">组合索引（最左前缀匹配原则）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#建立索引需要注意的点："><span class="nav-number">10.</span> <span class="nav-text">建立索引需要注意的点：</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#如何判定是否需要建立索引？"><span class="nav-number">11.</span> <span class="nav-text">如何判定是否需要建立索引？</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#单键索引还是组合索引？"><span class="nav-number">12.</span> <span class="nav-text">单键索引还是组合索引？</span></a></li></ol></div>
             
 
           </div>
